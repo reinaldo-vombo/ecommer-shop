@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE `products` ADD COLUMN `slug` VARCHAR(191) NULL,
+    ADD COLUMN `stock` INTEGER NULL,
+    ADD COLUMN `type` VARCHAR(191) NULL,
+    MODIFY `status` VARCHAR(191) NULL;

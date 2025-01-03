@@ -2,20 +2,179 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+body {
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+  }
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground cursor-auto;
+  }
+  .h1-bold {
+    @apply text-[4.688rem] font-bold leading-[140%] tracking-wider;
+  }
+
+  .h1-semibold {
+    @apply text-[2.25rem] font-semibold leading-[140%] tracking-wider;
+  }
+
+  .h2-bold {
+    @apply text-[1.875rem] font-bold leading-[140%] tracking-wider;
+  }
+
+  .h3-bold {
+    @apply text-[1.5rem] font-bold leading-[140%] tracking-wider;
+  }
+
+  .base-semibold {
+    @apply text-base font-semibold leading-[140%] tracking-wider;
+  }
+  .padding {
+    @apply py-[50px] md:py-[100px];
+  }
+}
+
+/*OIS delete on swipe  */
+.ios-swiper ul {
+  margin-top: 11px;
+  list-style: none;
+}
+.ios-swiper .li {
+  position: relative;
+  border-right: 1px solid red;
+}
+
+.delete-btn {
+  z-index: 1;
+  position: absolute;
+  height: calc(100% - 2px);
+  width: 70px;
+  top: 50%;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translateY(-50%);
+  background-color: red;
+}
+
+.msg-container {
+  position: relative;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  background-color: white;
+}
+
+&:hover {
+  cursor: pointer;
+}
+
+.user-icon {
+  display: block;
+  height: 60px;
+  width: 60px;
+  object-fit: cover;
+  object-position: top;
+  border-radius: 10px;
+  pointer-events: none;
+}
+
+.message-text {
+  flex: 1;
+  margin-left: 12px;
+  padding: 8px 0;
+}
+.windows-loading-spinner {
+  box-sizing: border-box;
+  width: 3rem;
+  height: 3rem;
+  padding: 2px;
+  overflow: visible;
+}
+
+.windows-loading-spinner > circle {
+  stroke: #fff;
+  fill: none;
+  stroke-width: 2px;
+  stroke-linecap: round;
+  transform-origin: 50% 50%;
+  transition: all 0.2s ease-in-out 0s;
+  animation: 2s linear 0s infinite normal none running loading-spinner;
+}
+
+@keyframes loading-spinner {
+  0% {
+    stroke-dasharray: 0.01px, 43.97px;
+    transform: rotate(0);
+  }
+
+  50% {
+    stroke-dasharray: 21.99px, 21.99px;
+    transform: rotate(450deg);
+  }
+
+  100% {
+    stroke-dasharray: 0.01px, 43.97px;
+    transform: rotate(1080deg);
+  }
 }
