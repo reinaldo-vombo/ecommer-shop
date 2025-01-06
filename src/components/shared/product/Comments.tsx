@@ -35,15 +35,17 @@ const Comments = ({ reviews }: TProps) => {
             </AccordionTrigger>
             <AccordionContent>
                <div>
-                  <Feedback stars={stars} setStars={setStars} />
                   {reviews.length > 0 ? reviews.map((feed) => (
-                     <div className='mt-8' key={feed.id}>
-                        <div className='flex items-center justify-between'>
-                           <Stars length={feed.stars} />
-                           <h3 className='base-semibold text-gray-400'>{feed.customer} - 22 Feb 2024</h3>
-                        </div>
-                        <div className='mt-6'>
-                           <h3 className='base-semibold'>{feed.comment}</h3>
+                     <div key={feed.id}>
+                        <Feedback stars={stars} setStars={setStars} productId={feed.productId} />
+                        <div className='mt-8'>
+                           <div className='flex items-center justify-between'>
+                              <Stars length={feed.stars} />
+                              <h3 className='base-semibold text-gray-400'>{feed.customer} - 22 Feb 2024</h3>
+                           </div>
+                           <div className='mt-6'>
+                              <h3 className='base-semibold'>{feed.comment}</h3>
+                           </div>
                         </div>
                      </div>
                   )) : (<p>Sem comentarios</p>)}

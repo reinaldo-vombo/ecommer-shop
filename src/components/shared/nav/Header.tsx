@@ -1,15 +1,20 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import { LogoIcon } from '@/assets/logos';
 import Link from 'next/link';
 import { ShiftingDropDown } from './Dropdwon';
 import Search from '../search-box/Search';
-import { Heart, ShoppingCart, User } from 'lucide-react';
+import { Heart, ShoppingCart, User as UserIcon } from 'lucide-react';
 import SheetModal from '../SheetModal';
 import Cart from '../cart/Cart';
+import { User } from '@/lib/auth/user'
 import FavoriteItem from '../wishList/ListItem';
+import { TProduct } from '../product/types';
+import MobileHeader from '../mobile/Header';
+import Image from 'next/image';
 
-const Header = () => {
+const Header = ({ data }: { data: TProduct[] }) => {
+   const user = User()
    const [scrolled, setScrolled] = useState(false);
    useEffect(() => {
       const handleScroll = () => {
@@ -23,22 +28,28 @@ const Header = () => {
       };
    }, []);
    return (
-      <header className={`fixed w-full z-30 ${scrolled ? 'bg-white shadow' : `bg-transparent}`} transition-all ease-in hidden sm:block`}>
+      <header className={`fixed w-full z-30 ${scrolled ? 'bg-white shadow' : `bg-transparent}`} transition-all ease-in`}>
          <div className="container">
-            <nav className='flex items-center justify-between'>
+            <nav className='items-center justify-between hidden md:flex'>
                <div>
                   <Link href='/'>
                      <LogoIcon width={40} height={40} />
                   </Link>
                </div>
                <div>
-                  <ShiftingDropDown scrolled={scrolled} />
+                  <ShiftingDropDown />
                </div>
                <div className="flex items-center gap-3">
-                  <Search />
-                  <Link href='/login' aria-label="user icon" className="hover:bg-slate-200 rounded-full p-2 flex items-center justify-center">
-                     <User width={25} />
-                  </Link>
+                  <Search product={data} />
+                  {user ? (
+                     <Link href='/perfil' aria-label="user profile photo" className="">
+                        <Image src={user?.avatar || '/avatar.jpg'} className='rounded-full' width={30} height={30} alt={use?.name} />
+                     </Link>
+                  ) : (
+                     <Link href='/login' aria-label="user icon" className="hover:bg-slate-200 rounded-full p-2 flex items-center justify-center">
+                        <UserIcon width={25} />
+                     </Link>
+                  )}
                   <SheetModal
                      label="shop icon"
                      side="right"
@@ -66,6 +77,7 @@ const Header = () => {
                   </SheetModal>
                </div>
             </nav>
+            <MobileHeader title='Discover' data={data} />
          </div>
       </header>
    )

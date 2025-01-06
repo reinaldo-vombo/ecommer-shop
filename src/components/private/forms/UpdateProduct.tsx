@@ -324,7 +324,7 @@ const UpdateProduct = ({ props }: TProductProps) => {
                                                    const currentSizes = field.value || [];
                                                    if (currentSizes.includes(size)) {
                                                       // Remove size if already selected
-                                                      field.onChange(currentSizes.filter((s: any) => s !== size));
+                                                      field.onChange(currentSizes.filter((s: unknown) => s !== size));
                                                    } else {
                                                       // Add size if not already selected
                                                       field.onChange([...currentSizes, size]);

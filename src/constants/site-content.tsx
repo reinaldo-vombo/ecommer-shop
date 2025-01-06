@@ -1,5 +1,6 @@
 import React from "react";
 import { ArrowUpDown, BookCheck, DollarSign, ShoppingBag } from 'lucide-react';
+import { AdidasLogo, ConversLogo, NDLogo, NikeLogo, PumaLogo } from "@/assets/logos";
 
 export const OVERVIEWS = [
    {
@@ -71,6 +72,7 @@ export const GENDER = [
    { id: 1, name: 'Homem', value: 'Homem' },
    { id: 2, name: 'Mulher', value: 'Mulher' },
    { id: 3, name: 'Unisex', value: 'Unisex' },
+   { id: 4, name: 'Criança', value: 'Criança' },
 ];
 export const CATEGORIES = [
    { id: 1, name: 'Stilo de vida', value: 'Stilo de vida' },
@@ -99,8 +101,8 @@ export const COLORES = [
    { id: 3, value: '#1809e8', name: 'Azul' },
 ];
 export const PRODUCT_TYPE = [
-   { id: 1, value: 'Sapatos', name: 'Sapatos' },
-   { id: 2, value: 'Tshite', name: 'Tshite' },
+   { id: 1, value: 'Sapatos', name: 'Sapatos/Tenis' },
+   { id: 2, value: 'Acessorios', name: 'Acessorios' },
    { id: 3, value: 'Roupas', name: 'Roupas' },
 ];
 export const STATUS = [
@@ -140,3 +142,10 @@ export const PRICE = [
    { id: 2, name: 'Medio', value: 'mid' },
    { id: 3, name: 'baixos', value: 'low' },
 ]
+export const BRANDS_LOGOS = [
+   { id: '1', value: 'Nike', logo: <NikeLogo width={40} height={40} /> },
+   { id: '2', value: 'Converse', logo: <ConversLogo width={40} height={40} /> },
+   { id: '3', value: 'Adidas', logo: <AdidasLogo width={40} height={40} /> },
+   { id: '4', value: 'Puma', logo: <PumaLogo width={40} height={40} /> },
+   { id: '5', value: 'Nd', logo: <NDLogo width={40} height={40} /> },
+] 

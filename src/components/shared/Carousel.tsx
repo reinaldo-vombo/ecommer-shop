@@ -9,7 +9,7 @@ import Image from 'next/image';
 
 type TProps = {
    initial: string[]
-   images: { color: string; images: string[] }[];
+   images?: { color: string; images: string[] }[];
 }
 export function CarouselCustomIndicator({ images, initial }: TProps) {
    const [index, setIndex] = useState(0);
@@ -20,12 +20,12 @@ export function CarouselCustomIndicator({ images, initial }: TProps) {
    }
 
    return (
-      <div className='relative w-full max-w-xs md:max-w-full py-8'>
+      <div className='relative w-full max-w-full md:py-8'>
          <Carousel index={index} onIndexChange={setIndex}>
             <CarouselContent className='relative'>
                {selectedColor.map((item, i) => {
                   return (
-                     <CarouselItem key={i} className='p-4'>
+                     <CarouselItem key={i} className='md:p-4'>
                         <div className='flex aspect-square relative items-center justify-center border border-zinc-200 dark:border-zinc-800'>
                            <Image src={item} className='rounded-lg' fill sizes='100%' alt={`preview${i}`} />
                         </div>
@@ -34,7 +34,7 @@ export function CarouselCustomIndicator({ images, initial }: TProps) {
                })}
             </CarouselContent>
          </Carousel>
-         <div className='flex w-full justify-center space-x-3 px-4'>
+         <div className='grid grid-cols-6 gap-2 px-4 mt-6 md:mt-auto'>
             {selectedColor.map((item, index) => {
                return (
                   <button

@@ -1,15 +1,15 @@
 'use client'
 import React, { useCallback, useEffect, useState } from 'react'
 import { motion } from 'framer-motion';
-import { useDropzone, DropzoneRootProps } from 'react-dropzone'
+import { useDropzone, DropzoneRootProps, FileRejection } from 'react-dropzone'
 import { TFileUploder } from './types';
 import { Images } from 'lucide-react';
 import MultipleImage from './MultipleImages';
 import SingleImage from './SigleImage';
 
-interface CustomFile extends File {
-   path?: string;
-}
+// interface CustomFile extends File {
+//    path?: string;
+// }
 const FileUploader = ({ maxFiles = 1, formField }: TFileUploder) => {
 
    const [files, setFiles] = useState<(File & { preview: string })[]>([]);
@@ -39,11 +39,11 @@ const FileUploader = ({ maxFiles = 1, formField }: TFileUploder) => {
          }
       })
 
-   const fileRejectionItems = fileRejections.map(({ file, errors }: { file: CustomFile, errors: any[] }) => (
+   const fileRejectionItems = fileRejections.map(({ file, errors }: FileRejection) => (
       <li key={file.path}>
          {file.path} - {file.size} bytes
          <ul>
-            {errors.map(e => (
+            {errors.map((e: any) => (
                <li key={e.code}>{e.message}</li>
             ))}
          </ul>

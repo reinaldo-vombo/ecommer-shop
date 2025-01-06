@@ -15,7 +15,10 @@ import {
    FormLabel,
    FormMessage,
 } from "@/components/ui/form";
-import { feedbackSchema } from "@/lib/form-validation";
+import { feedbackSchema } from "@/lib/validation/feeback";
+import { postReview } from "@/lib/actions/review";
+import { initialState } from "@/constants/site-content";
+import { toast } from "sonner";
 
 const feedback = [
    { stars: 4, emoji: <Laugh size={16} className="stroke-inherit" /> },
@@ -26,30 +29,37 @@ const feedback = [
 type TFeedbackProps = {
    stars: null | number
    setStars: Dispatch<SetStateAction<number | null>>
+   productId: string
 }
-export const Feedback = ({ stars, setStars }: TFeedbackProps) => {
+export const Feedback = ({ stars, setStars, productId }: TFeedbackProps) => {
    const [isSubmitted, setIsSubmitted] = useState<null | boolean>(null);
 
    useEffect(() => {
       setIsSubmitted(false)
    }, [stars])
-   type FormData = z.infer<typeof feedbackSchema>;
 
    const form = useForm({
       resolver: zodResolver(feedbackSchema),
       defaultValues: {
          message: "",
+         stars: stars
       },
    });
-   const onSubmit = async (data: FormData) => {
-      console.log(data);
-
+   const onSubmit = async (data: z.infer<typeof feedbackSchema>) => {
+      console.log(data)
+      const result = await postReview(initialState, data, productId,);
+      if (result?.error) {
+         toast.error(result.message)
+      }
+      if (result.success) {
+         toast.success(result.message)
+      }
    }
    const isLoading = form.formState.isSubmitting
+   console.log(form.formState.errors)
    return (
       <Form {...form}>
          <form onSubmit={form.handleSubmit(onSubmit)}>
-
             <motion.div
                layout
                initial={{ borderRadius: '2rem' }}
@@ -61,17 +71,34 @@ export const Feedback = ({ stars, setStars }: TFeedbackProps) => {
                   <div className="text-sm text-black dark:text-neutral-400">Like our service?</div>
                   <div className="flex items-center text-neutral-400">
                      {feedback.map((e) => (
-                        <button
-                           onClick={() => setStars((prev) => (e.stars === prev ? null : e.stars))}
-                           className={twMerge(
-                              stars === e.stars
-                                 ? 'bg-blue-100 stroke-blue-500 dark:bg-sky-900 dark:stroke-sky-500'
-                                 : 'stroke-neutral-500 dark:stroke-neutral-400',
-                              'flex h-8 w-8 items-center justify-center rounded-full transition-all hover:bg-blue-100 hover:stroke-blue-500 hover:dark:bg-sky-900 hover:dark:stroke-sky-500'
+                        <FormField
+                           key={e.stars}
+                           control={form.control}
+                           name="stars"
+                           render={({ field }) => (
+                              <FormItem>
+                                 <FormLabel></FormLabel>
+                                 <FormControl>
+                                    <button
+                                       onClick={() => {
+                                          setStars((prev) => (e.stars === prev ? null : e.stars))
+                                          field.onChange(e.stars)
+                                       }}
+                                       className={twMerge(
+                                          stars === e.stars
+                                             ? 'bg-blue-100 stroke-blue-500 dark:bg-sky-900 dark:stroke-sky-500'
+                                             : 'stroke-neutral-500 dark:stroke-neutral-400',
+                                          'flex h-8 w-8 items-center justify-center rounded-full transition-all hover:bg-blue-100 hover:stroke-blue-500 hover:dark:bg-sky-900 hover:dark:stroke-sky-500'
+                                       )}
+                                       key={e.stars}>
+                                       {e.emoji}
+                                    </button>
+                                 </FormControl>
+                                 <FormMessage />
+                              </FormItem>
                            )}
-                           key={e.stars}>
-                           {e.emoji}
-                        </button>
+                        />
+
                      ))}
                   </div>
                </span>

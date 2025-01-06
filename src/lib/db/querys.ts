@@ -1,8 +1,26 @@
 import { prisma } from './client';
 
 export const getProducts = async () => {
-  const posts = await prisma.products.findMany({});
-  return posts;
+  const products = await prisma.products.findMany({});
+  return products.map((product) => ({
+    ...product,
+    style:
+      typeof product.style === 'string'
+        ? JSON.parse(product.style)
+        : product.style,
+    size:
+      typeof product.size === 'string'
+        ? JSON.parse(product.size)
+        : product.size,
+    category:
+      typeof product.category === 'string'
+        ? JSON.parse(product.category)
+        : product.category,
+    images:
+      typeof product.images === 'string'
+        ? JSON.parse(product.images)
+        : product.images,
+  }));
 };
 
 // Sigle product by id
@@ -17,7 +35,25 @@ export const getProductById = async (id: string) => {
     throw new Error('Product not found');
   }
 
-  return product;
+  return {
+    ...product,
+    style:
+      typeof product.style === 'string'
+        ? JSON.parse(product.style)
+        : product.style,
+    size:
+      typeof product.size === 'string'
+        ? JSON.parse(product.size)
+        : product.size,
+    category:
+      typeof product.category === 'string'
+        ? JSON.parse(product.category)
+        : product.category,
+    images:
+      typeof product.images === 'string'
+        ? JSON.parse(product.images)
+        : product.images,
+  };
 };
 export const getWishistProduct = async (productIds: string[]) => {
   const favorite = await prisma.products.findMany({

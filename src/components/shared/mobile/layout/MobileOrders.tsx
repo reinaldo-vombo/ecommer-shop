@@ -1,7 +1,6 @@
 
 import SheetModal from "@/components/shared/SheetModal"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import {
    Card,
    CardContent,
@@ -10,18 +9,17 @@ import {
    CardHeader,
    CardTitle,
 } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import {
    Tabs,
    TabsContent,
    TabsList,
    TabsTrigger,
 } from "@/components/ui/tabs"
-import { PRODUCTS } from "@/constant/site-content"
 import Image from "next/image"
+import { TProduct } from "../../product/types"
 
 const MobileOrders = () => {
+   const PRODUCTS: TProduct[] = []
    return (
       <Tabs defaultValue="pending" className="w-full">
          <TabsList className="grid w-full grid-cols-2">
@@ -40,11 +38,11 @@ const MobileOrders = () => {
                   {PRODUCTS.map((item) => (
                      <Card key={item.id}>
                         <CardContent className="flex items-center justify-between p-1">
-                           <Image src={item.image} className="rounded-md" width={60} height={60} alt={item.title} />
+                           <Image src={item.image} className="rounded-md" width={60} height={60} alt={item.name} />
                            <div>
                               <div className="flex items-center flex-col">
                                  <h2 className="text-base grid">
-                                    {item.title}
+                                    {item.name}
                                     <span>Tamanho:</span>
                                  </h2>
                                  <div className="flex items-center gap-4">
@@ -78,11 +76,11 @@ const MobileOrders = () => {
                   {PRODUCTS.map((item) => (
                      <Card key={item.id}>
                         <CardContent className="flex items-center justify-between p-1">
-                           <Image src={item.image} className="rounded-md" width={60} height={60} alt={item.title} />
+                           <Image src={item.image} className="rounded-md" width={60} height={60} alt={item.name} />
                            <div>
                               <div className="flex items-center flex-col">
                                  <h2 className="text-base grid">
-                                    {item.title}
+                                    {item.name}
                                     <span>Tamanho:</span>
                                  </h2>
                                  <div className="flex items-center gap-4">

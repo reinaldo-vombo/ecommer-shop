@@ -1,9 +1,5 @@
-export interface CartItem extends Product {
+import { TProduct } from '@/components/shared/product/types';
+
+export interface CartItem extends TProduct {
   quantity: number;
-}
-export interface Product {
-  id: string;
-  name: string;
-  price: number;
-  image: string;
 }

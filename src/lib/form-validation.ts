@@ -30,28 +30,7 @@ export const productSchema = z.object({
     })
   ),
   type: z.string().min(1, { message: 'Tipo é obrigatório' }),
-  sizes: z.preprocess(
-    (value, ctx) => {
-      const type = ctx.parent?.type; // Access parent field
-      if (type === 'shoe') {
-        return value; // Let the schema below handle this case
-      }
-      // Ensure strings for clothing sizes
-      return Array.isArray(value) ? value.map(String) : value;
-    },
-    z.union([
-      z
-        .array(
-          z.number().min(1, { message: 'Tamanhos é obrigatório para tenis' })
-        )
-        .optional(), // Sizes for shoes
-      z
-        .array(
-          z.string().min(1, { message: 'Tamanhos é obrigatório para roupa' })
-        )
-        .optional(), // Sizes for clothing
-    ])
-  ),
+  sizes: z.any(),
   stock: z.string().optional(),
 });
 
@@ -95,11 +74,7 @@ export const logninSchema = z.object({
     message: 'Palavra-passe tem que conter no minimo 5 cararteres',
   }),
 });
-export const feedbackSchema = z.object({
-  message: z.string().min(1, {
-    message: 'Por-favor escreva sua messagem',
-  }),
-});
+
 export const signinSchema = z.object({
   name: z.string().min(4, {
     message: 'nome deve conter no minimo 5 cararteres',

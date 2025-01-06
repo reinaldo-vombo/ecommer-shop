@@ -21,7 +21,7 @@ const ProductSection = ({ products }: TProps) => {
       return matchesPrice;
    });
    return (
-      <section className='padding'>
+      <section className='padding hidden sm:block'>
          <div className="container">
             <div className='space-y-6'>
                <div className='flex items-center justify-between'>

@@ -1,12 +1,15 @@
 import Footer from '@/components/layouts/Footer'
+import ToolbarExpandable from '@/components/shared/mobile/BottomNav'
 import Header from '@/components/shared/nav/Header'
+import { TProduct } from '@/components/shared/product/types'
+import { getProducts } from '@/lib/db/querys'
 import { LayoutProp } from '@/lib/types'
-import React, { Fragment } from 'react'
 
-export default function Mainlayout({ children }: LayoutProp) {
+export default async function Mainlayout({ children }: LayoutProp) {
+   const data = await getProducts()
    return (
-      <Fragment>
-         <Header />
+      <div className='relative'>
+         <Header data={data as unknown as TProduct[]} />
          <main className='isolate'>
             {/* <div className='relative pt-14'>
                <div
@@ -20,6 +23,7 @@ export default function Mainlayout({ children }: LayoutProp) {
             {children}
          </main>
          <Footer />
-      </Fragment>
+         <ToolbarExpandable />
+      </div>
    )
 }

@@ -196,7 +196,7 @@ export const SidebarLogOut = ({
 }: {
    link: Links;
    className?: string;
-   logout: any;
+   logout: () => void;
    props?: LinkProps;
 }) => {
    const { open, animate } = useSidebar();

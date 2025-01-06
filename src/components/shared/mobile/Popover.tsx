@@ -1,3 +1,4 @@
+'use client'
 import useClickOutside from '@/lib/hooks/useClickOutside.';
 import { AnimatePresence, MotionConfig, motion } from 'framer-motion';
 import { ArrowLeftIcon } from 'lucide-react';

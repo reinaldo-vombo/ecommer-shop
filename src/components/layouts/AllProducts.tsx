@@ -5,6 +5,7 @@ import { TProduct } from '../shared/product/types';
 import ProductCard from '../shared/product/ProductCard';
 import { getPriceRange } from '@/lib/helper';
 import { useSearchParams } from 'next/navigation';
+import NoProductFound from '../shared/product/NoProductFound';
 
 type TProps = {
    props: TProduct[]
@@ -17,11 +18,13 @@ const AllProducts = ({ props }: TProps) => {
    const size = searchParams.get('size')
    const category = searchParams.get('category')
    const color = searchParams.get('color')
+   const type = searchParams.get('type')
    const [minPrice, maxPrice] = getPriceRange(price);
 
    const filteredProducts = props.filter((product) => {
       const matchesPrice = product.price >= minPrice && product.price <= maxPrice;
       const matchesBrand = brand ? product.brand === brand : true;
+      const matchesType = type ? product.type === type : true;
       const matchesColor = color
          ? product.images.some((img) => img.color === color)
          : true;
@@ -35,6 +38,7 @@ const AllProducts = ({ props }: TProps) => {
          matchesBrand &&
          matchesColor &&
          matchesSize &&
+         matchesType &&
          matchesCategory
       );
    });
@@ -55,7 +59,7 @@ const AllProducts = ({ props }: TProps) => {
                   <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                      {filteredProducts.length > 0 ? filteredProducts.map((product) => (
                         <ProductCard props={product} key={product.id} />
-                     )) : (<p>Sem product</p>)}
+                     )) : (<NoProductFound />)}
                   </div>
                </div>
             </div>

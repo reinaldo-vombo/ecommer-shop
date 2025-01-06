@@ -41,7 +41,6 @@ const ProductCard = ({ props }: TProductProps) => {
                </SheetModal>
                <SheetModal
                   side='bottom'
-                  className="sm:max-w-lg"
                   triggerClass='absolute right-4 top-16 opacity-0 group-hover:opacity-100 transition-opacity bg-primary rounded-md w-9 h-9 text-primary-foreground flex items-center justify-center'
                   title={name}
                   trigger={<Eye className="h-4 w-4" />}>
@@ -51,6 +50,7 @@ const ProductCard = ({ props }: TProductProps) => {
                   side='right'
                   triggerClass='absolute right-4 top-28 opacity-0 group-hover:opacity-100 transition-opacity bg-primary rounded-md w-9 h-9 text-primary-foreground flex items-center justify-center'
                   title="Seu favoritos"
+                  className="sm:max-w-lg"
                   onClick={() => addToWishlist(props)}
                   trigger={<Heart className="h-4 w-4" />}>
                   <FavoriteItem />

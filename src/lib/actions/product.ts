@@ -10,7 +10,12 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { prisma } from '../db/client';
 import { InputJsonValue } from '@prisma/client/runtime/library';
 import { revalidatePath } from 'next/cache';
-
+type ProductImage = {
+  images: {
+    color: string;
+    images: string[];
+  };
+};
 const PATH = '/api/uploads/';
 type FeatureData = z.infer<typeof productSchema>;
 type UpadateData = z.infer<typeof updateProductSchema>;
@@ -44,6 +49,9 @@ export async function createProduct(prevState: TState, data: FeatureData) {
     }
 
     async function saveFileToFirebase(file: File): Promise<string> {
+      if (!storage) {
+        throw new Error('Firebase storage is not initialized.');
+      }
       const bytes = await file.arrayBuffer();
       const storageRef = ref(storage, `images/${file.name}`);
       await uploadBytes(storageRef, bytes);
@@ -120,6 +128,7 @@ export async function createProduct(prevState: TState, data: FeatureData) {
         size: data.sizes as InputJsonValue,
         details: data.details,
         price,
+        stock,
         brand: data.brand,
         category: data.category,
       },
@@ -172,6 +181,9 @@ export async function updateProduct(
     }
 
     async function saveFileToFirebase(file: File): Promise<string> {
+      if (!storage) {
+        throw new Error('Firebase storage is not initialized.');
+      }
       const bytes = await file.arrayBuffer();
       const storageRef = ref(storage, `images/${file.name}`);
       await uploadBytes(storageRef, bytes);
@@ -322,7 +334,8 @@ export async function deleteProduct(prevState: TState, id: string) {
 
     // Step 4: Delete images in the nested colors array structure
     if (product.images && Array.isArray(product.images)) {
-      for (const colorEntry of product.images) {
+      const imagesArray = product.images as ProductImage[];
+      for (const colorEntry of imagesArray) {
         const { images } = colorEntry;
 
         if (images && Array.isArray(images)) {

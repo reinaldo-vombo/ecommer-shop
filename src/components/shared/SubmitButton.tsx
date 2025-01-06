@@ -2,10 +2,11 @@ import React from 'react'
 import { Button } from '../ui/button'
 import { SpinerIcon } from '@/assets/logos'
 type TProps = {
-   disabled: boolean
+   disabled: boolean;
+   title?: 'Entrar' | 'Enviar' | 'Atualizar' | 'Eliminar' | 'Postar'
 }
 
-const SubmitButton = ({ disabled }: TProps) => {
+const SubmitButton = ({ disabled, title = 'Postar' }: TProps) => {
    return (
       <Button
          type="submit"
@@ -14,7 +15,7 @@ const SubmitButton = ({ disabled }: TProps) => {
       >
          {disabled ? (
             <SpinerIcon />
-         ) : "Entrar"}
+         ) : title}
       </Button>
    )
 }

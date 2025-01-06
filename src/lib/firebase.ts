@@ -1,10 +1,10 @@
 import { initializeApp } from 'firebase/app';
-import { getStorage } from 'firebase/storage';
+import { getStorage, FirebaseStorage } from 'firebase/storage';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
-let storage;
+let storage: FirebaseStorage | undefined;
 
 if (process.env.NODE_ENV === 'production') {
   // Firebase configuration for production
@@ -20,6 +20,9 @@ if (process.env.NODE_ENV === 'production') {
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   storage = getStorage(app);
+} else {
+  // Provide a dummy object in development
+  storage = {} as FirebaseStorage;
 }
 
 export { storage };

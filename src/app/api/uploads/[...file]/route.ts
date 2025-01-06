@@ -1,21 +1,26 @@
 import { NextResponse } from 'next/server';
 import { join } from 'path';
-import { stat, readFile } from 'fs/promises';
+import { promises as fs } from 'fs';
+// import { stat, readFile } from 'fs/promises';
 
 const uploadsDir = join(process.cwd(), 'uploads');
 
 export async function GET(
   req: Request,
-  { params }: { params: { file: string[] } }
+  { params }: { params: Promise<{ file: string[] }> }
 ) {
   try {
-    const filePath = join(uploadsDir, ...params.file);
+    const resolvedParams = await params;
+    const filePath = join(uploadsDir, ...resolvedParams.file);
 
-    // Ensure the file exists
-    await stat(filePath);
+    if (!filePath.startsWith(uploadsDir)) {
+      return NextResponse.json({ error: 'Invalid file path' }, { status: 400 });
+    }
+
+    await fs.stat(filePath);
 
     // Read the file contents
-    const file = await readFile(filePath);
+    const file = await fs.readFile(filePath);
 
     // Determine the MIME type (simple handling, enhance if needed)
     const mimeType = getMimeType(filePath);

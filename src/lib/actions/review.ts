@@ -3,23 +3,34 @@
 import { authOptions } from '../auth/config';
 import { prisma } from '../db/client';
 import { getServerSession } from 'next-auth';
+import { z } from 'zod';
+import { feedbackSchema } from '../validation/feeback';
 
-export async function postReview(prevState: unknown, data: FormData) {
+type Data = z.infer<typeof feedbackSchema>;
+
+export async function postReview(
+  prevState: unknown,
+  data: Data,
+  productId: string
+) {
   const session = await getServerSession(authOptions);
+  const customerId = session?.user.id;
+  const { stars, message } = data;
   try {
-    // Extract fields from FormData
-    const productId = data.get('productId')?.toString();
-    const customerId = session?.user.id;
-    const comment = data.get('comment')?.toString();
-    const stars = parseInt(data.get('stars')?.toString() || '0', 10);
-
-    // Validate the input
     if (!productId || !customerId || !stars) {
-      throw new Error('Product ID, Customer ID, and Stars are required.');
+      return {
+        error: true,
+        status: 404,
+        message: 'Preencha todos os campos',
+      };
     }
 
     if (stars < 1 || stars > 5) {
-      throw new Error('Stars must be between 1 and 5.');
+      return {
+        error: true,
+        status: 404,
+        message: 'Strela tem está em 1 e 5',
+      };
     }
 
     // Create a new review in the database
@@ -27,7 +38,7 @@ export async function postReview(prevState: unknown, data: FormData) {
       data: {
         productId,
         customerId,
-        comment: comment || null, // Optional field
+        comment: message, // Optional field
         stars,
       },
     });

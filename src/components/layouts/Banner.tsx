@@ -8,6 +8,7 @@ import img2 from '@/assets/images/AIR+MAX+DNP-nbg.png'
 import img3 from '@/assets/images/AIR+MAX+DNG-nbg.png'
 import img4 from '@/assets/images/AIR+MAX+DNP-nbg.png'
 import { AnimatePresence, motion } from 'framer-motion'
+import MobileBanner from '../shared/mobile/layout/Banner'
 
 const images = [
    { id: '1', img: img1, alt: 'Product 1' },
@@ -24,7 +25,7 @@ const Banner = () => {
    }
    return (
       <section className="container mx-auto px-4 py-8 md:py-40">
-         <div className="grid md:grid-cols-[1fr,auto] gap-8 items-start">
+         <div className="md:grid-cols-[1fr,auto] gap-8 items-start hidden md:grid">
             {/* Product Section */}
             <div className="space-y-8">
                <div className="space-y-2">
@@ -54,22 +55,6 @@ const Banner = () => {
                </div>
 
                <Button className="w-full md:w-auto">SHOP NOW</Button>
-
-               {/* Social Links */}
-               <div className="flex items-center gap-4 pt-4 border-t">
-                  {/* <Link href="#" className="text-gray-600 hover:text-black">
-                <Facebook className="h-5 w-5" />
-                <span className="sr-only">Facebook</span>
-              </Link>
-              <Link href="#" className="text-gray-600 hover:text-black">
-                <Instagram className="h-5 w-5" />
-                <span className="sr-only">Instagram</span>
-              </Link>
-              <Link href="#" className="text-gray-600 hover:text-black">
-                <Twitter className="h-5 w-5" />
-                <span className="sr-only">Twitter</span>
-              </Link> */}
-               </div>
             </div>
 
             {/* Thumbnail Gallery */}
@@ -78,7 +63,7 @@ const Banner = () => {
                   <button
                      key={item.id}
                      onClick={() => handleImagePreview(item.img)}
-                     className="relative h-16 w-36 flex-shrink-0 rounded-lg overflow-hidden transition-colors"
+                     className="relative h-16 w-36 flex-shrink-0 rounded-lg overflow-hidden transition-colors scale-75 sm:scale-100"
                   >
                      <Image
                         src={item.img}
@@ -90,6 +75,7 @@ const Banner = () => {
                ))}
             </div>
          </div>
+         <MobileBanner />
       </section>
    )
 }

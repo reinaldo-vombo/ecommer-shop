@@ -1,13 +1,14 @@
 // store/cartStore.ts
 import { toast } from 'sonner';
 import { create } from 'zustand';
-import { CartItem, Product } from './type';
+import { CartItem } from './type';
+import { TProduct } from '@/components/shared/product/types';
 
 interface CartState {
   cart: CartItem[];
   loadCart: () => void;
   updateQuantity: (id: string, quantity: number) => void;
-  addToCart: (product: Product) => void;
+  addToCart: (product: TProduct) => void;
   removeFromCart: (id: string) => void;
   clearCart: () => void;
 }

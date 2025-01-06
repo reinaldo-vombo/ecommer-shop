@@ -1,16 +1,18 @@
+import { JsonValue } from '@prisma/client/runtime/library';
+
 export type TProduct = {
   id: string;
   name: string;
   gender: string;
   brand: string;
-  stock: number;
+  stock: number | null;
   style: string[];
   size: number[];
   // type: string;
   category: string[];
   price: number;
-  type: string;
-  gallery: { image: string; name: string }[];
+  type: string | null;
+  gallery: JsonValue;
   image: string;
   images: {
     color: string;
@@ -18,7 +20,7 @@ export type TProduct = {
   }[];
   description: string;
   details: string | null;
-  Reviews: TReviwes[];
+  Reviews?: TReviwes[];
 };
 
 export type TProductProps = {

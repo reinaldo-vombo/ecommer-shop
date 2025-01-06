@@ -1,8 +1,9 @@
-import { Button } from "@/components/ui/button"
+
 import { SIZES } from "@/constants/site-content"
 
-
 const SizeTabel = ({ sizes }: { sizes: number[] }) => {
+   console.log(sizes);
+
    return (
       <div>
          <h4 className="text-slate-400">Tamanhos</h4>

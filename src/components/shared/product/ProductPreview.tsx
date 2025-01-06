@@ -43,7 +43,10 @@ const ProductPreview = ({ props }: TProductProps) => {
                   <h4 className="text-slate-400">Descrição</h4>
                   <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Beatae unde eligendi nobis dolorum vitae repellendus voluptatem veritatis autem assumenda? Ipsa blanditiis fuga fugit quos, neque excepturi aspernatur earum porro autem assumenda delectus doloremque harum nobis, libero placeat perspiciatis deserunt adipisci laborum aliquid atque! Fuga nulla, nisi est explicabo maxime rem aspernatur animi. Natus voluptate libero culpa aliquid eius accusantium omnis illo quae eos ex, voluptates, voluptatem perspiciatis repellendus labore tenetur dolorum sapiente aut consectetur nihil illum molestiae? Dolores quas, veritatis atque consequuntur facilis saepe ab iusto, modi quidem corporis voluptatem!</p>
                </div>
-               <Feedback setStars={setStars} stars={stars} />
+               <Feedback
+                  setStars={setStars}
+                  stars={stars}
+                  productId={props.id} />
             </div>
          </div>
       </div>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
@@ -38,7 +38,6 @@ type TSort = {
 
 
 const ProductTable = ({ props }: TProps) => {
-   const [products, setProducts] = useState(props)
    const [sortConfig,] = useState<TSort>({ key: null, direction: 'ascending' })
    const [currentPage, setCurrentPage] = useState(1)
    const itemsPerPage = 5
@@ -48,16 +47,9 @@ const ProductTable = ({ props }: TProps) => {
    const query = searchParams.get('search')?.toString() || '';
    const filter = searchParams.get('filter')?.toString() || '';
 
-   useEffect(() => {
-      if (query) {
-         const filtered = props.filter(product =>
-            product.name.toLowerCase().includes(query.toLowerCase())
-         );
-         setProducts(filtered);
-      } else {
-         setProducts(props); // Reset to original products if no query
-      }
-   }, [query]);
+   const filteredProducts = props.filter((p) =>
+      p.name.toLowerCase().includes(query.toLowerCase())
+   );
 
    const handleSearch = useDebouncedCallback((term) => {
 
@@ -75,22 +67,6 @@ const ProductTable = ({ props }: TProps) => {
 
    // }
 
-   const filteredProducts = products
-      .filter(product => product.name.toLowerCase().includes(query.toLowerCase()))
-   // .filter(product => {
-   //    if (activeFilter === 'new') return product.status === 'new'
-   //    if (activeFilter === 'mostSold') return product.sold >= 50
-   //    if (activeFilter === 'returned') return product.returned > 0
-   //    return true
-   // })
-   // .sort((a, b) => {
-   //    if (sortConfig.key === null) return 0
-   //    const aValue = a[sortConfig.key]
-   //    const bValue = b[sortConfig.key]
-   //    if (aValue < bValue) return sortConfig.direction === 'ascending' ? -1 : 1
-   //    if (aValue > bValue) return sortConfig.direction === 'ascending' ? 1 : -1
-   //    return 0
-   // })
    const pageCount = Math.ceil(filteredProducts.length / itemsPerPage)
    const paginatedProducts = filteredProducts.slice(
       (currentPage - 1) * itemsPerPage,

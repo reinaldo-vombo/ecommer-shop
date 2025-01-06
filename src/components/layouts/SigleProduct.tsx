@@ -7,26 +7,21 @@ import FavoriteItem from '../shared/wishList/ListItem';
 import { Heart, ShoppingBag } from 'lucide-react';
 import SheetModal from '../shared/SheetModal';
 import Modal from '../shared/Moadal';
-import Comments from '../shared/product/Comments';
 import Details from '../private/product/Details';
 import SizeTabel from '../private/product/SizeTabel';
-import Image from 'next/image';
-import { useState } from 'react';
+import { useWishlistStore } from '@/lib/store/wishListStore';
 
 const SigleProduct = ({ props }: TProductProps) => {
    const product = props;
    const urls = product.images[0].images
-   const [defaultUrls, setDefaultUrls] = useState(urls)
    const addToCart = useCartStore((state) => state.addToCart);
-   const handleImageChange = (urls: string[]) => {
-      setDefaultUrls(urls)
-   }
+   const addToWishlist = useWishlistStore((state) => state.addToWishlist);
    return (
       <div className="padding">
          <div className="container space-y-11">
             <div className="grid grid-cols-12 gap-4">
                <div className="col-span-6">
-                  <CarouselCustomIndicator images={product.images} initial={defaultUrls} />
+                  <CarouselCustomIndicator images={product.images} initial={urls} />
                </div>
                <div className="col-span-6 p-8">
                   <div className="w-[69%] space-y-7">
@@ -35,18 +30,7 @@ const SigleProduct = ({ props }: TProductProps) => {
                         <h3 className="font-semibold">Sapatilha para homens</h3>
                         <h4 className="mt-6 font-bold">{product.price} (kz)</h4>
                      </div>
-                     <div>
-                        {product.images.map((image) => (
-                           <Image
-                              onClick={() => handleImageChange(image.images)}
-                              key={`${image.color}`}
-                              src={image.images[0]}
-                              className='rounded-lg'
-                              width={80}
-                              height={80}
-                              alt='preview' />
-                        ))}
-                     </div>
+
                      <SizeTabel sizes={product.size} />
                      <div className="grid gap-6">
                         <div className='flex items-center gap-5'>
@@ -62,6 +46,7 @@ const SigleProduct = ({ props }: TProductProps) => {
                               side='right'
                               triggerClass='bg-primary rounded-md p-2 text-primary-foreground flex items-center justify-center'
                               title={product.name}
+                              onClick={() => addToWishlist(product)}
                               trigger={<span className='flex items-center gap-4'>favoritos<Heart className="h-4 w-4" /></span>}>
                               <FavoriteItem />
                            </SheetModal>

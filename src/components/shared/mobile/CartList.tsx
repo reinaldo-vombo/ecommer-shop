@@ -1,27 +1,28 @@
 'use client'
 import { MESSAGE_DELETE_ANIMATION, MESSAGE_DELETE_TRANSITION } from "@/lib/motion";
-import { useCartStore } from "@/store/cartStore";
 import { AnimatePresence, motion } from "framer-motion";
+import { ShoppingCart } from "lucide-react";
+import { useCartStore } from "@/lib/store/cartStore";
 import Image from "next/image";
-import MobileNav from "../TopNav";
-import NavigationTab from "../bottomNav/NavigationTab";
-import { Icons } from "@/constant/icons";
+import { CartItem } from "@/lib/store/type";
+import QuantityButton from "../product/QuantityButton";
+type TProps = {
+   cart: CartItem[]
+}
 
 const DELETE_BTN_WIDTH = 70;
-const CartMobilePage = () => {
-   const cart = useCartStore((state) => state.cart);
+const CartMobileList = ({ cart }: TProps) => {
    const removeFromCart = useCartStore((state) => state.removeFromCart);
 
-   const handleDragEnd = (info: any, messageId: any) => {
+   const handleDragEnd = (info: any, messageId: string) => {
       const dragDistance = info.point.x
       if (dragDistance < -DELETE_BTN_WIDTH) {
          removeFromCart(messageId)
       }
    }
    return (
-      <section className="sm:hidden ios-swiper">
-         <MobileNav title="Carrinho" />
-         <ul className="h-screen">
+      <div className="sm:hidden ios-swiper">
+         <ul>
             <AnimatePresence>
                {cart.length > 0 ? cart.map(message => (
                   <motion.li
@@ -41,12 +42,14 @@ const CartMobilePage = () => {
                            src={message.image}
                            width={90}
                            height={90}
-                           alt={message.title}
+                           alt={message.name}
                         />
                         <div className="message-text base-semibold">
-                           <h3>{message.title}</h3>
+                           <h3>{message.name}</h3>
                            <p>{message.price} (kz)</p>
                         </div>
+
+                        <QuantityButton initialQuantity={message.quantity} id={message.id} />
                      </motion.div>
                      <div className="delete-btn bg-red-500">
                         <span className="text-right text-white">Remover</span>
@@ -56,15 +59,14 @@ const CartMobilePage = () => {
                   <li className="mt-[50%] text-center">
                      <h2 className="base-semibold">Seu carrinho está vazio</h2>
                      <div className="flex mt-4">
-                        <Icons.shoppingCart fill="#000" className="size-9 mx-auto" />
+                        <ShoppingCart fill="#000" className="size-9 mx-auto" />
                      </div>
                   </li>
                )}
             </AnimatePresence>
          </ul>
-         <NavigationTab />
-      </section>
+      </div>
    )
 }
 
-export default CartMobilePage;
+export default CartMobileList;

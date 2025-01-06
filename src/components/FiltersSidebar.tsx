@@ -1,14 +1,7 @@
-import { CATEGORIES } from '@/constants/site-content'
+import { BRANDS_LOGOS, CATEGORIES, PRODUCT_TYPE } from '@/constants/site-content'
 import { cn, createQueryString } from '@/lib/utils'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import React, { useCallback } from 'react'
-// const categories = [
-//    { name: "Running", count: 76 },
-//    { name: "Basketball", count: 69 },
-//    { name: "Football", count: 21 },
-//    { name: "Soccer", count: 13 },
-//    { name: "Training & Gym", count: 54 },
-// ]
 
 const colors = [
    { name: "White", class: "bg-white border" },
@@ -32,6 +25,7 @@ const FilterSideBar = () => {
    const router = useRouter()
    const pathname = usePathname()
    const searchParams = useSearchParams();
+   const categorie = searchParams.get('category')
    const generateQueryString = useCallback(
       (name: string, value: string) => createQueryString(searchParams, name, value),
       [searchParams]
@@ -47,8 +41,24 @@ const FilterSideBar = () => {
                {CATEGORIES.map((category) => (
                   <li key={category.name}>
                      <label className="flex items-center gap-2">
-                        <input type="checkbox" className="rounded" onClick={() => onChange("category", category.name)} />
+                        <input type="checkbox" checked={categorie === category.name} className="rounded" onChange={() => onChange("category", category.name)} />
                         <span>{category.name}</span>
+                        {/* <span className="ml-auto text-gray-500">
+                           {category.name}
+                        </span> */}
+                     </label>
+                  </li>
+               ))}
+            </ul>
+         </div>
+         <div>
+            <h3 className="font-semibold mb-4">Tipo</h3>
+            <ul className="space-y-2">
+               {PRODUCT_TYPE.map((type) => (
+                  <li key={type.name}>
+                     <label className="flex items-center gap-2">
+                        <input type="checkbox" checked={categorie === type.name} className="rounded" onChange={() => onChange("type", type.value)} />
+                        <span>{type.name}</span>
                         {/* <span className="ml-auto text-gray-500">
                            {category.name}
                         </span> */}
@@ -59,11 +69,13 @@ const FilterSideBar = () => {
          </div>
 
          <div>
-            <h3 className="font-semibold mb-4">Price</h3>
-
-            <div className="flex justify-between text-sm">
-               <span>$0</span>
-               <span>$500</span>
+            <h3 className="font-semibold mb-4">Marca</h3>
+            <div className="grid grid-cols-6 gap-10">
+               {BRANDS_LOGOS.map((brand) => (
+                  <button key={brand.id} onClick={() => onChange("brand", brand.value)}>
+                     {brand.logo}
+                  </button>
+               ))}
             </div>
          </div>
 

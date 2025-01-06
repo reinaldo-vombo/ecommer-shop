@@ -298,16 +298,16 @@ const CreateProduct = ({ products }: TProps) => {
                                                          key={size}
                                                          type="button"
                                                          onClick={() => {
-                                                            const currentSizes = field.value || [];
+                                                            const currentSizes: (string | number)[] = field.value || [];
                                                             if (currentSizes.includes(size)) {
                                                                // Remove size if already selected
-                                                               field.onChange(currentSizes.filter((s: any) => s !== size));
+                                                               field.onChange(currentSizes.filter((s) => s !== size));
                                                             } else {
                                                                // Add size if not already selected
                                                                field.onChange([...currentSizes, size]);
                                                             }
                                                          }}
-                                                         className={`${form.getValues("sizes")?.includes(size)
+                                                         className={`${(form.getValues("sizes") as (string | number)[])?.includes(size)
                                                             ? "bg-blue-500 text-white"
                                                             : "bg-white text-black"
                                                             }`}

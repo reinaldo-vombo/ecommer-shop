@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+
 type TProps = {
    totalPrice: number;
    totalQuantity: number;
@@ -22,6 +24,9 @@ const Summary = ({ totalPrice, totalQuantity }: TProps) => {
                {totalQuantity}&nbsp;$
                <span className="ml-1 inline">AKZ</span>
             </p>
+         </div>
+         <div>
+            <Button className="w-full">Checkout</Button>
          </div>
       </div>
    )

@@ -1,5 +1,4 @@
 'use client'
-import { Fragment, useEffect, useState } from 'react';
 import { LogoIcon } from '@/assets/logos';
 import { SheetHeader, SheetTitle } from '../../ui/sheet';
 import SheetModal from '../SheetModal';
@@ -8,31 +7,21 @@ import { Input } from '../../ui/input';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
 import { TProduct } from '../product/types';
-import SearchItem from './SearchItem';
-import NoItemFound from './NoItemFound';
 import SearchTerms from './SearchTerms';
+import { FilteredProducts } from './FilteredProducts';
+import { Suspense } from 'react';
+import Skeleton from '../LoadingCard';
+type TSearch = {
+   product: TProduct[]
+}
 
-const PRODUCTS: TProduct[] = []
-const Search = () => {
 
+const Search = ({ product }: TSearch) => {
    const searchParams = useSearchParams();
    const pathname = usePathname();
    const { replace } = useRouter();
-   const [filteredProducts, setFilteredProducts] = useState<TProduct[] | []>([]);
-   const query = searchParams.get('query')?.toString() || '';
 
-   useEffect(() => {
-      if (query) {
-         const filtered = PRODUCTS.filter(product =>
-            product.name.toLowerCase().includes(query.toLowerCase())
-         );
-         setFilteredProducts(filtered);
-      } else {
-         setFilteredProducts([]); // Reset to original products if no query
-      }
-   }, [query]);
    const handleSearch = useDebouncedCallback((term) => {
-
       const params = new URLSearchParams(searchParams);
       if (term) {
          params.set('query', term);
@@ -68,18 +57,9 @@ const Search = () => {
                      <SearchIcon width={25} className="absolute top-[6px] left-3" />
                   </div>
                   <div className="grid grid-cols-12 gap-4">
-                     {filteredProducts.length > 0 ? filteredProducts.map((product) => (
-                        <Fragment key={product.id}>
-                           {/* Desktop */}
-                           <SearchItem props={product} />
-                           {/* Desktop */}
-                           {/* Mobile */}
-
-                           {/* Mobile */}
-                        </Fragment>
-                     )) : (
-                        <NoItemFound />
-                     )}
+                     <Suspense fallback={<Skeleton />}>
+                        <FilteredProducts product={product} />
+                     </Suspense>
                   </div>
                </div>
             </div>
