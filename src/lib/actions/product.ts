@@ -1,15 +1,16 @@
 'use server';
 
-import { productSchema, updateProductSchema } from '../form-validation';
-import { TState, TUpadateState } from '../types';
 import { z } from 'zod';
-import { join } from 'path';
+import { productSchema, updateProductSchema } from '../validation/product';
 import { writeFile, mkdir, access, constants, unlink } from 'fs/promises';
-import { storage } from '@/lib/firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { prisma } from '../db/client';
 import { InputJsonValue } from '@prisma/client/runtime/library';
+import { TState, TUpadateState } from '../types';
+import { storage } from '@/lib/firebase';
 import { revalidatePath } from 'next/cache';
+import { prisma } from '../db/client';
+import { join } from 'path';
+
 type ProductImage = {
   images: {
     color: string;

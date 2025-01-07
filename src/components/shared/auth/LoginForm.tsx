@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/form";
 import { signIn } from "next-auth/react";
 import { toast } from "sonner";
-import { logninSchema } from "@/lib/form-validation";
+import { logninSchema } from "@/lib/validation/auth";
 
 const LoginForm = () => {
    const pathname = usePathname();

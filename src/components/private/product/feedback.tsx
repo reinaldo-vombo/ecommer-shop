@@ -48,7 +48,7 @@ export const Feedback = ({ stars, setStars, productId }: TFeedbackProps) => {
    const onSubmit = async (data: z.infer<typeof feedbackSchema>) => {
       console.log(data)
       const result = await postReview(initialState, data, productId,);
-      if (result?.error) {
+      if (result.error) {
          toast.error(result.message)
       }
       if (result.success) {

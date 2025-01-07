@@ -1,21 +1,16 @@
+import { TProduct } from '@/components/shared/product/types';
 import { toast } from 'sonner';
 import { create } from 'zustand'; // Adjust according to your toast library
 
-type WishlistItem = {
-  id: string;
-  name: string;
-  image: string; // Add other fields as needed
-};
-
 type WishlistState = {
-  wishlist: WishlistItem[];
-  addToWishlist: (product: WishlistItem) => void;
+  wishlist: TProduct[];
+  addToWishlist: (product: TProduct) => void;
   removeFromWishlist: (id: string) => void;
   clearWishlist: () => void;
 };
 
 // Load wishlist from local storage
-const loadWishlistFromLocalStorage = (): WishlistItem[] => {
+const loadWishlistFromLocalStorage = (): TProduct[] => {
   if (typeof window !== 'undefined') {
     const savedWishlist = localStorage.getItem('wishlist');
     return savedWishlist ? JSON.parse(savedWishlist) : [];
@@ -24,7 +19,7 @@ const loadWishlistFromLocalStorage = (): WishlistItem[] => {
 };
 
 // Save wishlist to local storage
-const saveWishlistToLocalStorage = (wishlist: WishlistItem[]) => {
+const saveWishlistToLocalStorage = (wishlist: TProduct[]) => {
   if (typeof window !== 'undefined') {
     localStorage.setItem('wishlist', JSON.stringify(wishlist));
   }

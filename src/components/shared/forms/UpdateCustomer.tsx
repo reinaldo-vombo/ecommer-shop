@@ -1,3 +1,4 @@
+'use client'
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -13,21 +14,34 @@ import {
 } from "@/components/ui/form";
 import { customerSchema } from "@/lib/validation/customer";
 import SubmitButton from "../SubmitButton";
+import { IUser } from "next-auth";
+import { updateCustomer } from "@/lib/actions/custumer";
+import { initialState } from "@/constants/site-content";
+import { toast } from "sonner";
+type TUserInfo = {
+   userInfo: IUser
+}
 
-const UpdateCustomer = () => {
+const UpdateCustomer = ({ userInfo }: TUserInfo) => {
+   const { name, email } = userInfo;
    type FormData = z.infer<typeof customerSchema>;
    const form = useForm<z.infer<typeof customerSchema>>({
       resolver: zodResolver(customerSchema),
       defaultValues: {
-         name: "",
-         email: "",
+         name: name,
+         email: email,
          location: "",
 
       },
    })
    const onSubmit = async (value: FormData) => {
-      console.log(value);
-
+      const result = await updateCustomer(initialState, value)
+      if (result.error) {
+         toast.error(result.message)
+      }
+      if (result.sucess) {
+         toast.success(result.message)
+      }
    }
    return (
       <Form {...form}>

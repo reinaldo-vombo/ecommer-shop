@@ -12,25 +12,22 @@ import {
    MorphingDialogTab,
 } from '@/components/shared/mobile/ui/morphing-dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { TProductProps } from '../../product/types';
-import { CarouselCustomIndicator } from '../../Carousel';
 import { useState } from 'react';
 import { Feedback } from '@/components/private/product/feedback';
-import Stars from '../../product/Stars';
 import { Separator } from '@/components/ui/separator';
+import { TProductProps } from '../../product/types';
+import { CarouselCustomIndicator } from '../../Carousel';
+import Stars from '../../product/Stars';
 import ButtomTab from './ButtomTab';
-// import { useWishlistStore } from '@/lib/store/wishListStore';
 interface IProduct extends TProductProps {
    className?: string
 }
 
-const ProductView = ({ props, className }: IProduct) => {
+const ProductList = ({ props }: IProduct) => {
    const { image, name, price, images, size } = props;
-   // const { wishlist } = useWishlistStore()
    const [stars, setStars] = useState<number | null>(null)
-
    return (
-      <div className={`sm:hidden ${className}`}>
+      <div className='sm:hidden col-span-12'>
          <MorphingDialog
             transition={{
                type: 'spring',
@@ -39,19 +36,21 @@ const ProductView = ({ props, className }: IProduct) => {
             }}
          >
             <MorphingDialogTrigger style={{ borderRadius: '4px' }} className={` bg-white`}>
-               <div className='grid '>
+               <div className='flex items-center space-x-3 p-3 shadow-md rounded-lg'>
                   <MorphingDialogImage
                      src={image}
                      alt={name}
-                     className='object-cover rounded-lg object-top'
-                     style={{ height: '12rem' }}
+                     className='w-12  h-12 object-cover object-top'
+                     style={{
+                        borderRadius: '4px',
+                     }}
                   />
                   <div className='flex flex-col items-start justify-center space-y-0'>
-                     <MorphingDialogTitle className='text-lg base-semibold p-1 text-black'>
+                     <MorphingDialogTitle className='base-semibold text-black dark:text-white'>
                         {name}
                      </MorphingDialogTitle>
-                     <MorphingDialogSubtitle className='text-base text-black'>
-                        {price} (kz)
+                     <MorphingDialogSubtitle className='text-base text-gray-600'>
+                        {price}(kz)
                      </MorphingDialogSubtitle>
                   </div>
                </div>
@@ -144,4 +143,4 @@ const ProductView = ({ props, className }: IProduct) => {
    )
 }
 
-export default ProductView;
+export default ProductList;

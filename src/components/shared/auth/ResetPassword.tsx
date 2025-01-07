@@ -18,16 +18,16 @@ import {
    InputOTPSlot,
 } from "@/components/ui/input-otp"
 import { Input } from '@/components/ui/input';
-import { resetPasswordSchema } from "@/lib/form-validation"
+import { resetPasswordSchema } from "@/lib/validation/auth"
 import { resetPassword } from "@/lib/actions/auth"
 import { useRef } from "react";
-import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { initialState } from "@/constants/site-content";
+import SubmitButton from "../SubmitButton";
 
 
 const ResetPassword: React.FC = () => {
-   const [state, formAction] = useFormState(resetPassword, initialState);
+   const [state, formAction, isLoading] = useFormState(resetPassword, initialState);
    const router = useRouter();
    const formRef = useRef<HTMLFormElement>(null)
    const form = useForm<z.infer<typeof resetPasswordSchema>>({
@@ -115,9 +115,7 @@ const ResetPassword: React.FC = () => {
                      </FormItem>
                   )}
                />
-               <Button className="w-full" disabled={form.formState.isSubmitting} type="submit">
-                  Atualizar
-               </Button>
+               <SubmitButton disabled={isLoading} title="Atualizar" />
             </div>
          </form>
       </Form>

@@ -5,6 +5,7 @@ import LoginForm from './LoginForm';
 import ForgotPassword from './ForgotPassword';
 import { motion } from 'framer-motion'
 import ResetPassword from './ResetPassword';
+import Register from './Register';
 
 const Login = () => {
    const queryParams = useSearchParams()
@@ -20,7 +21,12 @@ const Login = () => {
                className="absolute translate-x-0 top-0 bottom-0 hidden lg:block lg:w-1/2 bg-cover"
                style={{ backgroundImage: "url('/login.webp')" }}>
             </motion.div>
-            {view === 'reset' ? <ResetPassword /> : view === '4got10' ? <ForgotPassword /> : <LoginForm />}
+            {
+               view === 'reset' ?
+                  <ResetPassword />
+                  : view === '4got10'
+                     ? <ForgotPassword />
+                     : view === 'new' ? <Register /> : <LoginForm />}
             <LoginForm />
          </div>
       </div>

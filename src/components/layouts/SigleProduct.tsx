@@ -55,10 +55,11 @@ const SigleProduct = ({ props }: TProductProps) => {
                         <div className="mt-4">
                            <h3 className="font-semibold">Levantamento grátis</h3>
                            <Modal btn={<p className="underline">Procurar um loja</p>} title='Selecioneum local de levantamento'>
-                              procuara loja
+                              <h3 className='text-center font-semibold'>Está funcionalida ainda não está disponivel. <br /> Volte em breve</h3>
                            </Modal>
                         </div>
-                        <div>
+                        <div className='space-y-2'>
+                           <span className='text-slate-500'>Descrição</span>
                            <p className="font-semibold">{product.description}</p>
                         </div>
                         <Modal btn={<p className="underline font-semibold text-left">Ver detalhes do producto</p>} title='Selecioneum local de levantamento'>

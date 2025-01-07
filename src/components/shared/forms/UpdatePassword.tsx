@@ -1,3 +1,4 @@
+'use client'
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -12,6 +13,9 @@ import {
 } from "@/components/ui/form";
 import { customerPasswordSchema } from "@/lib/validation/customer";
 import SubmitButton from "../SubmitButton";
+import { updateCustomerPassWord } from "@/lib/actions/custumer";
+import { initialState } from "@/constants/site-content";
+import { toast } from "sonner";
 
 const UpdateCustomerPassword = () => {
    type FormData = z.infer<typeof customerPasswordSchema>;
@@ -24,7 +28,13 @@ const UpdateCustomerPassword = () => {
       },
    })
    const onSubmit = async (value: FormData) => {
-      console.log(value);
+      const result = await updateCustomerPassWord(initialState, value);
+      if (result.error) {
+         toast.error(result.message)
+      }
+      if (result.sucess) {
+         toast.success(result.message)
+      }
 
    }
    return (

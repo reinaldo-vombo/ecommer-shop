@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 async function main() {
   // Define roles to create
-  const roles = ['Admin', 'Editor', 'Reader', 'Customer'];
+  const roles = ['Admin', 'Customer', 'Editor', 'Reader'];
 
   // Create or update roles
   for (const roleName of roles) {
@@ -17,7 +17,7 @@ async function main() {
   }
 
   // Hash the password
-  const hashedPassword = await bcrypt.hash('redx1998', 10);
+  const hashedPassword = await bcrypt.hash('regi12345', 10);
 
   // Fetch Admin role ID
   const adminRole = await prisma.roles.findUnique({

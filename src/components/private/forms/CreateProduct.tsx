@@ -1,5 +1,22 @@
 'use client'
+import { z } from "zod"
+import { BRAND, C_SIZES, CATEGORIES, GENDER, initialState, PRODUCT_TYPE, SIZES_NUMBER } from '@/constants/site-content'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import FileUploader from '@/components/shared/file-uplode/FileUploder'
+import { TProduct } from '@/components/shared/product/types'
+import SubmitButton from '@/components/shared/SubmitButton'
+import { useFieldArray, useForm } from "react-hook-form"
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { productSchema } from '@/lib/validation/product'
+import ColorPiker from '@/components/shared/ColorPiker'
+import TextEditor from '@/components/shared/TextEditor'
+import { Separator } from '@/components/ui/separator'
+import { zodResolver } from "@hookform/resolvers/zod"
+import { createProduct } from '@/lib/actions/product'
 import { Button } from '@/components/ui/button'
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
 import {
    Form,
    FormControl,
@@ -8,29 +25,13 @@ import {
    FormLabel,
    FormMessage,
 } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useFieldArray, useForm } from "react-hook-form"
-import { z } from "zod"
-import { productSchema } from '@/lib/form-validation'
-import TextEditor from '@/components/shared/TextEditor'
-import { BRAND, C_SIZES, CATEGORIES, GENDER, initialState, PRODUCT_TYPE, SIZES_NUMBER } from '@/constants/site-content'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Label } from '@/components/ui/label'
-import { Separator } from '@/components/ui/separator'
-import FileUploader from '@/components/shared/file-uplode/FileUploder'
 import Modal from '@/components/shared/Moadal'
 import Selector from '@/components/shared/Selector'
 import { toast } from 'sonner'
 import { Toggle } from '@/components/ui/toggle'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { createProduct } from '@/lib/actions/product'
-import SubmitButton from '@/components/shared/SubmitButton'
-import ColorPiker from '@/components/shared/ColorPiker'
-import { TProduct } from '@/components/shared/product/types'
 import List from '../product/List'
 import ModalButton from '../product/ModalButton'
+
 type TProps = {
    products: TProduct[]
 }

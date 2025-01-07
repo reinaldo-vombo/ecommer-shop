@@ -2,10 +2,10 @@ import { DefaultSession } from 'next-auth';
 
 declare module 'next-auth' {
   interface Session {
-    user: Users & DefaultSession['user'];
+    user: IUser & DefaultSession['user'];
   }
 
-  interface Users {
+  export interface IUser {
     id: string;
     name: string;
     email: string;

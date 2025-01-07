@@ -55,6 +55,7 @@ export type TModalProps = {
   btn: any;
   children: ReactNode;
   className?: string;
+  size?: 'sm' | 'md' | 'lg';
 };
 
 export type TProductPrevie = {

@@ -14,7 +14,15 @@ import {
 } from "@/components/ui/tabs"
 import UpdateCustomer from "../../forms/UpdateCustomer";
 import UpdateCustomerPassword from "../../forms/UpdatePassword";
+import { User } from "@/lib/auth/user";
+import { toast } from "sonner";
+
 const MobileUserTab = () => {
+   const user = User()
+   if (!user) {
+      toast.warning('Faça o login')
+      return
+   }
    return (
       <Tabs defaultValue="account" className="w-full">
          <TabsList className="grid w-full grid-cols-2">
@@ -30,7 +38,7 @@ const MobileUserTab = () => {
                   </CardDescription>
                </CardHeader>
                <CardContent className="space-y-2">
-                  <UpdateCustomer />
+                  <UpdateCustomer userInfo={user} />
                </CardContent>
             </Card>
          </TabsContent>

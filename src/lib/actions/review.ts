@@ -17,11 +17,25 @@ export async function postReview(
   const customerId = session?.user.id;
   const { stars, message } = data;
   try {
-    if (!productId || !customerId || !stars) {
+    if (!stars) {
       return {
         error: true,
         status: 404,
-        message: 'Preencha todos os campos',
+        message: 'Adicione uma percentagem',
+      };
+    }
+    if (!customerId) {
+      return {
+        error: true,
+        status: 404,
+        message: 'Tem que estar logado para commentar',
+      };
+    }
+    if (!productId) {
+      return {
+        error: true,
+        status: 401,
+        message: 'Esté product não exite',
       };
     }
 

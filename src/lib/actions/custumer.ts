@@ -1,52 +1,85 @@
 'use server';
 
-import { prisma } from '../db/client';
-import bcrypt from 'bcrypt';
-import { transporter } from '../smtp/config';
-import { render } from '@react-email/render';
-import ResetPasswordEmail from '@/lib/email/ResetPassword';
 import React from 'react';
-import { TState } from '../types';
-import { resetPasswordSchema } from '../validation/auth';
-import { registerSchema } from '../validation/auth';
 import { z } from 'zod';
-import { redirect } from 'next/navigation';
+import { transporter } from '../smtp/config';
+import { prisma } from '../db/client';
+import ResetPasswordEmail from '../email/ResetPassword';
+import { TState } from '../types';
+import { render } from '@react-email/components';
+import bcrypt from 'bcrypt';
+import { resetPasswordSchema } from '../validation/auth';
+import { revalidatePath } from 'next/cache';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../auth/config';
+import { customerPasswordSchema, customerSchema } from '../validation/customer';
 
-type Data = z.infer<typeof registerSchema>;
+type UpdateData = z.infer<typeof customerSchema>;
+type UpdatePass = z.infer<typeof customerPasswordSchema>;
 
-export async function register(prevState: TState, data: Data) {
-  const { email, name, roleId, password, confirmPassword } = data;
+export async function updateCustomer(prevState: TState, Data: UpdateData) {
+  const session = await getServerSession(authOptions);
+  const { name, email } = Data;
 
-  if (!name && !email && !password && confirmPassword) {
-    return {
-      error: true,
-      status: 404,
-      message: 'Por-favor preencha todos os campos',
-    };
-  }
-  if (password !== confirmPassword) {
-    return {
-      error: true,
-      status: 404,
-      message: 'As palavra-passe não combinam',
-    };
-  }
   try {
-    await prisma.customers.create({
+    await prisma.customers.update({
+      where: { id: session?.user.id },
       data: {
         name,
         email,
-        password,
-        roleId: roleId || 2,
       },
     });
-    redirect('/');
+    revalidatePath('/');
+    return {
+      sucess: true,
+      status: 200,
+      message: 'Dados atualizados',
+    };
   } catch (error) {
     console.error(error);
     return {
       error: true,
       status: 500,
-      message: 'Ocorreu um erro ao cadastrar',
+      message: 'Oucorreu um erro ao atualizar',
+    };
+  }
+}
+export async function updateCustomerPassWord(
+  prevState: TState,
+  Data: UpdatePass
+) {
+  const session = await getServerSession(authOptions);
+  const { new_password, old_password } = Data;
+  if (old_password !== new_password) {
+    return {
+      error: true,
+      status: 401,
+      message: 'As palavra-passe não coincidem',
+    };
+  }
+  const hashedPassword = await bcrypt.hash(new_password, 10);
+
+  try {
+    await prisma.customers.update({
+      where: { id: session?.user.id },
+      data: {
+        name: session?.user.name,
+        email: session?.user.email,
+        password: hashedPassword,
+      },
+    });
+    revalidatePath('/');
+    return {
+      sucess: true,
+      status: 200,
+      message: 'Dados atualizados',
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      error: true,
+      status: 500,
+      message: 'Oucorreu um erro ao atualizar',
     };
   }
 }
@@ -63,7 +96,7 @@ export async function recoverPassword(prevState: TState, data: FormData) {
 
   try {
     // Check if the email belongs to a user
-    const user = await prisma.users.findUnique({
+    const user = await prisma.customers.findUnique({
       where: { email },
     });
 
@@ -117,7 +150,6 @@ export async function recoverPassword(prevState: TState, data: FormData) {
     };
   }
 }
-
 export async function resetPassword(prevState: TState, data: FormData) {
   const formData = Object.fromEntries(data);
   const parsed = resetPasswordSchema.safeParse(formData);
@@ -140,7 +172,7 @@ export async function resetPassword(prevState: TState, data: FormData) {
   }
   try {
     // Find the user by confirmation code and ensure it's valid
-    const user = await prisma.users.findFirst({
+    const user = await prisma.customers.findFirst({
       where: {
         confirmationCode: code,
         codeExpiresAt: { gte: new Date() }, // Ensure code hasn't expired

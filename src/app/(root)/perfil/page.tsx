@@ -18,18 +18,13 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from "@/lib/auth/config"
 import { redirect } from "next/navigation"
 import { Separator } from "@/components/ui/separator"
-import { Button } from "@/components/ui/button"
-import { LogOut } from "lucide-react"
-import { signOut } from "next-auth/react"
+import UserInfoTab from "@/components/shared/UserInfoTab"
+
 
 export default async function ProfilePage() {
    const session = await getServerSession(authOptions);
    if (!session) {
       redirect('/login')
-   }
-
-   const logout = () => {
-      signOut()
    }
 
    return (
@@ -40,27 +35,21 @@ export default async function ProfilePage() {
                   <Card>
                      <CardHeader>
                         <CardTitle>Conta</CardTitle>
-                        <CardDescription>
-                           Faça alterações em sua conta aqui. Clique em salvar quando terminar.
-                        </CardDescription>
                      </CardHeader>
                      <CardContent className="space-y-2">
-                        <div className="relative">
-                           <Image
-                              src={session?.user.avatar || '/avatar.jpg'}
-                              className="rounded-full"
-                              fill
-                              sizes="100%"
-                              alt={session?.user.name} />
-                        </div>
-                        <Separator />
-                        <div>
-                           <h2 className="text-center">{session.user.name}</h2>
-                           <div className="flex items-center justify-between">
-                              <span>Cilente</span>
-                              <Button onClick={() => logout()}><LogOut /></Button>
+                        <div className="flex">
+                           <div className="relative size-40 mx-auto">
+                              <Image
+                                 src={session?.user.avatar || '/avatar.jpg'}
+                                 className="rounded-full"
+                                 fill
+                                 sizes="100%"
+                                 alt={session?.user.name} />
                            </div>
                         </div>
+
+                        <Separator />
+                        <UserInfoTab user={session.user} />
                      </CardContent>
                   </Card>
                </div>
@@ -79,7 +68,7 @@ export default async function ProfilePage() {
                               </CardDescription>
                            </CardHeader>
                            <CardContent className="space-y-2">
-                              <UpdateCustomer />
+                              <UpdateCustomer userInfo={session.user} />
                            </CardContent>
                         </Card>
                      </TabsContent>

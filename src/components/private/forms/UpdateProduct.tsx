@@ -1,4 +1,31 @@
 "use client"
+import { z } from "zod"
+import { BRAND, CATEGORIES, GENDER, PRODUCT_TYPE, C_SIZES, SIZES_NUMBER, initialState } from '@/constants/site-content'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import UpdateFileUploader from '@/components/shared/file-uplode/UpdateFile'
+import FileUploader from '@/components/shared/file-uplode/FileUploder'
+import { deleteProduct, updateProduct } from '@/lib/actions/product'
+import { TProductProps } from '@/components/shared/product/types'
+import MultipleSelect from '@/components/shared/MultipleSelect'
+import { updateProductSchema } from '@/lib/validation/product'
+import SubmitButton from '@/components/shared/SubmitButton'
+import ActionDialog from '@/components/shared/ActionModal'
+import { useFieldArray, useForm } from "react-hook-form"
+import { ScrollArea } from '@/components/ui/scroll-area'
+import ColorPiker from '@/components/shared/ColorPiker'
+import TextEditor from '@/components/shared/TextEditor'
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Separator } from '@/components/ui/separator'
+import Selector from '@/components/shared/Selector'
+import ModalButton from '../product/ModalButton'
+import { Toggle } from '@/components/ui/toggle'
+import { Button } from '@/components/ui/button'
+import Modal from '@/components/shared/Moadal'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Trash } from 'lucide-react'
+import { useEffect } from 'react'
+import { toast } from 'sonner'
 import {
    Form,
    FormControl,
@@ -7,33 +34,6 @@ import {
    FormLabel,
    FormMessage,
 } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useFieldArray, useForm } from "react-hook-form"
-import { z } from "zod"
-import { updateProductSchema } from '@/lib/form-validation'
-import TextEditor from '@/components/shared/TextEditor'
-import { BRAND, CATEGORIES, GENDER, PRODUCT_TYPE, C_SIZES, SIZES_NUMBER, initialState } from '@/constants/site-content'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Label } from '@/components/ui/label'
-import { Separator } from '@/components/ui/separator'
-import Modal from '@/components/shared/Moadal'
-import { Button } from '@/components/ui/button'
-import Selector from '@/components/shared/Selector'
-import { toast } from 'sonner'
-import { Toggle } from '@/components/ui/toggle'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { deleteProduct, updateProduct } from '@/lib/actions/product'
-import SubmitButton from '@/components/shared/SubmitButton'
-import ModalButton from '../product/ModalButton'
-import ColorPiker from '@/components/shared/ColorPiker'
-import { TProductProps } from '@/components/shared/product/types'
-import { useEffect } from 'react'
-import UpdateFileUploader from '@/components/shared/file-uplode/UpdateFile'
-import MultipleSelect from '@/components/shared/MultipleSelect'
-import ActionDialog from '@/components/shared/ActionModal'
-import { Trash } from 'lucide-react'
-import FileUploader from '@/components/shared/file-uplode/FileUploder'
 
 const UpdateProduct = ({ props }: TProductProps) => {
 

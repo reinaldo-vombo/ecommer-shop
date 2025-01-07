@@ -7,6 +7,7 @@ import { AnimatePresence, motion, MotionConfig } from 'framer-motion';
 import useMeasure from 'react-use-measure';
 import { cn } from '@/lib/utils';
 import Cart from '../cart/Cart';
+import Wishlist from './layout/Wishlist';
 
 const transition = {
    type: 'spring',
@@ -35,11 +36,7 @@ const ITEMS = [
       id: 3,
       label: 'Wishlist',
       title: <Heart className='h-5 w-5' />,
-      content: (
-         <div className='flex flex-col space-y-4'>
-
-         </div>
-      ),
+      content: <Wishlist />,
    },
    {
       id: 4,

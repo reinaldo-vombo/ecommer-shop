@@ -36,13 +36,23 @@ export const authOptions: NextAuthOptions = {
           },
         });
 
-        if (!user) {
+        const customer = user
+          ? null
+          : await prisma.customers.findUnique({
+              where: {
+                email: credentials.email,
+              },
+            });
+
+        const authenticatedUser = user || customer;
+
+        if (!authenticatedUser) {
           return null;
         }
 
         const isPasswordValid = await compare(
           credentials.password,
-          user.password
+          authenticatedUser.password
         );
 
         if (!isPasswordValid) {
@@ -50,11 +60,11 @@ export const authOptions: NextAuthOptions = {
         }
 
         return {
-          id: user.id + '',
-          email: user.email,
-          name: user.name,
-          roleId: user.roleId,
-          avatar: user.avatar,
+          id: authenticatedUser.id + '',
+          email: authenticatedUser.email,
+          name: authenticatedUser.name,
+          roleId: authenticatedUser.roleId,
+          avatar: authenticatedUser.avatar,
         };
       },
     }),
@@ -96,6 +106,13 @@ export const authOptions: NextAuthOptions = {
           avatar: token.avatar,
         },
       };
+    },
+    async redirect({ url, baseUrl }) {
+      // Redirect to the home page after successful login
+      if (url === '/api/auth/signin') {
+        return `${baseUrl}/cms`;
+      }
+      return url.startsWith(baseUrl) ? url : baseUrl;
     },
   },
   pages: {

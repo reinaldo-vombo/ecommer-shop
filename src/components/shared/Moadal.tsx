@@ -7,11 +7,11 @@ import {
 } from "@/components/ui/dialog"
 import { TModalProps } from "./type"
 
-const Modal = ({ btn, children, title, className }: TModalProps) => {
+const Modal = ({ btn, children, title, className, size = 'md' }: TModalProps) => {
    return (
       <Dialog>
          <DialogTrigger className={className}>{btn}</DialogTrigger>
-         <DialogContent>
+         <DialogContent size={size}>
             <DialogHeader>
                <DialogTitle>{title}</DialogTitle>
             </DialogHeader>

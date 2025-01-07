@@ -9,6 +9,7 @@ export const customerSchema = z.object({
   }),
   location: z.string().optional(),
 });
+
 export const customerPasswordSchema = z.object({
   old_password: z.string().min(5, {
     message: 'Palavra-passe deve conter no minimo 5 cararteres',

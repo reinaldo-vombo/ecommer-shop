@@ -10,6 +10,62 @@ This template uses React Server Components, Server Actions, `Suspense`, `useOpti
 
 ## Root Layout (Desktop)
 
+# Image Gallery
+
+## Desktop Views
+
+<table>
+  <tr>
+    <td>
+      <img src="path/to/image1.png" alt="Home Page" width="300" />
+      <p align="center">Home Page</p>
+    </td>
+    <td>
+      <img src="path/to/image2.png" alt="Product Page" width="300" />
+      <p align="center">Product Page</p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img src="path/to/image3.png" alt="Checkout Page" width="300" />
+      <p align="center">Checkout Page</p>
+    </td>
+    <td>
+      <img src="path/to/image4.png" alt="Profile Page" width="300" />
+      <p align="center">Profile Page</p>
+    </td>
+  </tr>
+</table>
+
+## Mobile Views
+
+<table>
+  <tr>
+    <td>
+      <img src="/public/Mobile-home-1.png" alt="Home Page Mobile" width="200" />
+      <p align="center">Home page</p>
+    </td>
+    <td>
+      <img src="/public/Mobile-profile-1.png" alt="Product Page Mobile" width="200" />
+      <p align="center">Profile page</p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img src="/public/Mobile-profile-2.png" alt="Checkout Page Mobile" width="200" />
+      <p align="center">Profile page</p>
+    </td>
+    <td>
+      <img src="/public/Mobile-profile-3.png" alt="Profile Page Mobile" width="200" />
+      <p align="center">Profile Page</p>
+    </td>
+    <td>
+      <img src="/public/Mobile-profile-4.png" alt="Profile Page Mobile" width="200" />
+      <p align="center">Profile Page</p>
+    </td>
+  </tr>
+</table>
+
 ## Private Layout (Desktop)
 
 ## Root Layout (Mobile)
