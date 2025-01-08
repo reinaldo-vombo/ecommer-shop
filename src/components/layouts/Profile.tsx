@@ -1,6 +1,6 @@
 'use client'
-import UpdateCustomer from "@/components/shared/forms/UpdateCustomer"
-import UpdateCustomerPassword from "@/components/shared/forms/UpdatePassword"
+// import UpdateCustomer from "@/components/shared/forms/UpdateCustomer"
+// import UpdateCustomerPassword from "@/components/shared/forms/UpdatePassword"
 import {
    Card,
    CardContent,
@@ -76,7 +76,7 @@ const Profile = ({ user }: TProps) => {
                               </CardDescription>
                            </CardHeader>
                            <CardContent className="space-y-2">
-                              <UpdateCustomer userInfo={user} />
+                              {/* <UpdateCustomer userInfo={user} /> */}
                            </CardContent>
                         </Card>
                      </TabsContent>
@@ -89,7 +89,7 @@ const Profile = ({ user }: TProps) => {
                               </CardDescription>
                            </CardHeader>
                            <CardContent className="space-y-2">
-                              <UpdateCustomerPassword />
+                              {/* <UpdateCustomerPassword /> */}
                            </CardContent>
                         </Card>
                      </TabsContent>
