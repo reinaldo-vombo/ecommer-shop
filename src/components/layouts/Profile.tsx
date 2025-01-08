@@ -16,16 +16,19 @@ import {
 } from "@/components/ui/tabs"
 import Image from "next/image"
 import { Separator } from "@/components/ui/separator"
-import { IUser } from "next-auth"
 import { Button } from "../ui/button"
 import { LogOut } from "lucide-react"
 import { signOut } from "next-auth/react"
+import { User } from "@/lib/auth/user"
+import { useRouter } from "next/navigation"
 
-type TProps = {
-   user: IUser
-}
+const Profile = () => {
+   const router = useRouter()
 
-const Profile = ({ user }: TProps) => {
+   const user = User()
+   if (!user) {
+      router.push('/auth')
+   }
    const logout = () => {
       signOut()
    }
@@ -42,17 +45,17 @@ const Profile = ({ user }: TProps) => {
                         <div className="flex">
                            <div className="relative size-40 mx-auto">
                               <Image
-                                 src={user.avatar || '/avatar.jpg'}
+                                 src={user?.avatar || '/avatar.jpg'}
                                  className="rounded-full"
                                  fill
                                  sizes="100%"
-                                 alt={user.name} />
+                                 alt={user?.name || ''} />
                            </div>
                         </div>
 
                         <Separator />
                         <div>
-                           <h2 className="text-center h2-bold">{user.name}</h2>
+                           <h2 className="text-center h2-bold">{user?.name}</h2>
                            <div className="flex items-center justify-between">
                               <span>Cilente</span>
                               <Button onClick={() => logout()}><LogOut /></Button>

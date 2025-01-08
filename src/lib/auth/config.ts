@@ -110,7 +110,7 @@ export const authOptions: NextAuthOptions = {
     async redirect({ url, baseUrl }) {
       // Redirect to the home page after successful login
       if (url === '/api/auth/signin') {
-        return `${baseUrl}/cms`;
+        return `${baseUrl}/`;
       }
       return url.startsWith(baseUrl) ? url : baseUrl;
     },

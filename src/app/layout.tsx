@@ -3,8 +3,6 @@ import { GeistSans } from 'geist/font/sans';
 import "./globals.css";
 import { Toaster } from "sonner";
 import SessionWrapper from "@/provider/SessionWrapper";
-import { Suspense } from "react";
-import Loading from "./loading";
 
 const { TWITTER_CREATOR, TWITTER_SITE, SITE_NAME, AUTHOR_NAME } = process.env;
 const baseUrl = process.env.NEXT_PUBLIC
@@ -42,9 +40,7 @@ export default function RootLayout({
         <body
           className={`${GeistSans.variable} antialiased`}
         >
-          <Suspense fallback={<Loading />}>
-            {children}
-          </Suspense>
+          {children}
           <Toaster
             richColors
             position="bottom-right"

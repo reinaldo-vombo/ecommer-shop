@@ -7,7 +7,7 @@ import {
    FormLabel,
    FormMessage,
 } from '@/components/ui/form'
-import { Button } from '@/components/ui/button'
+
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { toast } from 'sonner'
@@ -18,6 +18,7 @@ import { signIn } from "next-auth/react";
 import { Eye, Mail } from 'lucide-react'
 import { TFormView } from '../type'
 import { logninSchema } from '@/lib/validation/auth'
+import SubmitButton from '@/components/shared/SubmitButton'
 
 const Lognin = ({ view }: TFormView) => {
 
@@ -29,12 +30,14 @@ const Lognin = ({ view }: TFormView) => {
             redirect: false,
             email,
             password,
+            callbackUrl: '/'
          });
 
          if (result?.error) {
             toast.warning("Email ou Senha incorreta");
-         } else if (result?.ok) {
-            toast.success("Bem-vindo ao portal");
+         }
+         if (result?.ok) {
+            toast.success(`Bem-vindo ao portal ${result.status}`);
          }
       } catch (error) {
          console.error(error);
@@ -91,12 +94,16 @@ const Lognin = ({ view }: TFormView) => {
                   </div>
                   <span onClick={() => view('recover')} className='text-xs cursor-pointer text-alpha'>Esqueceu a palvra-passe?</span>
                </div>
-               <Button className='w-full bg-neutral-950'>Entar</Button>
+               <SubmitButton disabled={form.formState.isSubmitting} title='Entrar' />
             </form>
          </Form>
-         <Separator />
-         <div>
+         {/* <div>
             <Button className='bg-red-500 w-full'>Entrar como visitante</Button>
+         </div> */}
+         <Separator />
+         <div className='flex items-center justify-center gap-2 text-xs'>
+            <span>Não tem uma conta?</span>
+            <span onClick={() => view("register")} className='text-alpha cursor-pointer'>Cadastrar</span>
          </div>
       </div>
    )

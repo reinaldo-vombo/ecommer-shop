@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 async function main() {
   // Define roles to create
-  const roles = ['Admin', 'Customer', 'Editor', 'Reader'];
+  const roles = ['Admin', 'Editor', 'Reader', 'Customer'];
 
   // Create or update roles
   for (const roleName of roles) {

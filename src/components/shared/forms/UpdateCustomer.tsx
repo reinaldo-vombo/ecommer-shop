@@ -14,22 +14,22 @@ import {
 } from "@/components/ui/form";
 import { customerSchema } from "@/lib/validation/customer";
 import SubmitButton from "../SubmitButton";
-import { IUser } from "next-auth";
 import { updateCustomer } from "@/lib/actions/custumer";
 import { initialState } from "@/constants/site-content";
 import { toast } from "sonner";
+import { IUser } from "next-auth";
+
 type TUserInfo = {
-   userInfo: IUser
+   userInfo: IUser | undefined
 }
 
 const UpdateCustomer = ({ userInfo }: TUserInfo) => {
-   const { name, email } = userInfo;
    type FormData = z.infer<typeof customerSchema>;
    const form = useForm<z.infer<typeof customerSchema>>({
       resolver: zodResolver(customerSchema),
       defaultValues: {
-         name: name,
-         email: email,
+         name: userInfo?.name,
+         email: userInfo?.email,
          location: "",
 
       },

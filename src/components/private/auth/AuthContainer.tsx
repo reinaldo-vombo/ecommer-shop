@@ -8,6 +8,7 @@ import ForgotPasswor from './forms/ForgotPasswor';
 import Link from 'next/link';
 import { LogoIcon } from '@/assets/logos';
 import { ArrowLeft } from 'lucide-react';
+import Register from './forms/Register';
 
 const variants = {
    enter: (direction: any) => ({
@@ -45,8 +46,9 @@ const AuthContainer = () => {
                   {formView === 'login' && 'Faça login em sua conta'}
                   {formView === 'reset' && 'ALteração de senha'}
                   {formView === 'reset' && 'Recuperação de conta'}
+                  {formView === 'register' && 'Crie sua conta'}
                </h1>
-               <div className="overflow-hidden w-[27rem]">
+               <div className="overflow-hidden w-[29rem] p-2">
                   {['login', 'register', 'reset', 'recover'].map((view) => (
                      formView === view && (
                         <motion.div
@@ -59,6 +61,7 @@ const AuthContainer = () => {
                            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                         >
                            {view === 'login' && <Login view={setFormView} />}
+                           {view === 'register' && <Register view={setFormView} />}
                            {view === 'recover' && <ForgotPasswor view={setFormView} />}
                            {view === 'reset' && <ResetPassword view={setFormView} />}
                         </motion.div>

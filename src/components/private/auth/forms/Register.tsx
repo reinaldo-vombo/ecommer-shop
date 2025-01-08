@@ -16,13 +16,21 @@ import {
    FormLabel,
    FormMessage,
 } from '@/components/ui/form'
-import { TAuthForm } from './type'
+import { TFormView } from '../type'
+import { register } from '@/lib/actions/auth'
+import { initialState } from '@/constants/site-content'
 
 
-const Register = ({ onChange }: TAuthForm) => {
-   function onSubmit(value: z.infer<typeof registerSchema>) {
-      console.log(value)
-      toast.success('hhhhh')
+const Register = ({ view }: TFormView) => {
+   async function onSubmit(value: z.infer<typeof registerSchema>) {
+      const result = await register(initialState, value);
+      if (result.error) {
+         toast.error(result.message)
+      }
+      if (result.sucess) {
+         toast.success(result.message)
+         view('login')
+      }
       // Handle form submission
    }
    const form = useForm<z.infer<typeof registerSchema>>({
@@ -103,13 +111,13 @@ const Register = ({ onChange }: TAuthForm) => {
                      </FormItem>
                   )}
                />
-               <SubmitButton disabled={form.formState.isSubmitting} title='Entrar' />
+               <SubmitButton disabled={form.formState.isSubmitting} title='Postar' />
             </form>
          </Form>
          <Separator />
          <div className='flex items-center justify-center gap-2 text-xs'>
             <span>Já tenho uma conta</span>
-            <span onClick={() => onChange("login")} className='text-alpha cursor-pointer'>Entrar</span>
+            <span onClick={() => view("login")} className='text-alpha cursor-pointer'>Entrar</span>
          </div>
       </div>
    )

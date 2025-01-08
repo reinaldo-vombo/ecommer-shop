@@ -7,7 +7,7 @@ import React from 'react'
 export default async function page() {
    const session = await getServerSession(authOptions);
    if (session) {
-      redirect('/cms')
+      redirect('/')
    }
    return <AuthContainer />
 }

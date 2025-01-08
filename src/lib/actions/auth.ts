@@ -10,7 +10,6 @@ import { TState } from '../types';
 import { resetPasswordSchema } from '../validation/auth';
 import { registerSchema } from '../validation/auth';
 import { z } from 'zod';
-import { redirect } from 'next/navigation';
 
 type Data = z.infer<typeof registerSchema>;
 
@@ -31,16 +30,22 @@ export async function register(prevState: TState, data: Data) {
       message: 'As palavra-passe não combinam',
     };
   }
+  const hashedPassword = await bcrypt.hash(password, 10);
   try {
     await prisma.customers.create({
       data: {
         name,
         email,
-        password,
+        password: hashedPassword,
         roleId: roleId || 2,
       },
     });
-    redirect('/');
+    // redirect('/');
+    return {
+      sucess: true,
+      status: 200,
+      message: 'Conta criada com sucesso',
+    };
   } catch (error) {
     console.error(error);
     return {
