@@ -1,6 +1,7 @@
 import LoginForm from '@/components/shared/auth/Login';
 import { getServerSession } from "next-auth/next"
 import { redirect } from 'next/navigation';
+import { Suspense } from 'react';
 
 export default async function LoginPage() {
    const session = await getServerSession()
@@ -12,5 +13,9 @@ export default async function LoginPage() {
       }
    }
 
-   return <LoginForm />
+   return (
+      <Suspense fallback={<p>loading..</p>}>
+         <LoginForm />
+      </Suspense>
+   )
 }
