@@ -6,12 +6,13 @@ import ForgotPassword from './ForgotPassword';
 import { motion } from 'framer-motion'
 import ResetPassword from './ResetPassword';
 import Register from './Register';
+import { Suspense } from 'react';
 
 const Login = () => {
    const queryParams = useSearchParams()
    const view = queryParams.get('view')
    return (
-      <div className="padding">
+      <Suspense fallback={<p>loading...</p>}>
          <div className="relative flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
             <motion.div
                initial={{ x: 0 }}
@@ -29,7 +30,7 @@ const Login = () => {
                      : view === 'new' ? <Register /> : <LoginForm />}
             <LoginForm />
          </div>
-      </div>
+      </Suspense>
    )
 }
 
