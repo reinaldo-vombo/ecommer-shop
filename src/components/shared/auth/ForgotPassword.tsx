@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { recoverPassword } from '@/lib/actions/auth';
 import { toast } from 'sonner';
 import { TAuthForm } from './type';
+import { LogoIcon } from "@/assets/logos";
 
 const initialState = {
    message: '',
@@ -21,7 +22,7 @@ const ForgotPassword = ({ onChange }: TAuthForm) => {
 
    return (
       <form className="w-full p-8 lg:w-1/2" action={formAction}>
-         <h2 className="text-2xl font-semibold text-gray-700 text-center">Brand</h2>
+         <LogoIcon className="size-10" />
          <p className="text-xl text-gray-600 text-center">Esqueceu a palavra-passe</p>
          <div className="mt-4 flex items-center justify-between">
             <span className="border-b w-1/5 lg:w-1/4"></span>

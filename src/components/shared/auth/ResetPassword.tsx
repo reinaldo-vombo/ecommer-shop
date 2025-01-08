@@ -1,3 +1,4 @@
+'use client'
 import { z } from "zod"
 import { useFormState } from 'react-dom';
 import { zodResolver } from "@hookform/resolvers/zod"
