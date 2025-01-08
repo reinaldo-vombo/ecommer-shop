@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from "@/lib/auth/config"
 import { redirect } from "next/navigation"
 import Profile from '@/components/layouts/Profile';
+import { Suspense } from 'react';
 
 
 export default async function ProfilePage() {
@@ -11,5 +12,9 @@ export default async function ProfilePage() {
       redirect('/login')
    }
 
-   return <Profile user={session.user} />
+   return (
+      <Suspense fallback={<p>loading..</p>}>
+         <Profile user={session.user} />
+      </Suspense>
+   )
 }
