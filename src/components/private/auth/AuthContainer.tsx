@@ -48,7 +48,7 @@ const AuthContainer = () => {
                   {formView === 'reset' && 'Recuperação de conta'}
                   {formView === 'register' && 'Crie sua conta'}
                </h1>
-               <div className="overflow-hidden w-[29rem] p-2">
+               <div className="overflow-hidden w-full md:w-[29rem] p-2">
                   {['login', 'register', 'reset', 'recover'].map((view) => (
                      formView === view && (
                         <motion.div
@@ -70,7 +70,7 @@ const AuthContainer = () => {
                </div>
             </div>
          </div>
-         <div className="group sticky top-4 m-4 h-80 overflow-hidden rounded-3xl rounded-tl-[4rem] bg-slate-950 md:h-[calc(100vh_-_2rem)]">
+         <div className="group sticky hidden md:block top-4 m-4 h-80 overflow-hidden rounded-3xl rounded-tl-[4rem] bg-slate-950 md:h-[calc(100vh_-_2rem)]">
             <div className='relative h-full'>
                <motion.div
                   initial={false}

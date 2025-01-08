@@ -63,7 +63,7 @@ const Lognin = ({ view }: TFormView) => {
                         <FormLabel className='text-slate-500'>Email</FormLabel>
                         <FormControl>
                            <div className='relative'>
-                              <Input placeholder='email' type="email" {...field} />
+                              <Input placeholder='Email' type="email" {...field} />
                               <Mail className='absolute right-[22px] top-[9px] text-slate-300' width={20} />
                            </div>
                         </FormControl>

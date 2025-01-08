@@ -37,7 +37,7 @@ export async function register(prevState: TState, data: Data) {
         name,
         email,
         password: hashedPassword,
-        roleId: roleId || 2,
+        roleId: roleId || 4,
       },
     });
     // redirect('/');

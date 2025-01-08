@@ -21,7 +21,7 @@ const BrandsFilter = () => {
             <button
                key={brand.id}
                onClick={() => onChange("brand", brand.value)}
-               className={`h-[3.25rem] rounded border ${query === brand.value ? 'bg-red-500' : ''}`}
+               className={`h-[3.25rem] rounded border p-1 flex items-center justify-center ${query === brand.value ? 'bg-red-500' : ''}`}
             >
                {brand.logo}
             </button>

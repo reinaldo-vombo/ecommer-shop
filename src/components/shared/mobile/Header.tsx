@@ -3,6 +3,7 @@ import Image from 'next/image'
 import ProfileView from './layout/Profile'
 import { TProduct } from '../product/types'
 import Search from '../search-box/Search'
+import Link from 'next/link'
 type THeader = {
    title: string
    data: TProduct[]
@@ -22,7 +23,9 @@ const MobileHeader = ({ title, data }: THeader) => {
             {user ? (
                <ProfileView />
             ) : (
-               <Image src='/avatar.jpg' className='size-6 rounded-full' width={500} height={500} alt='use name' />
+               <Link href='/auth'>
+                  <Image src='/avatar.jpg' className='size-6 rounded-full' width={500} height={500} alt='use name' />
+               </Link>
             )}
          </div>
       </nav>

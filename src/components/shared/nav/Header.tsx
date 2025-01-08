@@ -42,11 +42,11 @@ const Header = ({ data }: { data: TProduct[] }) => {
                <div className="flex items-center gap-3">
                   <Search product={data} />
                   {user ? (
-                     <Link href='/perfil' aria-label="user profile photo" className="">
+                     <Link href='/perfiel' aria-label="user profile photo" className="">
                         <Image src={user?.avatar || '/avatar.jpg'} className='rounded-full' width={30} height={30} alt={use?.name} />
                      </Link>
                   ) : (
-                     <Link href='/login' aria-label="user icon" className="hover:bg-slate-200 rounded-full p-2 flex items-center justify-center">
+                     <Link href='/auth' aria-label="user icon" className="hover:bg-slate-200 rounded-full p-2 flex items-center justify-center">
                         <UserIcon width={25} />
                      </Link>
                   )}
