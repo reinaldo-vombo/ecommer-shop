@@ -1,12 +1,11 @@
-import Link from 'next/link'
-import { useCallback, useActionState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
-import { createQueryString } from "@/lib/utils";
+
+import { useActionState } from "react";
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button';
 import { recoverPassword } from '@/lib/actions/auth';
 import { toast } from 'sonner';
+import { TAuthForm } from './type';
 
 const initialState = {
    message: '',
@@ -14,18 +13,12 @@ const initialState = {
    status: 0,
    success: undefined
 }
-const ForgotPassword = () => {
+const ForgotPassword = ({ onChange }: TAuthForm) => {
    const [state, formAction, pending] = useActionState(recoverPassword, initialState)
    if (state?.status === 200) {
       toast.success(state?.message)
    }
-   const pathname = usePathname();
-   const searchParams = useSearchParams();
 
-   const generateQueryString = useCallback(
-      (name: string, value: string) => createQueryString(searchParams, name, value),
-      [searchParams]
-   );
    return (
       <form className="w-full p-8 lg:w-1/2" action={formAction}>
          <h2 className="text-2xl font-semibold text-gray-700 text-center">Brand</h2>
@@ -45,7 +38,7 @@ const ForgotPassword = () => {
          </div>
          <div className="mt-4 flex items-center justify-between">
             <span className="border-b w-1/5 md:w-1/4"></span>
-            <Link href={pathname + '?' + generateQueryString('view', 'login')} className="text-xs text-gray-500 uppercase">Entrar</Link>
+            <span onClick={() => onChange("login")} className="text-xs text-gray-500 uppercase">Entrar</span>
             <span className="border-b w-1/5 md:w-1/4"></span>
          </div>
       </form>

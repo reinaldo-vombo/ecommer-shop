@@ -6,7 +6,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Eye, Mail, User } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
-import { usePathname, useSearchParams } from "next/navigation";
 import { toast } from 'sonner'
 import { z } from 'zod'
 import {
@@ -17,14 +16,10 @@ import {
    FormLabel,
    FormMessage,
 } from '@/components/ui/form'
-import Link from 'next/link'
-import { createQueryString } from '@/lib/utils'
-import { useCallback } from 'react'
+import { TAuthForm } from './type'
 
 
-const Register = () => {
-   const pathname = usePathname();
-   const searchParams = useSearchParams();
+const Register = ({ onChange }: TAuthForm) => {
    function onSubmit(value: z.infer<typeof registerSchema>) {
       console.log(value)
       toast.success('hhhhh')
@@ -39,10 +34,7 @@ const Register = () => {
          confirmPassword: ""
       }
    })
-   const generateQueryString = useCallback(
-      (name: string, value: string) => createQueryString(searchParams, name, value),
-      [searchParams]
-   );
+
    return (
       <div className='space-y-8'>
          <Form {...form}>
@@ -117,7 +109,7 @@ const Register = () => {
          <Separator />
          <div className='flex items-center justify-center gap-2 text-xs'>
             <span>Já tenho uma conta</span>
-            <Link href={pathname + '?' + generateQueryString('view', 'login')} className='text-alpha cursor-pointer'>Entrar</Link>
+            <span onClick={() => onChange("login")} className='text-alpha cursor-pointer'>Entrar</span>
          </div>
       </div>
    )

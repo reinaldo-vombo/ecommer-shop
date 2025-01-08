@@ -25,7 +25,6 @@ import { toast } from "sonner";
 import { initialState } from "@/constants/site-content";
 import SubmitButton from "../SubmitButton";
 
-
 const ResetPassword: React.FC = () => {
    const [state, formAction, isLoading] = useFormState(resetPassword, initialState);
    const router = useRouter();
@@ -41,7 +40,7 @@ const ResetPassword: React.FC = () => {
    })
    if (state.status === 200) {
       toast.success(state.message)
-      router.replace("?view=login");
+      router.push("/login");
    }
 
    return (

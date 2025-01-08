@@ -2,10 +2,6 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Input } from '@/components/ui/input'
-import { useCallback } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
-import { createQueryString } from "@/lib/utils";
-import Link from 'next/link';
 import { LogoIcon, SpinerIcon } from '@/assets/logos';
 import { Button } from "@/components/ui/button";
 import {
@@ -19,10 +15,9 @@ import {
 import { signIn } from "next-auth/react";
 import { toast } from "sonner";
 import { logninSchema } from "@/lib/validation/auth";
+import { TAuthForm } from "./type";
 
-const LoginForm = () => {
-   const pathname = usePathname();
-   const searchParams = useSearchParams();
+const LoginForm = ({ onChange }: TAuthForm) => {
 
    type FormData = z.infer<typeof logninSchema>;
 
@@ -33,10 +28,6 @@ const LoginForm = () => {
          password: "",
       },
    });
-   const generateQueryString = useCallback(
-      (name: string, value: string) => createQueryString(searchParams, name, value),
-      [searchParams]
-   );
 
    const onSubmit = async (data: FormData) => {
       const { email, password } = data;
@@ -46,7 +37,7 @@ const LoginForm = () => {
             redirect: false, // Prevent automatic redirection
             email,
             password,
-            callbackUrl: '/cms'
+            callbackUrl: '/'
          });
 
          // Handle the case where `result` is `null` or undefined
@@ -141,7 +132,7 @@ const LoginForm = () => {
          </Form>
          <div className="mt-4 flex items-center justify-between">
             <span className="border-b w-1/5 md:w-1/4"></span>
-            <Link href={pathname + '?' + generateQueryString('view', '4got10')} className="text-xs text-gray-500">Esqueceu a palavra-passe?</Link>
+            <span onClick={() => onChange("4got10")} className="text-xs text-gray-500">Esqueceu a palavra-passe?</span>
             <span className="border-b w-1/5 md:w-1/4"></span>
          </div>
       </div>

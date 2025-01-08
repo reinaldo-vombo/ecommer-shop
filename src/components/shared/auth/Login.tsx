@@ -1,18 +1,15 @@
 
 'use client'
-import { useSearchParams } from 'next/navigation'
 import LoginForm from './LoginForm';
 import ForgotPassword from './ForgotPassword';
 import { motion } from 'framer-motion'
-import ResetPassword from './ResetPassword';
 import Register from './Register';
-import { Suspense } from 'react';
+import { useState } from 'react';
 
 const Login = () => {
-   const queryParams = useSearchParams()
-   const view = queryParams.get('view')
+   const [view, setView] = useState('login')
    return (
-      <Suspense fallback={<p>loading...</p>}>
+      <div className="padding">
          <div className="relative flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
             <motion.div
                initial={{ x: 0 }}
@@ -23,14 +20,12 @@ const Login = () => {
                style={{ backgroundImage: "url('/login.webp')" }}>
             </motion.div>
             {
-               view === 'reset' ?
-                  <ResetPassword />
-                  : view === '4got10'
-                     ? <ForgotPassword />
-                     : view === 'new' ? <Register /> : <LoginForm />}
-            <LoginForm />
+               view === '4got10'
+                  ? <ForgotPassword onChange={setView} />
+                  : view === 'new' ? <Register onChange={setView} /> : <LoginForm onChange={setView} />}
+            <LoginForm onChange={setView} />
          </div>
-      </Suspense>
+      </div>
    )
 }
 
