@@ -19,8 +19,10 @@ import { Eye, Mail } from 'lucide-react'
 import { TFormView } from '../type'
 import { logninSchema } from '@/lib/validation/auth'
 import SubmitButton from '@/components/shared/SubmitButton'
+import { useRouter } from 'next/navigation'
 
 const Lognin = ({ view }: TFormView) => {
+   const router = useRouter()
 
    async function onSubmit(value: z.infer<typeof logninSchema>) {
       const email = value.email
@@ -38,6 +40,8 @@ const Lognin = ({ view }: TFormView) => {
          }
          if (result?.ok) {
             toast.success(`Bem-vindo ao portal ${result.status}`);
+            console.log(result.url)
+            router.push("/");
          }
       } catch (error) {
          console.error(error);

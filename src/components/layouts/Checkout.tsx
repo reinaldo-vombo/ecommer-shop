@@ -32,7 +32,7 @@ const Checkout = () => {
                <div className="flex items-center gap-3 text-sm">
                   {NAV_ITEMS.map((item) => (
                      <Fragment key={item.id}>
-                        <span className="text-white">Information</span>
+                        <span className={`${step === item.name ? 'text-red-500' : 'text-white'}`}>Information</span>
                         <ChevronRight className="h-4 w-4 text-gray-500" />
                      </Fragment>
                   ))}
