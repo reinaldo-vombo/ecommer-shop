@@ -14,7 +14,7 @@ const Footer = () => {
                <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
                   <div>
                      <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
-                        Resources
+                        Recursos
                      </h2>
                      <ul className="text-gray-600 dark:text-gray-400">
                         <li className="mb-4">
@@ -34,12 +34,12 @@ const Footer = () => {
                   </div>
                   <div>
                      <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
-                        Follow us
+                        Siga-nos
                      </h2>
                      <ul className="text-gray-600 dark:text-gray-400">
                         <li className="mb-4">
                            <a
-                              href="javascript:void(0)"
+                              href="https://github.com/reinaldo-vombo/"
                               className="hover:underline "
                            >
                               Github
@@ -77,9 +77,9 @@ const Footer = () => {
             <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
             <div className="sm:flex sm:items-center sm:justify-between">
                <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
-                  © 2022{" "}
+                  © 2025{" "}
                   <a href="javascript:void(0)" className="hover:underline">
-                     Logo™
+                     <LogoIcon className="size-4" />
                   </a>
                   . All Rights Reserved.
                </span>

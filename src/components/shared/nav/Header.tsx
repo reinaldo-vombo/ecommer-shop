@@ -43,7 +43,7 @@ const Header = ({ data }: { data: TProduct[] }) => {
                   <Search product={data} />
                   {user ? (
                      <Link href='/perfiel' aria-label="user profile photo" className="">
-                        <Image src={user?.avatar || '/avatar.jpg'} className='rounded-full' width={30} height={30} alt={use?.name} />
+                        <Image src={user?.avatar || '/placeholder.jpg'} className='rounded-full' width={30} height={30} alt={use?.name} />
                      </Link>
                   ) : (
                      <Link href='/auth' aria-label="user icon" className="hover:bg-slate-200 rounded-full p-2 flex items-center justify-center">

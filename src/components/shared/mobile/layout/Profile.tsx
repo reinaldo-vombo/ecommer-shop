@@ -33,7 +33,7 @@ const ProfileView = () => {
             >
                <div className='flex items-center space-x-3 p-3'>
                   <MorphingDialogImage
-                     src='/avatar.jpg'
+                     src={user?.avatar || '/placeholder.jpg'}
                      alt={user?.name || ''}
                      className='h-8 w-8 object-cover object-top rounded-full'
                   />
@@ -50,7 +50,7 @@ const ProfileView = () => {
                      <div className='relative p-6'>
                         <div className='flex justify-center py-10'>
                            <MorphingDialogImage
-                              src='/avatar.jpg'
+                              src={user?.avatar || '/placeholder.jpg'}
                               alt={user?.name || ''}
                               className='h-auto w-[200px] rounded-full'
                            />
@@ -60,7 +60,7 @@ const ProfileView = () => {
                               {user?.name}
                            </MorphingDialogTitle>
                            <MorphingDialogSubtitle className='font-light text-gray-400'>
-                              Haruki Murakami
+                              Cliente
                            </MorphingDialogSubtitle>
                            <MobileUserTab />
                         </div>

@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 type TProps = {
    totalPrice: number;
@@ -26,7 +27,9 @@ const Summary = ({ totalPrice, totalQuantity }: TProps) => {
             </p>
          </div>
          <div>
-            <Button className="w-full">Checkout</Button>
+            <Link href={'/checkout'} className={`${totalPrice === 0 ? 'pointer-events-none cursor-not-allowed' : ' pointer-events-auto cursor-auto'}`}>
+               <Button className={`${totalPrice === 0 ? 'bg-neutral-400' : 'bg-primary'} w-full`}>Checkout</Button>
+            </Link>
          </div>
       </div>
    )

@@ -153,11 +153,11 @@ export function Dasboard({ children }: TDashbord) {
                <div>
                   <SidebarLink
                      link={{
-                        label: user?.name ? user.name : '',
+                        label: user?.name || '',
                         href: "/dashboard/profile",
                         icon: (
                            <Image
-                              src="/avatar.jpg"
+                              src={user?.avatar || "/placeholder.jpg"}
                               className="h-7 w-7 flex-shrink-0 rounded-full"
                               width={50}
                               height={50}

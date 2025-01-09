@@ -45,7 +45,7 @@ const Profile = () => {
                         <div className="flex">
                            <div className="relative size-40 mx-auto">
                               <Image
-                                 src={user?.avatar || '/avatar.jpg'}
+                                 src={user?.avatar || '/placeholder.jpg'}
                                  className="rounded-full"
                                  fill
                                  sizes="100%"
