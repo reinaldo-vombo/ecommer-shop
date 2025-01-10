@@ -17,12 +17,12 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL('/auth', req.url));
   }
 
-  const customerRoleId = 2;
+  // const customerRoleId = 2;
 
-  // Redirect customers with specific role to the homepage
-  if (token.roleId === customerRoleId) {
-    return NextResponse.redirect(new URL('/', req.url));
-  }
+  // // Redirect customers with specific role to the homepage
+  // if (token.roleId === customerRoleId) {
+  //   return NextResponse.redirect(new URL('/', req.url));
+  // }
 
   // Allow other requests to proceed
   return NextResponse.next();
