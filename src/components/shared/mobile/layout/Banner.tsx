@@ -33,7 +33,7 @@ const MobileBanner = () => {
                      return (
                         <CarouselItem key={item.id} className='p-4'>
                            <div className='flex aspect-square relative items-center justify-center'>
-                              <Image src={item.img} className='rounded-lg object-contain' fill sizes='100%' alt={`preview${i}`} />
+                              <Image src={item.img} className='rounded-lg object-contain' priority fill sizes='100%' alt={`preview${i}`} />
                            </div>
                         </CarouselItem>
                      );

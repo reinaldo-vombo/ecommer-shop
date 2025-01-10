@@ -86,6 +86,7 @@ const Footer = () => {
                <div className="flex mt-4 space-x-6 sm:justify-center sm:mt-0">
                   <a
                      href="javascript:void(0)"
+                     aria-label='facebook icon'
                      className="text-gray-500 hover:text-gray-900 dark:hover:text-white"
                   >
                      <svg
@@ -102,6 +103,7 @@ const Footer = () => {
                      </svg>
                   </a>
                   <a
+                     aria-label='instagram icon'
                      href="javascript:void(0)"
                      className="text-gray-500 hover:text-gray-900 dark:hover:text-white"
                   >
@@ -119,6 +121,7 @@ const Footer = () => {
                      </svg>
                   </a>
                   <a
+                     aria-label='x/twitter icon'
                      href="https://x.com/RVombo"
                      className="text-gray-500 hover:text-gray-900 dark:hover:text-white"
                   >
@@ -132,6 +135,7 @@ const Footer = () => {
                      </svg>
                   </a>
                   <a
+                     aria-label='github icon'
                      href="javascript:void(0)"
                      className="text-gray-500 hover:text-gray-900 dark:hover:text-white"
                   >
@@ -149,6 +153,7 @@ const Footer = () => {
                      </svg>
                   </a>
                   <a
+                     aria-label='bribble icon'
                      href="javascript:void(0)"
                      className="text-gray-500 hover:text-gray-900 dark:hover:text-white"
                   >

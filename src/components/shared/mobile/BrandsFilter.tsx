@@ -20,6 +20,7 @@ const BrandsFilter = () => {
          {BRANDS_LOGOS.map((brand) => (
             <button
                key={brand.id}
+               aria-label={`Brand logo ${brand.value}`}
                onClick={() => onChange("brand", brand.value)}
                className={`h-[3.25rem] rounded border p-1 flex items-center justify-center ${query === brand.value ? 'bg-red-500' : ''}`}
             >

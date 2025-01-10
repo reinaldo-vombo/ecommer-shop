@@ -24,7 +24,7 @@ const SelectOption = ({ options, placeholder, className }: TSelectOption) => {
    }
    return (
       <Select onValueChange={onChange}>
-         <SelectTrigger className={`${className ? className : 'w-[180px]'}`}>
+         <SelectTrigger aria-label={`Select ${placeholder}`} className={`${className ? className : 'w-[180px]'}`}>
             <SelectValue placeholder={placeholder} />
          </SelectTrigger>
          <SelectContent>

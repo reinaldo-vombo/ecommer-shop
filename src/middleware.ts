@@ -23,6 +23,18 @@ export async function middleware(req: NextRequest) {
   // if (token.roleId === customerRoleId) {
   //   return NextResponse.redirect(new URL('/', req.url));
   // }
+  const customerRoleId = 2; // Define customer role ID
+  const adminRoleId = 1; // Define admin role ID (or other roles as needed)
+
+  // Redirect customers to the homepage if they try to access `/cms`
+  if (url.pathname.startsWith('/cms') && token.roleId === customerRoleId) {
+    return NextResponse.redirect(new URL('/', req.url));
+  }
+
+  // Allow admins to access `/cms`
+  if (url.pathname.startsWith('/cms') && token.roleId === adminRoleId) {
+    return NextResponse.next();
+  }
 
   // Allow other requests to proceed
   return NextResponse.next();

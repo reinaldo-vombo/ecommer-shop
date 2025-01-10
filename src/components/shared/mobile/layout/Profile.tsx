@@ -36,6 +36,7 @@ const ProfileView = () => {
                      src={user?.avatar || '/placeholder.jpg'}
                      alt={user?.name || ''}
                      className='h-8 w-8 object-cover object-top rounded-full'
+                     style={{ width: 32, height: 32 }}
                   />
                </div>
             </MorphingDialogTrigger>

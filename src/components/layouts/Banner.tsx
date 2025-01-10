@@ -48,6 +48,7 @@ const Banner = () => {
                            alt="Nike Air Max 720 Horizon"
                            className="object-contain"
                            fill
+                           sizes='100%'
                            priority
                         />
                      </motion.div>

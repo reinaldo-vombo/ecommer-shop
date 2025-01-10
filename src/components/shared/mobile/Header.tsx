@@ -24,7 +24,14 @@ const MobileHeader = ({ title, data }: THeader) => {
                <ProfileView />
             ) : (
                <Link href='/auth'>
-                  <Image src='/placeholder.jpg' className='size-6 rounded-full' width={500} height={500} alt='use name' />
+                  <div className='relative size-6'>
+                     <Image
+                        src='/placeholder.jpg'
+                        className='rounded-full'
+                        fill
+                        sizes='100%'
+                        alt='use name' />
+                  </div>
                </Link>
             )}
          </div>
