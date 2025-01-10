@@ -27,12 +27,14 @@ const SortProducts = () => {
       switch (type) {
          case 'sapatos':
             return 'Sapatos & Tenis para'
+         case 'todos':
+            return 'Mens Shoes & Sneakers'
          case 'roupas':
             return 'Roupas para'
          case 'acessorios':
             return 'Acessorios para'
          default:
-            return 'Mens Shoes & Sneakers';
+            return '';
       }
 
    }

@@ -76,7 +76,7 @@ const Footer = () => {
             </div>
             <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
             <div className="sm:flex sm:items-center sm:justify-between">
-               <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
+               <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400 flex items-center gap-2">
                   © 2025{" "}
                   <a href="javascript:void(0)" className="hover:underline">
                      <LogoIcon className="size-4" />
@@ -119,7 +119,7 @@ const Footer = () => {
                      </svg>
                   </a>
                   <a
-                     href="javascript:void(0)"
+                     href="https://x.com/RVombo"
                      className="text-gray-500 hover:text-gray-900 dark:hover:text-white"
                   >
                      <svg

@@ -71,7 +71,7 @@ const Register = ({ view }: TFormView) => {
                         <FormLabel className='text-slate-500'>Email</FormLabel>
                         <FormControl>
                            <div className='relative'>
-                              <Input placeholder='email' {...field} />
+                              <Input placeholder='Email' {...field} />
                               <Mail className='absolute right-[22px] top-[9px] text-slate-300' width={20} />
                            </div>
                         </FormControl>
@@ -103,7 +103,7 @@ const Register = ({ view }: TFormView) => {
                         <FormLabel className='text-slate-500'>Confirmar Palavra-passe</FormLabel>
                         <FormControl>
                            <div className='relative'>
-                              <Input type='password' placeholder='confirmar' {...field} />
+                              <Input type='password' placeholder='Confirmar' {...field} />
                               <Eye className='absolute right-[22px] top-[9px] text-slate-300' width={20} />
                            </div>
                         </FormControl>

@@ -19,6 +19,7 @@ import { feedbackSchema } from "@/lib/validation/feeback";
 import { postReview } from "@/lib/actions/review";
 import { initialState } from "@/constants/site-content";
 import { toast } from "sonner";
+import { User } from "@/lib/auth/user";
 
 const feedback = [
    { stars: 4, emoji: <Laugh size={16} className="stroke-inherit" /> },
@@ -32,6 +33,7 @@ type TFeedbackProps = {
    productId: string
 }
 export const Feedback = ({ stars, setStars, productId }: TFeedbackProps) => {
+   const user = User()
    const [isSubmitted, setIsSubmitted] = useState<null | boolean>(null);
 
    useEffect(() => {
@@ -42,12 +44,14 @@ export const Feedback = ({ stars, setStars, productId }: TFeedbackProps) => {
       resolver: zodResolver(feedbackSchema),
       defaultValues: {
          message: "",
-         stars: stars
+         stars: stars,
+         productId: productId,
+         customerId: user?.id
       },
    });
    const onSubmit = async (data: z.infer<typeof feedbackSchema>) => {
-      console.log(data)
-      const result = await postReview(initialState, data, productId,);
+      console.log('form', data)
+      const result = await postReview(initialState, data);
       if (result.error) {
          toast.error(result.message)
       }

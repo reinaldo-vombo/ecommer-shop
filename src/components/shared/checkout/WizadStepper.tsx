@@ -1,13 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ChevronRight } from "lucide-react";
+import InformationForm from "./InformationForm";
+import DeliveryForm from "./DeliveryForm";
 
 const steps = [
-   { id: 1, content: "Step 1: Personal Information" },
-   { id: 2, content: "Step 2: Address Details" },
-   { id: 3, content: "Step 3: Review & Submit" },
+   { id: 1, name: 'Informação', content: <InformationForm /> },
+   { id: 2, name: 'Entrega', content: <DeliveryForm /> },
+   { id: 3, name: 'Pagamento', content: "Step 3: Review & Submit" },
 ];
+
 
 const WizardStepper = () => {
    const [currentStep, setCurrentStep] = useState(0);
@@ -26,22 +30,19 @@ const WizardStepper = () => {
 
    return (
       <div className="w-full p-4">
-         <div className="mb-6">
-            <div className="flex justify-between">
+         <nav className="mb-8">
+            <div className="flex items-center gap-3 text-sm">
                {steps.map((step, index) => (
-                  <div
-                     key={step.id}
-                     className={`w-full h-2 ${index <= currentStep ? "bg-blue-500" : "bg-gray-300"
-                        }`}
-                  ></div>
+                  <Fragment key={step.id}>
+                     <span className={` ${index <= currentStep ? "text-blue-500" : "text-gray-300"
+                        }`}>{step.name}</span>
+                     <ChevronRight className="h-4 w-4 text-gray-500" />
+                  </Fragment>
                ))}
             </div>
-            <p className="text-center mt-2">
-               Step {currentStep + 1} of {steps.length}
-            </p>
-         </div>
+         </nav>
 
-         <div className="relative h-40 overflow-hidden">
+         <div className="relative h-[35rem] overflow-hidden">
             <AnimatePresence mode="wait">
                <motion.div
                   key={steps[currentStep].id}
@@ -49,7 +50,7 @@ const WizardStepper = () => {
                   animate={{ x: 0, opacity: 1 }}
                   exit={{ x: -300, opacity: 0 }}
                   transition={{ duration: 0.5, ease: "linear" }}
-                  className="absolute w-full text-center p-4 bg-white rounded-lg shadow-md"
+                  className="absolute w-full rounded-lg"
                >
                   {steps[currentStep].content}
                </motion.div>
@@ -65,7 +66,7 @@ const WizardStepper = () => {
                   : "bg-blue-500 text-white"
                   }`}
             >
-               Back
+               Retroceder
             </button>
             <button
                onClick={handleNext}
@@ -75,7 +76,7 @@ const WizardStepper = () => {
                   : "bg-blue-500 text-white"
                   }`}
             >
-               Next
+               Proximo
             </button>
          </div>
       </div>

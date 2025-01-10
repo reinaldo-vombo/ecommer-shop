@@ -32,6 +32,7 @@ const Profile = () => {
    const logout = () => {
       signOut()
    }
+
    return (
       <section className='padding'>
          <div className="container">
@@ -57,7 +58,9 @@ const Profile = () => {
                         <div>
                            <h2 className="text-center h2-bold">{user?.name}</h2>
                            <div className="flex items-center justify-between">
-                              <span>Cilente</span>
+                              {user && (
+                                 <span>{user.roleId === 4 ? 'Cliente' : 'CMS users'}</span>
+                              )}
                               <Button onClick={() => logout()}><LogOut /></Button>
                            </div>
                         </div>

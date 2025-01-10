@@ -5,4 +5,6 @@ export const feedbackSchema = z.object({
     message: 'Por-favor escreva sua messagem',
   }),
   stars: z.number().min(1).max(5).nullish(),
+  productId: z.string().optional(),
+  customerId: z.string().optional(),
 });

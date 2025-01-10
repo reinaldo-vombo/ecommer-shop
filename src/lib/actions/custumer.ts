@@ -7,26 +7,93 @@ import { prisma } from '../db/client';
 import ResetPasswordEmail from '../email/ResetPassword';
 import { TState } from '../types';
 import { render } from '@react-email/components';
+import { writeFile, mkdir, access, constants } from 'fs/promises';
+import { storage } from '@/lib/firebase';
+import { join } from 'path';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import bcrypt from 'bcrypt';
 import { resetPasswordSchema } from '../validation/auth';
 import { revalidatePath } from 'next/cache';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/config';
 import { customerPasswordSchema, customerSchema } from '../validation/customer';
+import { PATH } from '../helper';
 
 type UpdateData = z.infer<typeof customerSchema>;
 type UpdatePass = z.infer<typeof customerPasswordSchema>;
 
 export async function updateCustomer(prevState: TState, Data: UpdateData) {
   const session = await getServerSession(authOptions);
+  if (!session) {
+    return {
+      error: true,
+      status: 404,
+      message: 'Não autorizado',
+    };
+  }
   const { name, email } = Data;
-
   try {
+    //stpe to handle file in production and development
+    async function saveFileLocally(file: File): Promise<string> {
+      const bytes = await file.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+
+      const uploadDir = join(process.cwd(), 'uploads');
+      try {
+        await access(uploadDir, constants.F_OK);
+      } catch {
+        await mkdir(uploadDir, { recursive: true });
+      }
+
+      const filePath = join(uploadDir, file.name);
+      await writeFile(filePath, buffer);
+      return `${PATH}${file.name}`;
+    }
+
+    async function saveFileToFirebase(file: File): Promise<string> {
+      if (!storage) {
+        throw new Error('Firebase storage is not initialized.');
+      }
+      const bytes = await file.arrayBuffer();
+      const storageRef = ref(storage, `images/${file.name}`);
+      await uploadBytes(storageRef, bytes);
+      return getDownloadURL(storageRef);
+    }
+
+    async function saveFile(file: File): Promise<string> {
+      return process.env.NODE_ENV === 'production'
+        ? saveFileToFirebase(file)
+        : saveFileLocally(file);
+    }
+
+    const file = Data.avatar && (Data.avatar[0] as unknown as File);
+    if (!file) {
+      return {
+        error: true,
+        status: 400,
+        message: 'Nenhum ficheiro carregado',
+      };
+    }
+
+    let fileUrl: string;
+    try {
+      fileUrl = await saveFile(file);
+    } catch (err) {
+      console.log(err);
+      return {
+        error: true,
+        status: 500,
+        message: 'Fallha ao carregegar imagem',
+      };
+    }
+    console.log(fileUrl);
+
     await prisma.customers.update({
-      where: { id: session?.user.id },
+      where: { id: session.user.id },
       data: {
         name,
         email,
+        avatar: fileUrl || session.user.avatar,
       },
     });
     revalidatePath('/');
@@ -49,6 +116,13 @@ export async function updateCustomerPassWord(
   Data: UpdatePass
 ) {
   const session = await getServerSession(authOptions);
+  if (!session) {
+    return {
+      error: true,
+      status: 404,
+      message: 'Não autorizado',
+    };
+  }
   const { new_password, old_password } = Data;
   if (old_password !== new_password) {
     return {
@@ -61,10 +135,10 @@ export async function updateCustomerPassWord(
 
   try {
     await prisma.customers.update({
-      where: { id: session?.user.id },
+      where: { id: session.user.id },
       data: {
-        name: session?.user.name,
-        email: session?.user.email,
+        name: session.user.name,
+        email: session.user.email,
         password: hashedPassword,
       },
     });

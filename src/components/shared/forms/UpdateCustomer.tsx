@@ -18,12 +18,15 @@ import { updateCustomer } from "@/lib/actions/custumer";
 import { initialState } from "@/constants/site-content";
 import { toast } from "sonner";
 import { IUser } from "next-auth";
+import FileUploader from "../file-uplode/FileUploder";
+import { useSession } from "next-auth/react";
 
 type TUserInfo = {
    userInfo: IUser | undefined
 }
 
 const UpdateCustomer = ({ userInfo }: TUserInfo) => {
+   const { update } = useSession();
    type FormData = z.infer<typeof customerSchema>;
    const form = useForm<z.infer<typeof customerSchema>>({
       resolver: zodResolver(customerSchema),
@@ -31,6 +34,7 @@ const UpdateCustomer = ({ userInfo }: TUserInfo) => {
          name: userInfo?.name,
          email: userInfo?.email,
          location: "",
+         avatar: []
 
       },
    })
@@ -40,6 +44,11 @@ const UpdateCustomer = ({ userInfo }: TUserInfo) => {
          toast.error(result.message)
       }
       if (result.sucess) {
+         await update({
+            name: value.name,
+            email: value.email,
+            avatar: value.avatar
+         })
          toast.success(result.message)
       }
    }
@@ -97,6 +106,19 @@ const UpdateCustomer = ({ userInfo }: TUserInfo) => {
                         />
                      </FormControl>
                      <FormDescription>Opcional, ajuda na filtragem de loja perto si</FormDescription>
+                     <FormMessage />
+                  </FormItem>
+               )}
+            />
+            <FormField
+               control={form.control}
+               name="avatar"
+               render={({ field }) => (
+                  <FormItem className='w-full'>
+                     <FormLabel className='text-slate-500'>Avatar</FormLabel>
+                     <FormControl>
+                        <FileUploader formField={field} maxFiles={1} />
+                     </FormControl>
                      <FormMessage />
                   </FormItem>
                )}

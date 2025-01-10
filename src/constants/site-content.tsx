@@ -35,35 +35,34 @@ export const OVERVIEWS = [
 export const NAV_ITEMS = [
    {
       shoes: [
-         { id: 1, name: 'Todos os tenis', query: '?type=all' },
-         { id: 2, name: 'Estilo de vida', query: '?type=life-style' },
-         { id: 3, name: 'Corrida', query: '?type=runnig' },
-         { id: 4, name: 'Footbol', query: '?type=footbal' },
-         { id: 5, name: 'Basktbol', query: '?type=footbal' },
-         { id: 6, name: 'Basktbol', query: '?type=footbal' },
-         { id: 7, name: 'Basktbol', query: '?type=footbal' },
+         { id: 1, name: 'Todos os tenis', query: 'type=sapatos' },
+         { id: 2, name: 'Estilo de vida', query: 'type=stilo-de-vida' },
+         { id: 3, name: 'Corrida', query: 'type=corrida' },
+         { id: 4, name: 'Footbol', query: 'type=football' },
+         { id: 5, name: 'Basktbol', query: 'type=basketball' },
+         { id: 6, name: 'Basktbol', query: 'type=treino-&-GYM' },
       ],
    },
    {
       close: [
-         { id: 1, name: 'Todos os vestuários', query: '?type=all' },
-         { id: 2, name: 'Camisola', query: '?type=shirt' },
-         { id: 3, name: 'Camisola de capuz', query: '?type=hood' },
-         { id: 4, name: 'Calças e legging', query: '?type=pents' },
-         { id: 5, name: 'Casacos', query: '?type=footbal' },
-         { id: 6, name: 'Calções', query: '?type=shorts' },
+         { id: 1, name: 'Todos os vestuários', query: 'type=todos' },
+         { id: 2, name: 'Camisola', query: 'type=camisola' },
+         { id: 3, name: 'Camisa', query: 'type=camisa' },
+         { id: 4, name: 'Camisola de capuz', query: 'type=capuz' },
+         { id: 5, name: 'Calças e legging', query: 'type=calsao' },
+         { id: 6, name: 'Casacos', query: 'type=casacos' },
       ],
    },
    {
       acessories: [
-         { id: 1, name: 'Todos os acessorios', query: '?type=all' },
-         { id: 2, name: 'Meias', query: '?type=socks' },
-         { id: 3, name: 'Muchilas e pasta', query: '?type=bags' },
-         { id: 4, name: 'Chapeus', query: '?type=hats' },
+         { id: 1, name: 'Todos os acessorios', query: 'type=all' },
+         { id: 2, name: 'Meias', query: 'type=socks' },
+         { id: 3, name: 'Muchilas e pasta', query: 'type=bags' },
+         { id: 4, name: 'Chapeus', query: 'type=hats' },
          {
             id: 5,
             name: 'Equipamento desportivo',
-            query: '?type=sport-equipmente',
+            query: 'type=sport-equipmente',
          },
       ],
    },
@@ -75,11 +74,11 @@ export const GENDER = [
    { id: 4, name: 'Criança', value: 'Criança' },
 ];
 export const CATEGORIES = [
-   { id: 1, name: 'Stilo de vida', value: 'Stilo de vida' },
-   { id: 2, name: 'Corrida', value: 'Corrida' },
-   { id: 3, name: 'Football', value: 'Football' },
-   { id: 4, name: 'Basketball', value: 'Basketball' },
-   { id: 5, name: 'Treino & GYM', value: 'Treino & GYM' },
+   { id: 1, name: 'Stilo de vida', value: 'stilo-de-vida' },
+   { id: 2, name: 'Corrida', value: 'corrida' },
+   { id: 3, name: 'Football', value: 'football' },
+   { id: 4, name: 'Basketball', value: 'basketball' },
+   { id: 5, name: 'Treino & GYM', value: 'treino-&-GYM' },
 ];
 export const BRAND = [
    { id: 1, name: 'Nike', value: 'Nike' },

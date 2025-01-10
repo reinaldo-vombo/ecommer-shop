@@ -57,7 +57,7 @@ const ProductCard = ({ props }: TProductProps) => {
                </SheetModal>
 
             </div>
-            <div className='h-0 group-hover:h-auto transition-all flex gap-3'>
+            <div className='transition-all flex gap-3'>
                {colors.map((url, idx) => (
                   <div className='flex gap-3 items-center' key={idx}>
                      <Image src={url} key={url} className='opacity-0 group-hover:opacity-100 transition-opacity rounded-lg' width={40} height={40} alt='w' />

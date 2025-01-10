@@ -8,6 +8,7 @@ export const customerSchema = z.object({
     message: 'preencha com email valido',
   }),
   location: z.string().optional(),
+  avatar: z.array(z.instanceof(File)).optional(),
 });
 
 export const customerPasswordSchema = z.object({

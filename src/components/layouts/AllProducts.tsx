@@ -18,13 +18,13 @@ const AllProducts = ({ props }: TProps) => {
    const size = searchParams.get('size')
    const category = searchParams.get('category')
    const color = searchParams.get('color')
-   const type = searchParams.get('type')
+   // const type = searchParams.get('type')
    const [minPrice, maxPrice] = getPriceRange(price);
 
    const filteredProducts = props.filter((product) => {
       const matchesPrice = product.price >= minPrice && product.price <= maxPrice;
       const matchesBrand = brand ? product.brand === brand : true;
-      const matchesType = type ? product.type === type : true;
+      // const matchesType = type ? product.type === type : true;
       const matchesColor = color
          ? product.images.some((img) => img.color === color)
          : true;
@@ -38,7 +38,7 @@ const AllProducts = ({ props }: TProps) => {
          matchesBrand &&
          matchesColor &&
          matchesSize &&
-         matchesType &&
+         // matchesType &&
          matchesCategory
       );
    });

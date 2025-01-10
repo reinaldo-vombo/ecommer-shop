@@ -1,9 +1,4 @@
-export const normalizePreviewPath = (preview: string): string => {
-  const UPLOADS_PATH = '/api/uploads/';
-  return preview.startsWith(UPLOADS_PATH)
-    ? preview
-    : `${UPLOADS_PATH}${preview}`;
-};
+export const PATH = '/api/uploads/';
 
 export const getPriceRange = (price: string | null) => {
   switch (price) {
