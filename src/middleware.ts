@@ -17,7 +17,7 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL('/auth', req.url));
   }
 
-  const customerRoleId = 4;
+  const customerRoleId = 2;
 
   // Redirect customers with specific role to the homepage
   if (token.roleId === customerRoleId) {
