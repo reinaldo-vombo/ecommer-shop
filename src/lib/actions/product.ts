@@ -48,21 +48,33 @@ export async function createProduct(prevState: TState, data: FeatureData) {
       await writeFile(filePath, buffer);
       return `${PATH}${file.name}`;
     }
+    console.log('Firebase Storage Initialized:', !!storage);
 
     async function saveFileToFirebase(file: File): Promise<string> {
       if (!storage) {
+        console.error('Firebase storage is not initialized.');
         throw new Error('Firebase storage is not initialized.');
       }
+      console.log('Uploading file to Firebase:', file.name);
+
       const bytes = await file.arrayBuffer();
       const storageRef = ref(storage, `images/${file.name}`);
       await uploadBytes(storageRef, bytes);
-      return getDownloadURL(storageRef);
+      console.log('File uploaded to Firebase:', file.name);
+
+      const downloadURL = await getDownloadURL(storageRef);
+      console.log('Download URL:', downloadURL);
+      return downloadURL;
     }
 
     async function saveFile(file: File): Promise<string> {
-      return process.env.NODE_ENV === 'production'
-        ? saveFileToFirebase(file)
-        : saveFileLocally(file);
+      if (process.env.NODE_ENV === 'production') {
+        console.log('Running in production. Saving file to Firebase...');
+        return saveFileToFirebase(file);
+      }
+
+      console.log('Running in development. Saving file locally...');
+      return saveFileLocally(file);
     }
 
     // Step 1: Save the main image
@@ -83,7 +95,7 @@ export async function createProduct(prevState: TState, data: FeatureData) {
       return {
         error: true,
         status: 500,
-        message: 'Fallha ao carregegar imagem',
+        message: 'Failed to save file. Please try again later.',
       };
     }
 
