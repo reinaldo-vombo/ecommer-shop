@@ -31,69 +31,51 @@ export async function updateCustomer(prevState: TState, Data: UpdateData) {
       message: 'Não autorizado',
     };
   }
-  const { name, email } = Data;
-  try {
-    //stpe to handle file in production and development
-    async function saveFileLocally(file: File): Promise<string> {
-      const bytes = await file.arrayBuffer();
-      const buffer = Buffer.from(bytes);
+  const { name, email, avatar } = Data;
+  //stpe to handle file in production and development
+  async function saveFileLocally(file: File): Promise<string> {
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
 
-      const uploadDir = join(process.cwd(), 'uploads');
-      try {
-        await access(uploadDir, constants.F_OK);
-      } catch {
-        await mkdir(uploadDir, { recursive: true });
-      }
-
-      const filePath = join(uploadDir, file.name);
-      await writeFile(filePath, buffer);
-      return `${PATH}${file.name}`;
-    }
-
-    async function saveFileToFirebase(file: File): Promise<string> {
-      if (!storage) {
-        throw new Error('Firebase storage is not initialized.');
-      }
-      const bytes = await file.arrayBuffer();
-      const storageRef = ref(storage, `images/${file.name}`);
-      await uploadBytes(storageRef, bytes);
-      return getDownloadURL(storageRef);
-    }
-
-    async function saveFile(file: File): Promise<string> {
-      return process.env.NODE_ENV === 'production'
-        ? saveFileToFirebase(file)
-        : saveFileLocally(file);
-    }
-
-    const file = Data.avatar && (Data.avatar[0] as unknown as File);
-    if (!file) {
-      return {
-        error: true,
-        status: 400,
-        message: 'Nenhum ficheiro carregado',
-      };
-    }
-
-    let fileUrl: string;
+    const uploadDir = join(process.cwd(), 'uploads');
     try {
-      fileUrl = await saveFile(file);
-    } catch (err) {
-      console.log(err);
-      return {
-        error: true,
-        status: 500,
-        message: 'Fallha ao carregegar imagem',
-      };
+      await access(uploadDir, constants.F_OK);
+    } catch {
+      await mkdir(uploadDir, { recursive: true });
     }
-    console.log(fileUrl);
 
+    const filePath = join(uploadDir, file.name);
+    await writeFile(filePath, buffer);
+    return `${PATH}${file.name}`;
+  }
+
+  async function saveFileToFirebase(file: File): Promise<string> {
+    if (!storage) {
+      throw new Error('Firebase storage is not initialized.');
+    }
+    const bytes = await file.arrayBuffer();
+    const storageRef = ref(storage, `images/${file.name}`);
+    await uploadBytes(storageRef, bytes);
+    return getDownloadURL(storageRef);
+  }
+
+  async function saveFile(file: File): Promise<string> {
+    return process.env.NODE_ENV === 'production'
+      ? saveFileToFirebase(file)
+      : saveFileLocally(file);
+  }
+  try {
+    let avatarUrl: string | null = null;
+    if (avatar && avatar[0]) {
+      const file = avatar[0] as File; // Ensure proper typing
+      avatarUrl = await saveFile(file);
+    }
     await prisma.customers.update({
       where: { id: session.user.id },
       data: {
         name,
         email,
-        avatar: fileUrl || session.user.avatar,
+        ...(avatarUrl && { avatar: avatarUrl }),
       },
     });
     revalidatePath('/');
