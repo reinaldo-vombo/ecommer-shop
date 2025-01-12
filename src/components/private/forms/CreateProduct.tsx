@@ -59,7 +59,7 @@ const CreateProduct = ({ products }: TProps) => {
    async function onSubmit(value: z.infer<typeof productSchema>) {
       const result = await createProduct(initialState, value)
       if (result?.error) {
-         toast.error(result.message)
+         toast.error('Ocorreu um error ao publicar o producto')
       }
       if (result?.success) {
          toast.success('Produto cadastrado com sucesso')

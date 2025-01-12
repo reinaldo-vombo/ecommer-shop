@@ -18,7 +18,7 @@ type ProductImage = {
   };
 };
 
-export async function uploadToCloudinary(file: File): Promise<string> {
+async function uploadToCloudinary(file: File): Promise<string> {
   try {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
@@ -46,7 +46,7 @@ export async function uploadToCloudinary(file: File): Promise<string> {
   }
 }
 
-export async function saveFileLocally(file: File): Promise<string> {
+async function saveFileLocally(file: File): Promise<string> {
   const bytes = await file.arrayBuffer();
   const buffer = Buffer.from(bytes);
 
@@ -64,7 +64,7 @@ export async function saveFileLocally(file: File): Promise<string> {
 }
 
 // Utility function to save the file
-export async function saveFile(file: File): Promise<string> {
+async function saveFile(file: File): Promise<string> {
   if (process.env.NODE_ENV === 'production') {
     return uploadToCloudinary(file);
   }
@@ -153,11 +153,11 @@ export async function createProduct(prevState: TState, data: FeatureData) {
       message: 'Producto publicado',
     };
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return {
       error: true,
       status: 500,
-      message: 'Ocorreu um error ao publicar o producto',
+      message: error,
     };
   }
 }
@@ -331,6 +331,7 @@ export async function deleteProduct(prevState: TState, id: string) {
       where: { id },
     });
 
+    revalidatePath('/');
     return {
       success: true,
       message: 'Produto excluir com sucesso',
