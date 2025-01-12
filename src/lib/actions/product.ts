@@ -2,14 +2,13 @@
 
 import { z } from 'zod';
 import { productSchema, updateProductSchema } from '../validation/product';
-import { writeFile, mkdir, access, constants, unlink } from 'fs/promises';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { access, constants, unlink } from 'fs/promises';
 import { InputJsonValue } from '@prisma/client/runtime/library';
 import { TState, TUpadateState } from '../types';
-import { storage } from '@/lib/firebase';
 import { revalidatePath } from 'next/cache';
 import { prisma } from '../db/client';
 import { join } from 'path';
+import { saveFile, saveFileLocally, uploadToCloudinary } from '../helper';
 
 type ProductImage = {
   images: {
@@ -31,73 +30,18 @@ export async function createProduct(prevState: TState, data: FeatureData) {
       message: 'Invalid price value. Must be a number.',
     };
   }
+  if (!data.image || data.image.length === 0) {
+    return {
+      error: true,
+      status: 400,
+      message: 'Nenhum ficheiro carregado',
+    };
+  }
+
   console.log('data', data);
   try {
-    async function saveFileLocally(file: File): Promise<string> {
-      const bytes = await file.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-
-      const uploadDir = join(process.cwd(), 'uploads');
-      try {
-        await access(uploadDir, constants.F_OK);
-      } catch {
-        await mkdir(uploadDir, { recursive: true });
-      }
-
-      const filePath = join(uploadDir, file.name);
-      await writeFile(filePath, buffer);
-      return `${PATH}${file.name}`;
-    }
-    console.log('Firebase Storage Initialized:', !!storage);
-
-    async function saveFileToFirebase(file: File): Promise<string> {
-      if (!storage) {
-        console.error('Firebase storage is not initialized.');
-        throw new Error('Firebase storage is not initialized.');
-      }
-      console.log('Uploading file to Firebase:', file.name);
-
-      const bytes = await file.arrayBuffer();
-      const storageRef = ref(storage, `images/${file.name}`);
-      await uploadBytes(storageRef, bytes);
-      console.log('File uploaded to Firebase:', file.name);
-
-      const downloadURL = await getDownloadURL(storageRef);
-      console.log('Download URL:', downloadURL);
-      return downloadURL;
-    }
-
-    async function saveFile(file: File): Promise<string> {
-      if (process.env.NODE_ENV === 'production') {
-        console.log('Running in production. Saving file to Firebase...');
-        return saveFileToFirebase(file);
-      }
-
-      console.log('Running in development. Saving file locally...');
-      return saveFileLocally(file);
-    }
-
-    // Step 1: Save the main image
-    const file = data.image[0] as unknown as File;
-    if (!file) {
-      return {
-        error: true,
-        status: 400,
-        message: 'Nenhum ficheiro carregado',
-      };
-    }
-
-    let fileUrl: string;
-    try {
-      fileUrl = await saveFile(file);
-    } catch (err) {
-      console.log(err);
-      return {
-        error: true,
-        status: 500,
-        message: 'Failed to save file. Please try again later.',
-      };
-    }
+    const file = data.image[0] as File;
+    const fileUrl = await saveFile(file);
 
     // Step 2: Save images in the colors array
     const updatedColors = [];
@@ -177,62 +121,24 @@ export async function updateProduct(
   }
 
   try {
-    async function saveFileLocally(file: File): Promise<string> {
-      const bytes = await file.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-
-      const uploadDir = join(process.cwd(), 'uploads');
-      try {
-        await access(uploadDir, constants.F_OK);
-      } catch {
-        await mkdir(uploadDir, { recursive: true });
-      }
-
-      const filePath = join(uploadDir, file.name);
-      await writeFile(filePath, buffer);
-      return `${PATH}${file.name}`;
-    }
-
-    async function saveFileToFirebase(file: File): Promise<string> {
-      if (!storage) {
-        throw new Error('Firebase storage is not initialized.');
-      }
-      const bytes = await file.arrayBuffer();
-      const storageRef = ref(storage, `images/${file.name}`);
-      await uploadBytes(storageRef, bytes);
-      return getDownloadURL(storageRef);
-    }
-
-    async function saveFile(file: File): Promise<string> {
-      return process.env.NODE_ENV === 'production'
-        ? saveFileToFirebase(file)
-        : saveFileLocally(file);
-    }
-
-    // Step 1: Handle the main image
     let fileUrl: string;
 
     if (typeof data.image === 'string') {
-      // If image is a string, use it directly
+      // If image is already a URL, use it directly
       fileUrl = data.image;
     } else if (data.image && data.image[0]) {
       // If image is a file, process it
-      const file = data.image[0] as unknown as File;
-      try {
-        fileUrl = await saveFile(file);
-      } catch (err) {
-        console.error(err);
-        return {
-          error: true,
-          status: 500,
-          message: 'Falha ao carregar imagem principal',
-        };
-      }
+      const file = data.image[0] as File;
+      // Save the file based on the environment
+      fileUrl =
+        process.env.NODE_ENV === 'production'
+          ? await uploadToCloudinary(file)
+          : await saveFileLocally(file);
     } else {
       return {
         error: true,
         status: 400,
-        message: 'Nenhuma imagem valida foi carregada',
+        message: 'No image provided',
       };
     }
 
@@ -248,12 +154,14 @@ export async function updateProduct(
       const savedImages = [];
       for (const imageFile of images as unknown as (File | string)[]) {
         if (typeof imageFile === 'string') {
-          // If the image is already a string (URL), add it directly
           savedImages.push(imageFile);
         } else {
-          // If the image is a file, upload it
           try {
-            const imageUrl = await saveFile(imageFile as File);
+            const imageUrl =
+              process.env.NODE_ENV === 'production'
+                ? await uploadToCloudinary(imageFile)
+                : await saveFileLocally(imageFile);
+
             savedImages.push(imageUrl);
           } catch (err) {
             console.error(`Failed to upload image for color ${color}`, err);
