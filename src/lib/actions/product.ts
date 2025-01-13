@@ -5,11 +5,11 @@ import { productSchema, updateProductSchema } from '../validation/product';
 import { InputJsonValue } from '@prisma/client/runtime/library';
 import { TState, TUpadateState } from '../types';
 import cloudinary from '@/lib/storege/cloudinary';
-import { writeFile, mkdir, access, constants, unlink } from 'fs/promises';
 import { revalidatePath } from 'next/cache';
 import { prisma } from '../db/client';
-import { join } from 'path';
-import { PATH } from '../helper';
+// import { writeFile, mkdir, access, constants, unlink } from 'fs/promises'; //uncomment this if want use local save  file
+// import { join } from 'path';
+// import { PATH } from '../helper';
 
 type ProductImage = {
   images: {
@@ -18,6 +18,7 @@ type ProductImage = {
   };
 };
 
+// Utility function to save the file in online
 async function uploadToCloudinary(file: File): Promise<string> {
   try {
     const arrayBuffer = await file.arrayBuffer();
@@ -31,7 +32,6 @@ async function uploadToCloudinary(file: File): Promise<string> {
             console.error('Cloudinary upload error:', error);
             reject(new Error('Failed to upload image to Cloudinary'));
           } else {
-            console.log('Uploaded file URL:', result?.secure_url);
             resolve(result?.secure_url || '');
           }
         }
@@ -46,29 +46,27 @@ async function uploadToCloudinary(file: File): Promise<string> {
   }
 }
 
-async function saveFileLocally(file: File): Promise<string> {
-  const bytes = await file.arrayBuffer();
-  const buffer = Buffer.from(bytes);
+// Utility function to save the file in local folder if your working offline
+// async function saveFileLocally(file: File): Promise<string> {
+//   const bytes = await file.arrayBuffer();
+//   const buffer = Buffer.from(bytes);
 
-  const uploadDir = join(process.cwd(), 'uploads');
-  try {
-    await access(uploadDir, constants.F_OK);
-  } catch {
-    await mkdir(uploadDir, { recursive: true });
-  }
+//   const uploadDir = join(process.cwd(), 'uploads');
+//   try {
+//     await access(uploadDir, constants.F_OK);
+//   } catch {
+//     await mkdir(uploadDir, { recursive: true });
+//   }
 
-  const filePath = join(uploadDir, file.name);
-  await writeFile(filePath, buffer);
+//   const filePath = join(uploadDir, file.name);
+//   await writeFile(filePath, buffer);
 
-  return `${PATH}${file.name}`;
-}
+//   return `${PATH}${file.name}`;
+// }
 
 // Utility function to save the file
 async function saveFile(file: File): Promise<string> {
-  if (process.env.NODE_ENV === 'production') {
-    return uploadToCloudinary(file);
-  }
-  return saveFileLocally(file);
+  return uploadToCloudinary(file);
 }
 
 //save product to database
@@ -186,10 +184,7 @@ export async function updateProduct(
       // If image is a file, process it
       const file = data.image[0] as File;
       // Save the file based on the environment
-      fileUrl =
-        process.env.NODE_ENV === 'production'
-          ? await uploadToCloudinary(file)
-          : await saveFileLocally(file);
+      fileUrl = await uploadToCloudinary(file);
     } else {
       return {
         error: true,
@@ -213,10 +208,7 @@ export async function updateProduct(
           savedImages.push(imageFile);
         } else {
           try {
-            const imageUrl =
-              process.env.NODE_ENV === 'production'
-                ? await uploadToCloudinary(imageFile)
-                : await saveFileLocally(imageFile);
+            const imageUrl = await uploadToCloudinary(imageFile);
 
             savedImages.push(imageUrl);
           } catch (err) {
@@ -269,6 +261,84 @@ export async function updateProduct(
     };
   }
 }
+
+// Utility function to delete all images related to product bean deleted for local file
+// export async function deleteProduct(prevState: TState, id: string) {
+//   if (!id) {
+//     return {
+//       error: true,
+//       message: 'Este produto não existe',
+//     };
+//   }
+
+//   try {
+//     // Step 1: Fetch the product from the database
+//     const product = await prisma.products.findUnique({
+//       where: { id },
+//     });
+
+//     if (!product) {
+//       return {
+//         error: true,
+//         message: 'Produto não encontrado',
+//       };
+//     }
+
+//     // Step 2: Define a function to delete a file from the uploads folder
+//     async function deleteFile(filePath: string) {
+//       const fullPath = join(process.cwd(), 'uploads', filePath);
+//       try {
+//         // Check if the file exists before attempting to delete
+//         await access(fullPath, constants.F_OK);
+//         await unlink(fullPath); // Delete the file
+//         console.log(`Deleted file: ${fullPath}`);
+//       } catch (err) {
+//         console.warn(`Failed to delete file: ${fullPath}`, err);
+//       }
+//     }
+
+//     // Step 3: Delete the main product image
+//     if (product.image) {
+//       const mainImagePath = product.image.replace(`${PATH}`, ''); // Remove base path to get relative path
+//       await deleteFile(mainImagePath);
+//     }
+
+//     // Step 4: Delete images in the nested colors array structure
+//     if (product.images && Array.isArray(product.images)) {
+//       const imagesArray = product.images as ProductImage[];
+//       for (const colorEntry of imagesArray) {
+//         const { images } = colorEntry;
+
+//         if (images && Array.isArray(images)) {
+//           for (const imagePath of images) {
+//             if (imagePath) {
+//               const relativePath = imagePath.replace(`${PATH}`, ''); // Remove base path to get relative path
+//               await deleteFile(relativePath);
+//             }
+//           }
+//         }
+//       }
+//     }
+
+//     // Step 5: Delete the product from the database
+//     await prisma.products.delete({
+//       where: { id },
+//     });
+
+//     revalidatePath('/');
+//     return {
+//       success: true,
+//       message: 'Produto excluir com sucesso',
+//     };
+//   } catch (error) {
+//     console.error('Erro ao excluir o produto:', error);
+//     return {
+//       error: true,
+//       message: 'Erro ao excluir o produto',
+//     };
+//   }
+// }
+// Utility function to delete all images related to product bean deleted for cloudinari file
 export async function deleteProduct(prevState: TState, id: string) {
   if (!id) {
     return {
@@ -290,26 +360,25 @@ export async function deleteProduct(prevState: TState, id: string) {
       };
     }
 
-    // Step 2: Define a function to delete a file from the uploads folder
-    async function deleteFile(filePath: string) {
-      const fullPath = join(process.cwd(), 'uploads', filePath);
+    //function to delete an image from Cloudinary
+    async function deleteFromCloudinary(publicId: string) {
       try {
-        // Check if the file exists before attempting to delete
-        await access(fullPath, constants.F_OK);
-        await unlink(fullPath); // Delete the file
-        console.log(`Deleted file: ${fullPath}`);
+        const result = await cloudinary.uploader.destroy(publicId);
+        console.log(`Deleted from Cloudinary: ${publicId}`, result);
       } catch (err) {
-        console.warn(`Failed to delete file: ${fullPath}`, err);
+        console.error(`Failed to delete from Cloudinary: ${publicId}`, err);
       }
     }
 
-    // Step 3: Delete the main product image
+    //Delete the main product image from Cloudinary
     if (product.image) {
-      const mainImagePath = product.image.replace(`${PATH}`, ''); // Remove base path to get relative path
-      await deleteFile(mainImagePath);
+      const publicId = extractPublicId(product.image); // Extract the public ID
+      if (publicId) {
+        await deleteFromCloudinary(publicId);
+      }
     }
 
-    // Step 4: Delete images in the nested colors array structure
+    //Delete images in the nested `images` JSON structure
     if (product.images && Array.isArray(product.images)) {
       const imagesArray = product.images as ProductImage[];
       for (const colorEntry of imagesArray) {
@@ -318,15 +387,17 @@ export async function deleteProduct(prevState: TState, id: string) {
         if (images && Array.isArray(images)) {
           for (const imagePath of images) {
             if (imagePath) {
-              const relativePath = imagePath.replace(`${PATH}`, ''); // Remove base path to get relative path
-              await deleteFile(relativePath);
+              const publicId = extractPublicId(imagePath); // Extract the public ID
+              if (publicId) {
+                await deleteFromCloudinary(publicId);
+              }
             }
           }
         }
       }
     }
 
-    // Step 5: Delete the product from the database
+    //Delete the product from the database
     await prisma.products.delete({
       where: { id },
     });
@@ -342,5 +413,18 @@ export async function deleteProduct(prevState: TState, id: string) {
       error: true,
       message: 'Erro ao excluir o produto',
     };
+  }
+}
+
+//helper
+function extractPublicId(url: string): string | null {
+  try {
+    const parts = url.split('/');
+    const filename = parts[parts.length - 1];
+    const [publicId] = filename.split('.'); // Remove the file extension
+    return parts.includes('image') ? `images/${publicId}` : publicId;
+  } catch (error) {
+    console.error('Failed to extract public ID:', error);
+    return null;
   }
 }
