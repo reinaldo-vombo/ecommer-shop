@@ -151,7 +151,10 @@ export async function createProduct(prevState: TState, data: FeatureData) {
       message: 'Producto publicado',
     };
   } catch (error) {
-    console.error(error);
+    if (error instanceof Error) {
+      console.error(error.cause);
+      console.log('Error: ', error.stack);
+    }
     return {
       error: true,
       status: 500,

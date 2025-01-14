@@ -5,7 +5,7 @@ import MobileProductSection from '@/components/shared/mobile/layout/ProductSecti
 import { TProduct } from "@/components/shared/product/types";
 import { Suspense } from "react";
 
-
+export const revalidate = 7200;
 export default async function Home() {
   const data = await getProducts()
 

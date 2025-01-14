@@ -118,8 +118,8 @@ model Products {
   gallery     Json?
   image       String       @db.VarChar(255)
   images      Json
-  description String
-  details     String?
+  description String       @db.Text
+  details     String?      @db.Text
   favorites   Int?         @default(0)
   purchases   Int?         @default(0)
   refunds     Int?         @default(0)
