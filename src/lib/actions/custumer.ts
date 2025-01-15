@@ -87,7 +87,7 @@ export async function updateCustomer(prevState: TState, Data: UpdateData) {
       avatarUrl = await saveFile(file);
     }
 
-    await prisma.customers.update({
+    const customer = await prisma.customers.update({
       where: { id: session.user.id },
       data: {
         name,
@@ -100,6 +100,7 @@ export async function updateCustomer(prevState: TState, Data: UpdateData) {
       sucess: true,
       status: 200,
       message: 'Dados atualizados',
+      fields: customer, 
     };
   } catch (error) {
     console.error(error);

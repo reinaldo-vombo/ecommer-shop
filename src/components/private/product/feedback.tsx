@@ -50,17 +50,16 @@ export const Feedback = ({ stars, setStars, productId }: TFeedbackProps) => {
       },
    });
    const onSubmit = async (data: z.infer<typeof feedbackSchema>) => {
-      console.log('form', data)
       const result = await postReview(initialState, data);
       if (result.error) {
          toast.error(result.message)
       }
       if (result.success) {
          toast.success(result.message)
+         setIsSubmitted(true)
       }
    }
    const isLoading = form.formState.isSubmitting
-   console.log(form.formState.errors)
    return (
       <Form {...form}>
          <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -72,7 +71,7 @@ export const Feedback = ({ stars, setStars, productId }: TFeedbackProps) => {
                   'w-full overflow-hidden border py-2 shadow-sm dark:border-neutral-800 dark:bg-neutral-950'
                )}>
                <span className="flex items-center justify-center gap-3 pl-4 pr-2">
-                  <div className="text-sm text-black dark:text-neutral-400">Like our service?</div>
+                  <div className="text-sm text-black dark:text-neutral-400">O que acho commente</div>
                   <div className="flex items-center text-neutral-400">
                      {feedback.map((e) => (
                         <FormField
@@ -111,7 +110,7 @@ export const Feedback = ({ stars, setStars, productId }: TFeedbackProps) => {
                   initial={{ height: 0, translateY: 15 }}
                   className="px-2"
                   transition={{ ease: 'easeInOut', duration: 0.3 }}
-                  animate={stars ? { height: '195px', width: '100%' } : {}}>
+                  animate={stars ? { height: '236px', width: '100%' } : {}}>
                   <AnimatePresence>
                      {!isSubmitted ? (
                         <motion.span exit={{ opacity: 0 }} initial={{ opacity: 1 }}>

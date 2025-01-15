@@ -26,7 +26,7 @@ type TUserInfo = {
 }
 
 const UpdateCustomer = ({ userInfo }: TUserInfo) => {
-   const { update } = useSession();
+   const { data: session, update } = useSession();
    type FormData = z.infer<typeof customerSchema>;
    const form = useForm<z.infer<typeof customerSchema>>({
       resolver: zodResolver(customerSchema),
@@ -45,9 +45,13 @@ const UpdateCustomer = ({ userInfo }: TUserInfo) => {
       }
       if (result.sucess) {
          await update({
-            name: value.name,
-            email: value.email,
-            avatar: value.avatar
+            ...session,
+            user: {
+               ...session?.user,
+               name: result.fields.name,
+               email: result.fields.email,
+               avatar: result.fields.avatar
+            },
          })
          toast.success(result.message)
       }

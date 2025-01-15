@@ -10,7 +10,7 @@ type TProps = {
    cart: CartItem[]
 }
 
-const DELETE_BTN_WIDTH = 70;
+const DELETE_BTN_WIDTH = 40;
 const CartMobileList = ({ cart }: TProps) => {
    const removeFromCart = useCartStore((state) => state.removeFromCart);
 

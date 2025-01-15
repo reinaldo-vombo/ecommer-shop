@@ -40,11 +40,11 @@ export function CarouselCustomIndicator({ images, initial }: TProps) {
                   <button
                      key={item}
                      type='button'
-                     aria-label={`Go to slide ${item}`}
+                     aria-label={`Go to slide ${index}`}
                      onClick={() => setIndex(index)}
                      className='h-12 w-12 border rounded-lg border-zinc-200 dark:border-zinc-800'
                   >
-                     <Image src={item} width={48} height={48} alt='preview' />
+                     <Image src={item} width={48} height={48} alt={`preview${index}`} />
                   </button>
                );
             })}

@@ -1,6 +1,6 @@
 "use client"
 import { useCartStore } from '@/lib/store/cartStore';
-import { TProductProps } from '../shared/product/types';
+import { SigleProductProps } from '../shared/product/types';
 import { CarouselCustomIndicator } from '../shared/Carousel';
 import Cart from '../shared/cart/Cart';
 import FavoriteItem from '../shared/wishList/ListItem';
@@ -10,12 +10,19 @@ import Modal from '../shared/Moadal';
 import Details from '../private/product/Details';
 import SizeTabel from '../private/product/SizeTabel';
 import { useWishlistStore } from '@/lib/store/wishListStore';
+import parse from 'html-react-parser';
+import Comments from '../shared/product/Comments';
+import { CarouselCustomSizes } from '../shared/carosel/CaroselItems';
 
-const SigleProduct = ({ props }: TProductProps) => {
-   const product = props;
+const SigleProduct: React.FC<{ props: SigleProductProps }> = ({ props }) => {
+   const { product, reviews, relatedProducts } = props;
+
    const urls = product.images[0].images
    const addToCart = useCartStore((state) => state.addToCart);
    const addToWishlist = useWishlistStore((state) => state.addToWishlist);
+   const covertedText = parse(product.details || '');
+   const productId = product.id;
+
    return (
       <div className="padding">
          <div className="container space-y-11">
@@ -60,19 +67,19 @@ const SigleProduct = ({ props }: TProductProps) => {
                         </div>
                         <div className='space-y-2'>
                            <span className='text-slate-500'>Descrição</span>
-                           <p className="font-semibold">{product.description}</p>
+                           <div>{parse(product.description)}</div>
                         </div>
-                        <Modal btn={<p className="underline font-semibold text-left">Ver detalhes do producto</p>} title='Selecioneum local de levantamento'>
+                        <Modal btn={<p className="underline font-semibold text-left">Ver detalhes do producto</p>} title='Detalhes'>
                            <Details
                               name={product.name}
                               image={product.image}
                               price={product.price}
-                              description={product.description}
+                              description={covertedText}
                            />
                         </Modal>
-                        {/* {product.Reviews.length > 0 ? (
-                           <Comments reviews={product.Reviews} />
-                        ) : (<p>Sem commentarios</p>)} */}
+                        {reviews.length > 0 ? (
+                           <Comments reviews={reviews} productId={productId} />
+                        ) : (<p>Sem commentarios</p>)}
                      </div>
                   </div>
                </div>
@@ -80,11 +87,11 @@ const SigleProduct = ({ props }: TProductProps) => {
             {/* <Gallery images={product.gallery} /> */}
             <div className="space-y-6">
                <h2 className="h2-bold">Productos relacionados</h2>
-               {/* <ProductCarousel /> */}
+               <CarouselCustomSizes data={relatedProducts} />
             </div>
          </div>
       </div>
    )
 }
 
-export default SigleProduct
+export default SigleProduct;

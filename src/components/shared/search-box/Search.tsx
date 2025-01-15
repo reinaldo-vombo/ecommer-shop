@@ -44,7 +44,7 @@ const Search = ({ product }: TSearch) => {
             <div className="grid grid-cols-12">
                <SheetHeader className="col-span-12 md:col-span-3">
                   <SheetTitle className="hidden md:block"><LogoIcon width={90} /></SheetTitle>
-                  <SearchTerms onChange={handleSearch} />
+                  <SearchTerms products={product} onChange={handleSearch} />
                </SheetHeader>
                <div className="col-span-12 md:col-span-9 space-y-6">
                   <div className="relative">

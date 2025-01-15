@@ -11,11 +11,12 @@ import Stars from './Stars'
 import { Feedback } from '@/components/private/product/feedback'
 
 type TProps = {
-   reviews: TReviwes[]
+   reviews: TReviwes[];
+   productId: string
 }
 
-const Comments = ({ reviews }: TProps) => {
-   const [stars, setStars] = useState<number | null>(null)
+const Comments = ({ reviews, productId }: TProps) => {
+   const [stars, setStars] = useState<number | null>(null);
    return (
       <Accordion type='multiple'>
          <AccordionItem value='item1'>
@@ -35,13 +36,13 @@ const Comments = ({ reviews }: TProps) => {
             </AccordionTrigger>
             <AccordionContent>
                <div>
+                  <Feedback stars={stars} setStars={setStars} productId={productId} />
                   {reviews.length > 0 ? reviews.map((feed) => (
                      <div key={feed.id}>
-                        <Feedback stars={stars} setStars={setStars} productId={feed.productId} />
                         <div className='mt-8'>
-                           <div className='flex items-center justify-between'>
+                           <div className='space-y-2'>
+                              <h3 className='base-semibold text-gray-400'>{feed.customerName} - {feed.date}</h3>
                               <Stars length={feed.stars} />
-                              <h3 className='base-semibold text-gray-400'>{feed.customer} - 22 Feb 2024</h3>
                            </div>
                            <div className='mt-6'>
                               <h3 className='base-semibold'>{feed.comment}</h3>

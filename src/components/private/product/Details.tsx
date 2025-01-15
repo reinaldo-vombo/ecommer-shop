@@ -4,7 +4,7 @@ type TProps = {
    name: string;
    price: number;
    image: string;
-   description: string;
+   description: string | React.JSX.Element | React.JSX.Element[];
 
 }
 
@@ -19,7 +19,7 @@ const Details = ({ name, price, image, description }: TProps) => {
             </div>
          </div>
          <div>
-            <p>{description}</p>
+            <div>{description}</div>
          </div>
       </div>
    )

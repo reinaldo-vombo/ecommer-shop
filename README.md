@@ -208,13 +208,13 @@ SMTP_SUBJECT=""
 ```
 
 ## Running locally | Execução local
-
+<!-- 
 1. Clona o repositorio: `git clone https://github.com/reinaldo-vombo/ecommerce-app.git`
 2. Instale as dependencias: `npm install`
 3. Adicione as variaveis de ambiente `crie um ficheiro .env na raiz do projecto`
 4. Preencha o banco com as tabelas `npx prisma db push`
 5. Preencha as tabelas com os dados padrão `npx prisma db seed`
-6. Start the development server: `npm run dev`
+6. Start the development server: `npm run dev` -->
 
 ## Contributing
 

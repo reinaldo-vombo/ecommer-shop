@@ -6,7 +6,7 @@ export type TProduct = {
   gender: string;
   brand: string;
   stock: number | null;
-  style: string[];
+  // style: string[];
   size: number[];
   // type: string;
   category: string[];
@@ -28,13 +28,15 @@ export type TProductProps = {
 };
 export type TReviwes = {
   id: string;
-  productId: string;
-  product: string;
-  customerId: string;
-  customer: string;
-  comment?: string;
+  comment: string | null;
   stars: number;
-  createdAt: Date;
+  date: string;
+  customerName: string;
+};
+export type SigleProductProps = {
+  product: TProduct;
+  reviews: TReviwes[];
+  relatedProducts: any[];
 };
 export type TProductModal = {
   title: string;

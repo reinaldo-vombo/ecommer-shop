@@ -21,14 +21,18 @@ import { LogOut } from "lucide-react"
 import { signOut } from "next-auth/react"
 import { User } from "@/lib/auth/user"
 import { useRouter } from "next/navigation"
+import { useEffect } from "react"
 
 const Profile = () => {
    const router = useRouter()
 
    const user = User()
-   if (!user) {
-      router.push('/auth')
-   }
+   useEffect(() => {
+      if (!user) {
+         router.push('/auth')
+      }
+   }, [])
+
    const logout = () => {
       signOut()
    }
