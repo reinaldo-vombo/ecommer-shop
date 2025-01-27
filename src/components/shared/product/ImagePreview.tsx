@@ -4,19 +4,33 @@ import {
    CarouselContent,
    CarouselItem,
 } from '@/components/ui/carousel';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import Image from 'next/image';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { createQueryString } from '@/lib/utils';
 
 type TProps = {
    initial: string[]
    images?: { color: string; images: string[] }[];
 }
-export function CarouselCustomIndicator({ images, initial }: TProps) {
+export function ImagePreview({ images, initial }: TProps) {
    const [index, setIndex] = useState(0);
    const [selectedColor, setSelectedColor] = useState(initial);
+   const router = useRouter()
+   const pathname = usePathname()
+   const searchParams = useSearchParams();
+   const generateQueryString = useCallback(
+      (name: string, value: string) => createQueryString(searchParams, name, value),
+      [searchParams]
+   );
+   const onChange = (queryName: string, queryValue: string) => {
+      router.push(pathname + '?' + generateQueryString(queryName, queryValue), { scroll: false })
+   }
 
-   const handleColorChange = (urls: string[]) => {
+
+   const handleColorChange = (urls: string[], color: string) => {
       setSelectedColor(urls)
+      onChange("color", color)
    }
 
    return (
@@ -49,13 +63,13 @@ export function CarouselCustomIndicator({ images, initial }: TProps) {
                );
             })}
          </div>
-         <div className='flex gap-2 mt-6'>
+         <div className='flex gap-2 mt-6 px-6'>
             {images && images.map((color) => {
                return (
                   <button
                      className='size-4 rounded-full'
                      key={color.color}
-                     onMouseEnter={() => handleColorChange(color.images)}
+                     onMouseEnter={() => handleColorChange(color.images, color.color)}
                      style={{ backgroundColor: color.color }} />
                )
             })}

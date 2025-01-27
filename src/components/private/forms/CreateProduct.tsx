@@ -29,8 +29,9 @@ import Modal from '@/components/shared/Moadal'
 import Selector from '@/components/shared/Selector'
 import { toast } from 'sonner'
 import { Toggle } from '@/components/ui/toggle'
-import List from '../product/List'
 import ModalButton from '../product/ModalButton'
+import { MultiSelect } from "@/components/ui/multi-select"
+import ListProducts from "../product/ListProduct"
 
 type TProps = {
    products: TProduct[]
@@ -83,13 +84,7 @@ const CreateProduct = ({ products }: TProps) => {
       <Form {...form}>
          <form onSubmit={form.handleSubmit(onSubmit, onInvalid)}>
             <div className="grid grid-cols-12 gap-4 relative">
-               <div className='col-span-4 sticky top-0 space-y-5'>
-                  {products.length > 0 ? products.map((product) => (
-                     <List props={product} key={product.id} />
-                  )) : (
-                     <p>Seu productos seram exibidos aqui</p>
-                  )}
-               </div>
+               <ListProducts products={products} />
                <div className='col-span-8'>
                   <Tabs defaultValue="general" className="w-full">
                      <TabsList className='flex items-center justify-between'>
@@ -135,16 +130,18 @@ const CreateProduct = ({ products }: TProps) => {
                               </div>
                               <div className='flex items-center gap-4'>
                                  <FormField
-                                    control={form.control}
                                     name="category"
+                                    control={control}
                                     render={({ field }) => (
-                                       <FormItem className='w-full'>
-                                          <FormLabel className='text-slate-500'>Categoria</FormLabel>
-                                          <FormControl>
-                                             <Selector multiple={true} placeholder='Categoria' options={CATEGORIES} formField={field} className='w-full' />
-                                          </FormControl>
-                                          <FormMessage />
-                                       </FormItem>
+                                       <MultiSelect
+                                          options={CATEGORIES}
+                                          onValueChange={field.onChange} // Connect onChange to react-hook-form
+                                          defaultValue={field.value} // Set initial value from react-hook-form
+                                          placeholder="Select frameworks"
+                                          variant="inverted"
+                                          animation={2}
+                                          maxCount={3}
+                                       />
                                     )}
                                  />
                                  <FormField

@@ -1,16 +1,15 @@
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
-import {
-   Select,
-   SelectContent,
-   SelectItem,
-   SelectTrigger,
-   SelectValue,
-} from '@/components/ui/select'
 import { Search } from 'lucide-react'
+import LocationSelector from '@/components/ui/location-input'
+import { useState } from 'react'
 
 const InformationForm = () => {
+   const [countryName, setCountryName] = useState<string>('')
+   const [stateName, setStateName] = useState<string>('')
+   console.log({ countryName, stateName });
+
    return (
       <div>
          <h2 className="mb-6 text-2xl font-bold">Contacto</h2>
@@ -32,17 +31,6 @@ const InformationForm = () => {
             <div>
                <h2 className="mb-6 text-2xl font-bold">Endereço de Entrega</h2>
                <div className="space-y-4">
-                  <Select defaultValue="US">
-                     <SelectTrigger className="w-full bg-transparent border-gray-800">
-                        <SelectValue placeholder="Country/Region" />
-                     </SelectTrigger>
-                     <SelectContent>
-                        <SelectItem value="US">United States</SelectItem>
-                        <SelectItem value="CA">Canada</SelectItem>
-                        <SelectItem value="UK">United Kingdom</SelectItem>
-                     </SelectContent>
-                  </Select>
-
                   <div className="grid grid-cols-2 gap-4">
                      <Input
                         type="text"
@@ -72,21 +60,16 @@ const InformationForm = () => {
                   />
 
                   <div className="grid grid-cols-[2fr_2fr_1fr] gap-4">
-                     <Input
-                        type="text"
-                        placeholder="City"
-                        className="bg-transparent border-gray-800"
+                     <LocationSelector
+                        onCountryChange={(country) => {
+                           setCountryName(country?.name || '')
+                           //  form.setValue(field.name, [country?.name || '', stateName || ''])
+                        }}
+                        onStateChange={(state) => {
+                           setStateName(state?.name || '')
+                           //  form.setValue(field.name, [countryName || '', state?.name || ''])
+                        }}
                      />
-                     <Select>
-                        <SelectTrigger className="bg-transparent border-gray-800">
-                           <SelectValue placeholder="State" />
-                        </SelectTrigger>
-                        <SelectContent>
-                           <SelectItem value="CA">California</SelectItem>
-                           <SelectItem value="NY">New York</SelectItem>
-                           <SelectItem value="TX">Texas</SelectItem>
-                        </SelectContent>
-                     </Select>
                      <Input
                         type="text"
                         placeholder="ZIP code"
