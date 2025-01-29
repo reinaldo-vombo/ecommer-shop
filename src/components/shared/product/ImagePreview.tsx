@@ -55,7 +55,7 @@ export function ImagePreview({ images, initial }: TProps) {
                      key={item}
                      type='button'
                      aria-label={`Go to slide ${index}`}
-                     onClick={() => setIndex(index)}
+                     onMouseEnter={() => setIndex(index)}
                      className='h-12 w-12 border rounded-lg border-zinc-200 dark:border-zinc-800'
                   >
                      <Image src={item} width={48} height={48} alt={`preview${index}`} />
@@ -69,7 +69,7 @@ export function ImagePreview({ images, initial }: TProps) {
                   <button
                      className='size-4 rounded-full'
                      key={color.color}
-                     onMouseEnter={() => handleColorChange(color.images, color.color)}
+                     onClick={() => handleColorChange(color.images, color.color)}
                      style={{ backgroundColor: color.color }} />
                )
             })}

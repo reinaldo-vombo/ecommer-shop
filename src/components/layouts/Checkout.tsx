@@ -3,8 +3,17 @@ import Image from 'next/image'
 import WizardStepper from '../shared/checkout/WizadStepper'
 import { useCartStore } from '@/lib/store/cartStore';
 import { useEffect, useMemo } from 'react';
+import { TProvince } from '@/lib/types';
+type TProps = {
+   province: TProvince[]
+   states: {
+      id: string
+      capital: string
+   }[]
+}
+const Checkout = ({ province, states }: TProps) => {
+   console.log({ province, states });
 
-const Checkout = () => {
 
    const cart = useCartStore((state) => state.cart);
    const loadCart = useCartStore((state) => state.loadCart);

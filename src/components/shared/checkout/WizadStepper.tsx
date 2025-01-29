@@ -5,11 +5,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronRight } from "lucide-react";
 import InformationForm from "./InformationForm";
 import DeliveryForm from "./DeliveryForm";
+import ConfirmationForm from "./ConfirmationForm";
 
 const steps = [
    { id: 1, name: 'Informação', content: <InformationForm /> },
    { id: 2, name: 'Entrega', content: <DeliveryForm /> },
-   { id: 3, name: 'Pagamento', content: "Step 3: Review & Submit" },
+   { id: 3, name: 'Pagamento', content: <ConfirmationForm /> },
 ];
 
 

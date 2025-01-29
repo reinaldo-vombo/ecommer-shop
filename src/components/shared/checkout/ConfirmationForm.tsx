@@ -10,12 +10,16 @@ import SubmitButton from "../SubmitButton";
 import { User } from "@/lib/auth/user";
 import { useEffect } from "react";
 import { useCartStore } from "@/lib/store/cartStore";
+import { useRouter } from "next/navigation";
+import { NoMoneyIcon } from "@/assets/logos";
 
 
 const ConfirmationForm = () => {
    const user = User()
+   const router = useRouter()
    const cart = useCartStore((state) => state.cart);
    const loadCart = useCartStore((state) => state.loadCart);
+   const clearCart = useCartStore((state) => state.clearCart);
 
    // Ensure the cart is loaded on component mount
    useEffect(() => {
@@ -42,7 +46,8 @@ const ConfirmationForm = () => {
       }
       if (result?.success) {
          toast.success('Produto cadastrado com sucesso')
-         form.reset()
+         router.push('/')
+         clearCart()
       }
    }
    const onInvalid = (errors: unknown) => {
@@ -51,7 +56,10 @@ const ConfirmationForm = () => {
    };
    return (
       <div>
-         <div></div>
+         <div className="bg-neutral-800 rounded-lg border border-slate-500 p-6 flex flex-col items-center justify-center">
+            <NoMoneyIcon />
+            <p className="text-center">Confirmar o pagamento</p>
+         </div>
          <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit, onInvalid)}>
                <SubmitButton title="Confirmar" disabled={form.formState.isSubmitting} />

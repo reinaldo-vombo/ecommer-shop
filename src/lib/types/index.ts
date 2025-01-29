@@ -26,3 +26,17 @@ export type TUpadateState = {
   fields?: Record<string, string>;
   issues?: string[];
 };
+export type TProvince = {
+  id: string;
+  nome: string;
+  codigo: string;
+  capital: string;
+  area: number;
+  populacao: number;
+  municipios: number;
+  comunas: number;
+};
+export type TCapital = {
+  id: string;
+  capital: string;
+};
