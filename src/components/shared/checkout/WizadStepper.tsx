@@ -12,8 +12,6 @@ const steps = [
    { id: 2, name: 'Entrega', content: <DeliveryForm /> },
    { id: 3, name: 'Pagamento', content: <ConfirmationForm /> },
 ];
-
-
 const WizardStepper = () => {
    const [currentStep, setCurrentStep] = useState(0);
 

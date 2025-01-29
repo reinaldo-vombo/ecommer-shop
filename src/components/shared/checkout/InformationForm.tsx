@@ -45,10 +45,15 @@ const InformationForm = () => {
                   </div>
 
                   <div className="relative">
-                     <Input
-                        type="text"
-                        placeholder="Address"
-                        className="bg-transparent border-gray-800 pr-10"
+                     <LocationSelector
+                        onCountryChange={(country) => {
+                           setCountryName(country?.name || '')
+                           //  form.setValue(field.name, [country?.name || '', stateName || ''])
+                        }}
+                        onStateChange={(state) => {
+                           setStateName(state?.name || '')
+                           //  form.setValue(field.name, [countryName || '', state?.name || ''])
+                        }}
                      />
                      <Search className="absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-500" />
                   </div>
@@ -60,16 +65,7 @@ const InformationForm = () => {
                   />
 
                   <div className="grid grid-cols-[2fr_2fr_1fr] gap-4">
-                     <LocationSelector
-                        onCountryChange={(country) => {
-                           setCountryName(country?.name || '')
-                           //  form.setValue(field.name, [country?.name || '', stateName || ''])
-                        }}
-                        onStateChange={(state) => {
-                           setStateName(state?.name || '')
-                           //  form.setValue(field.name, [countryName || '', state?.name || ''])
-                        }}
-                     />
+
                      <Input
                         type="text"
                         placeholder="ZIP code"
