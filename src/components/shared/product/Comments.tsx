@@ -49,7 +49,7 @@ const Comments = ({ reviews, productId }: TProps) => {
                            </div>
                         </div>
                      </div>
-                  )) : (<p>Sem comentarios</p>)}
+                  )) : (<p className='mt-8 text-center'>Sem comentarios</p>)}
                </div>
             </AccordionContent>
          </AccordionItem>

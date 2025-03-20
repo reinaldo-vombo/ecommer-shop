@@ -17,7 +17,7 @@ const Selector = ({ options, placeholder, className, formField, multiple = false
       if (multiple && Array.isArray(formField.value)) {
          setSelectedValues(formField.value);
       }
-   }, [formField.value, multiple]);
+   }, [multiple]);
 
    const onChange = (value: string) => {
       if (multiple) {

@@ -18,20 +18,19 @@ import Image from "next/image"
 import { Separator } from "@/components/ui/separator"
 import { Button } from "../ui/button"
 import { LogOut } from "lucide-react"
-import { signOut } from "next-auth/react"
-import { User } from "@/lib/auth/user"
+import { signOut, useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 
 const Profile = () => {
+   console.log('hello');
    const router = useRouter()
-
-   const user = User()
+   const { data: session } = useSession();
    useEffect(() => {
-      if (!user) {
+      if (!session?.user) {
          router.push('/auth')
       }
-   }, [])
+   }, [session, router])
 
    const logout = () => {
       signOut()
@@ -50,20 +49,20 @@ const Profile = () => {
                         <div className="flex">
                            <div className="relative size-40 mx-auto">
                               <Image
-                                 src={user?.avatar || '/placeholder.jpg'}
+                                 src={session?.user?.avatar || '/placeholder.jpg'}
                                  className="rounded-full"
                                  fill
                                  sizes="100%"
-                                 alt={user?.name || ''} />
+                                 alt={session?.user?.name || ''} />
                            </div>
                         </div>
 
                         <Separator />
                         <div>
-                           <h2 className="text-center h2-bold">{user?.name}</h2>
+                           <h2 className="text-center h2-bold">{session?.user?.name}</h2>
                            <div className="flex items-center justify-between">
-                              {user && (
-                                 <span>{user.roleId === 4 ? 'Cliente' : 'CMS users'}</span>
+                              {session?.user && (
+                                 <span>{session?.user?.roleId === 4 ? 'Cliente' : 'CMS users'}</span>
                               )}
                               <Button onClick={() => logout()}><LogOut /></Button>
                            </div>
@@ -86,7 +85,7 @@ const Profile = () => {
                               </CardDescription>
                            </CardHeader>
                            <CardContent className="space-y-2">
-                              <UpdateCustomer userInfo={user} />
+                              <UpdateCustomer userInfo={session?.user} />
                            </CardContent>
                         </Card>
                      </TabsContent>

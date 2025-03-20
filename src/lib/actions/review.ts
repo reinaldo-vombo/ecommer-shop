@@ -14,7 +14,7 @@ export async function postReview(prevState: unknown, data: Data) {
     return {
       error: true,
       status: 404,
-      message: 'Não autorizado',
+      message: 'Faça login para comentar',
     };
   }
   const { stars, message, customerId, productId } = data;

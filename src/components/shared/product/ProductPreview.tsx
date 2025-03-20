@@ -10,8 +10,21 @@ import Rating from "../Rating"
 
 const ProductPreview = ({ props }: TProductProps) => {
    const [stars, setStars] = useState<number | null>(null)
-   const { name, price, images, size } = props;
+   const { name, price, images, size, gender } = props;
    const defaultUrls = images[0].images;
+   const genderType = () => {
+      switch (gender) {
+         case 'homen':
+            return 'Sapatilha para homems'
+         case 'mulher':
+            return 'Sapatilha para mulheres'
+         case 'Criança':
+            return 'Sapatilha para crianças'
+         default:
+            break;
+      }
+
+   }
    return (
       <div className="container">
          <div className="grid grid-cols-12 gap-4">
@@ -24,11 +37,10 @@ const ProductPreview = ({ props }: TProductProps) => {
                         chlidren={<Rating />}
                         trigger={<span className="flex items-center"><Star color="gold" /> (5/0)</span>}
                      />
-                     <span className="text-slate-400">Sapatilha para homems</span>
+                     <span className="text-slate-400">{genderType()}</span>
                   </div>
                </div>
                <div className="space-y-3">
-                  <h4 className="text-slate-400">Tamanhos</h4>
                   <SizeTabel sizes={size} />
                </div>
 

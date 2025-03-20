@@ -6,6 +6,7 @@ import SelectOption from '../shared/Select'
 import { PRICE } from '@/constants/site-content'
 import { useSearchParams } from 'next/navigation'
 import { getPriceRange } from '@/lib/helper'
+import NoProductFound from '../shared/product/NoProductFound'
 type TProps = {
    products: TProduct[]
 }
@@ -32,7 +33,7 @@ const ProductSection = ({ products }: TProps) => {
                <div className='grid sm:grid-cols-2 lg:grid-cols-3 gap-6'>
                   {filteredProducts.length > 0 ? filteredProducts.map((product) => (
                      <ProductCard props={product} key={product.id} />
-                  )) : (<p>Sem product</p>)}
+                  )) : (<NoProductFound />)}
                </div>
             </div>
             <div className='mt-8 space-y-6'>
@@ -43,7 +44,7 @@ const ProductSection = ({ products }: TProps) => {
                <div className='grid sm:grid-cols-2 lg:grid-cols-3 gap-6'>
                   {filteredProducts.length > 0 ? filteredProducts.map((product) => (
                      <ProductCard props={product} key={product.id} />
-                  )) : (<p>Sem product</p>)}
+                  )) : (<NoProductFound />)}
                </div>
                <div></div>
             </div>

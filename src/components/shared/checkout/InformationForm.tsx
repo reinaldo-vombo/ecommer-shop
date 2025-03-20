@@ -2,13 +2,16 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Search } from 'lucide-react'
-import LocationSelector from '@/components/ui/location-input'
-import { useState } from 'react'
-
+import {
+   Select,
+   SelectContent,
+   SelectGroup,
+   SelectItem,
+   SelectLabel,
+   SelectTrigger,
+   SelectValue,
+} from "@/components/ui/select"
 const InformationForm = () => {
-   const [countryName, setCountryName] = useState<string>('')
-   const [stateName, setStateName] = useState<string>('')
-   console.log({ countryName, stateName });
 
    return (
       <div>
@@ -45,16 +48,21 @@ const InformationForm = () => {
                   </div>
 
                   <div className="relative">
-                     <LocationSelector
-                        onCountryChange={(country) => {
-                           setCountryName(country?.name || '')
-                           //  form.setValue(field.name, [country?.name || '', stateName || ''])
-                        }}
-                        onStateChange={(state) => {
-                           setStateName(state?.name || '')
-                           //  form.setValue(field.name, [countryName || '', state?.name || ''])
-                        }}
-                     />
+                     <Select>
+                        <SelectTrigger className="w-[180px]">
+                           <SelectValue placeholder="Select a fruit" />
+                        </SelectTrigger>
+                        <SelectContent>
+                           <SelectGroup>
+                              <SelectLabel>Fruits</SelectLabel>
+                              <SelectItem value="apple">Apple</SelectItem>
+                              <SelectItem value="banana">Banana</SelectItem>
+                              <SelectItem value="blueberry">Blueberry</SelectItem>
+                              <SelectItem value="grapes">Grapes</SelectItem>
+                              <SelectItem value="pineapple">Pineapple</SelectItem>
+                           </SelectGroup>
+                        </SelectContent>
+                     </Select>
                      <Search className="absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-500" />
                   </div>
 

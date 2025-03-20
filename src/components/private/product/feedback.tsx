@@ -2,7 +2,7 @@
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Angry, Check, Frown, Laugh, Loader2, Smile } from 'lucide-react'
+import { Check, Loader2, Star } from 'lucide-react'
 import { Dispatch, SetStateAction, useEffect, useState, } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { twMerge } from 'tailwind-merge'
@@ -22,10 +22,10 @@ import { toast } from "sonner";
 import { User } from "@/lib/auth/user";
 
 const feedback = [
-   { stars: 4, emoji: <Laugh size={16} className="stroke-inherit" /> },
-   { stars: 3, emoji: <Smile size={16} className="stroke-inherit" /> },
-   { stars: 2, emoji: <Frown size={16} className="stroke-inherit" /> },
-   { stars: 1, emoji: <Angry size={16} className="stroke-inherit" /> }
+   { stars: 4, emoji: <Star size={16} className="stroke-inherit" /> },
+   { stars: 3, emoji: <Star size={16} className="stroke-inherit" /> },
+   { stars: 2, emoji: <Star size={16} className="stroke-inherit" /> },
+   { stars: 1, emoji: <Star size={16} className="stroke-inherit" /> }
 ]
 type TFeedbackProps = {
    stars: null | number

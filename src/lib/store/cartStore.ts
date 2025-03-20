@@ -9,7 +9,7 @@ interface CartState {
   loadCart: () => void;
   updateQuantity: (id: string, quantity: number) => void;
   addToCart: (product: TProduct) => void;
-  updateAttributes: (id: string, color: string, size: string) => void;
+  updateAttributes: (id: string, color: string, size: number[]) => void;
   removeFromCart: (id: string) => void;
   clearCart: () => void;
 }
@@ -59,7 +59,7 @@ export const useCartStore = create<CartState>((set) => ({
 
       return { cart: updatedCart };
     }),
-  updateAttributes: (id: string, color: string, size: string) =>
+  updateAttributes: (id: string, color: string, size: number[]) =>
     set((state) => {
       const updatedCart = state.cart.map((item) =>
         item.id === id ? { ...item, color, size } : item

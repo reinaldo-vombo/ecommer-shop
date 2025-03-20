@@ -33,7 +33,7 @@ const Cart = () => {
 
    return (
       <div>
-         <ScrollArea className='h-[600px] '>
+         <ScrollArea className='h-[450px] '>
             <h2 className='text-center text-gray-500 mt-6 md:hidden'>Deslize a esqueda para eliminar</h2>
             <div className='gap-8 mt-12 hidden md:grid'>
                <AnimatePresence mode='popLayout'>
@@ -75,8 +75,8 @@ const Cart = () => {
                </AnimatePresence>
             </div>
          </ScrollArea>
-         <CartMobileList cart={cart} />
          <Summary totalQuantity={totalQuantity} totalPrice={totalPrice} />
+         <CartMobileList cart={cart} />
       </div>
    )
 }

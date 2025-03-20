@@ -30,7 +30,6 @@ import Selector from '@/components/shared/Selector'
 import { toast } from 'sonner'
 import { Toggle } from '@/components/ui/toggle'
 import ModalButton from '../product/ModalButton'
-import { MultiSelect } from "@/components/ui/multi-select"
 import ListProducts from "../product/ListProduct"
 
 type TProps = {
@@ -56,6 +55,7 @@ const CreateProduct = ({ products }: TProps) => {
          stock: ""
       },
    })
+   console.log(form.getValues('category'));
 
    async function onSubmit(value: z.infer<typeof productSchema>) {
       const result = await createProduct(initialState, value)
@@ -133,15 +133,7 @@ const CreateProduct = ({ products }: TProps) => {
                                     name="category"
                                     control={control}
                                     render={({ field }) => (
-                                       <MultiSelect
-                                          options={CATEGORIES}
-                                          onValueChange={field.onChange} // Connect onChange to react-hook-form
-                                          defaultValue={field.value} // Set initial value from react-hook-form
-                                          placeholder="Select frameworks"
-                                          variant="inverted"
-                                          animation={2}
-                                          maxCount={3}
-                                       />
+                                       <Selector placeholder='Categoria' options={CATEGORIES} formField={field} className='w-full' />
                                     )}
                                  />
                                  <FormField

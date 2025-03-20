@@ -32,6 +32,8 @@ const SigleProduct: React.FC<{ props: SigleProductProps }> = ({ props }) => {
    const searchParams = useSearchParams();
    const color = searchParams.get('color');
    const size = searchParams.get('size');
+   const convertedSize = Number(size);
+   const arr = [convertedSize]
 
    const cart = useCartStore((state) => state.cart);
    const loadCart = useCartStore((state) => state.loadCart);
@@ -42,7 +44,7 @@ const SigleProduct: React.FC<{ props: SigleProductProps }> = ({ props }) => {
    }, [loadCart]);
    useEffect(() => {
       const handleAttributeChange = () => {
-         updateAttributes(color || '', productId, size || '');
+         updateAttributes(color || '', productId, arr);
       };
 
       handleAttributeChange();
