@@ -105,7 +105,7 @@ model OrderItems {
 model Products {
   id          String       @id @default(uuid())
   name        String       @db.VarChar(255)
-  slug        String?
+  slug        String       @unique
   size        Json
   type        String?
   stock       Int?

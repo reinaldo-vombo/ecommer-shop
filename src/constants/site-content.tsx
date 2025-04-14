@@ -2,6 +2,18 @@ import React from "react";
 import { ArrowUpDown, BookCheck, DollarSign, ShoppingBag } from 'lucide-react';
 import { AdidasLogo, ConversLogo, NDLogo, NikeLogo, PumaLogo } from "@/assets/logos";
 
+
+export const ROUTES = {
+   ROOT: '/',
+   LOGIN: '/auth',
+   SIGNLE_PRODUCT: '/productos',
+   PROFILE: '/perfiel',
+   PRODUCTS: '/cms/products',
+   CREATE_PRODUCTS: '/cms/products/create',
+   UPDATE_PRODUCTS: '/cms/products/update',
+
+}
+
 export const OVERVIEWS = [
    {
       id: '1',
@@ -147,4 +159,4 @@ export const BRANDS_LOGOS = [
    { id: '3', value: 'Adidas', logo: <AdidasLogo width={40} height={40} /> },
    { id: '4', value: 'Puma', logo: <PumaLogo width={40} height={40} /> },
    { id: '5', value: 'Nd', logo: <NDLogo width={40} height={40} /> },
-] 
+]

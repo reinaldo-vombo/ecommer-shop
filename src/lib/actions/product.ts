@@ -7,9 +7,9 @@ import { TState, TUpadateState } from '../types';
 import cloudinary from '@/lib/storege/cloudinary';
 import { revalidatePath } from 'next/cache';
 import { prisma } from '../db/client';
-// import { writeFile, mkdir, access, constants, unlink } from 'fs/promises'; //uncomment this if want use local save  file
-// import { join } from 'path';
-// import { PATH } from '../helper';
+import { writeFile, mkdir, access, constants, } from 'fs/promises'; //uncomment this if want use local save  file
+import { join } from 'path';
+import { PATH } from '../helper';
 
 type ProductImage = {
   images: {
@@ -19,54 +19,55 @@ type ProductImage = {
 };
 
 // Utility function to save the file in online
-async function uploadToCloudinary(file: File): Promise<string> {
-  try {
-    const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
+// async function uploadToCloudinary(file: File): Promise<string> {
+//   try {
+//     const arrayBuffer = await file.arrayBuffer();
+//     const buffer = Buffer.from(arrayBuffer);
 
-    return new Promise((resolve, reject) => {
-      const uploadStream = cloudinary.uploader.upload_stream(
-        { folder: 'shoes' }, // Optional: Organize files in a folder
-        (error, result) => {
-          if (error) {
-            console.error('Cloudinary upload error:', error);
-            reject(new Error('Failed to upload image to Cloudinary'));
-          } else {
-            resolve(result?.secure_url || '');
-          }
-        }
-      );
+//     return new Promise((resolve, reject) => {
+//       const uploadStream = cloudinary.uploader.upload_stream(
+//         { folder: 'shoes' }, // Optional: Organize files in a folder
+//         (error, result) => {
+//           if (error) {
+//             console.error('Cloudinary upload error:', error);
+//             reject(new Error('Failed to upload image to Cloudinary'));
+//           } else {
+//             resolve(result?.secure_url || '');
+//           }
+//         }
+//       );
 
-      // Write the buffer to the Cloudinary upload stream
-      uploadStream.end(buffer);
-    });
-  } catch (error) {
-    console.error('Error in uploadToCloudinary:', error);
-    throw new Error('Failed to upload image to Cloudinary');
-  }
-}
+//       // Write the buffer to the Cloudinary upload stream
+//       uploadStream.end(buffer);
+//     });
+//   } catch (error) {
+//     console.error('Error in uploadToCloudinary:', error);
+//     throw new Error('Failed to upload image to Cloudinary');
+//   }
+// }
 
 // Utility function to save the file in local folder if your working offline
-// async function saveFileLocally(file: File): Promise<string> {
-//   const bytes = await file.arrayBuffer();
-//   const buffer = Buffer.from(bytes);
+async function saveFileLocally(file: File): Promise<string> {
+  const bytes = await file.arrayBuffer();
+  const buffer = Buffer.from(bytes);
 
-//   const uploadDir = join(process.cwd(), 'uploads');
-//   try {
-//     await access(uploadDir, constants.F_OK);
-//   } catch {
-//     await mkdir(uploadDir, { recursive: true });
-//   }
+  const uploadDir = join(process.cwd(), 'uploads');
+  try {
+    await access(uploadDir, constants.F_OK);
+  } catch {
+    await mkdir(uploadDir, { recursive: true });
+  }
 
-//   const filePath = join(uploadDir, file.name);
-//   await writeFile(filePath, buffer);
+  const filePath = join(uploadDir, file.name);
+  await writeFile(filePath, buffer);
 
-//   return `${PATH}${file.name}`;
-// }
+  return `${PATH}${file.name}`;
+}
 
 // Utility function to save the file
 async function saveFile(file: File): Promise<string> {
-  return uploadToCloudinary(file);
+  return saveFileLocally(file);
+  // return uploadToCloudinary(file);
 }
 
 //save product to database
@@ -91,8 +92,6 @@ export async function createProduct(prevState: TState, data: FeatureData) {
       message: 'Nenhum ficheiro carregado',
     };
   }
-
-  console.log('data', data);
   try {
     const file = data.image[0] as File;
     const fileUrl = await saveFile(file);
@@ -131,6 +130,7 @@ export async function createProduct(prevState: TState, data: FeatureData) {
     await prisma.products.create({
       data: {
         name: data.name,
+        slug: data.slug,
         description: data.description || '',
         image: fileUrl,
         images: updatedColors,
@@ -187,7 +187,8 @@ export async function updateProduct(
       // If image is a file, process it
       const file = data.image[0] as File;
       // Save the file based on the environment
-      fileUrl = await uploadToCloudinary(file);
+      // fileUrl = await uploadToCloudinary(file);
+      fileUrl = await saveFileLocally(file);
     } else {
       return {
         error: true,
@@ -211,7 +212,8 @@ export async function updateProduct(
           savedImages.push(imageFile);
         } else {
           try {
-            const imageUrl = await uploadToCloudinary(imageFile);
+            const imageUrl = await saveFileLocally(imageFile);
+            // const imageUrl = await uploadToCloudinary(imageFile);
 
             savedImages.push(imageUrl);
           } catch (err) {

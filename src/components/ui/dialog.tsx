@@ -32,13 +32,14 @@ DialogOverlay.displayName = DialogPrimitive.Overlay.displayName
 const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & {
-    size?: 'sm' | 'md' | 'lg'; // Adding a size prop for variants
+    size?: 'sm' | 'md' | 'lg' | 'xlg'; // Adding a size prop for variants
   }
 >(({ className, children, size = 'md', ...props }, ref) => {
   const sizeClasses = {
     sm: 'max-w-sm',  // Small dialog size
     md: 'max-w-lg',  // Default medium size
     lg: 'max-w-2xl', // Large dialog size
+    xlg: 'max-w-3xl', // Large dialog size
   };
   return (
     <DialogPortal>

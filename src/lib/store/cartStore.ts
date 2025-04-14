@@ -32,14 +32,15 @@ export const useCartStore = create<CartState>((set) => ({
       const existingItem = state.cart.find((item) => item.id === product.id);
       let updatedCart;
 
+      const color = product.images[0]?.color || 'default';
       if (existingItem) {
         updatedCart = state.cart.map((item) =>
           item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
+            ? { ...item, quantity: item.quantity + 1, color,  }
             : item
         );
       } else {
-        updatedCart = [...state.cart, { ...product, quantity: 1 }];
+        updatedCart = [...state.cart, { ...product, quantity: 1, color }];
       }
 
       // Save the updated cart to localStorage

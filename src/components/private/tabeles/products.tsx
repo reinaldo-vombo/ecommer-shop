@@ -12,7 +12,7 @@ import { TProduct } from '@/components/shared/product/types'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useDebouncedCallback } from 'use-debounce'
 import { createQueryString } from '@/lib/utils'
-import { FILTER_ITEMS, SORT_ITEM } from '@/constants/site-content'
+import { FILTER_ITEMS, ROUTES, SORT_ITEM } from '@/constants/site-content'
 // import AlertModal from '@/components/shared/AlertModal'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import ProductDetails from '../product/OverView'
@@ -100,6 +100,11 @@ const ProductTable = ({ props }: TProps) => {
                      </Link>
                   </Button>
                ))}
+               <Button variant='outline'>
+                  <Link href={ROUTES.CREATE_PRODUCTS}>
+                     Criar produto
+                  </Link>
+               </Button>
             </div>
          </div>
          <div className="overflow-x-auto">

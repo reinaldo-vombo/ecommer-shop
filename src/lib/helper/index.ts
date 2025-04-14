@@ -19,3 +19,7 @@ export const generateSlug = (text: string): string => {
     .replace(/[^a-z0-9\s-]/g, '') // Remove non-alphanumeric characters
     .replace(/\s+/g, '-'); // Replace spaces with hyphens
 };
+export const priceCoverter = (price: number) => {
+  const converted = new Intl.NumberFormat('AOA', { style: 'currency', currency: "AOA" }).format(price)
+  return converted
+}

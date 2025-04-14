@@ -4,6 +4,9 @@ export const productSchema = z.object({
   name: z.string().min(2, {
     message: 'Product name must be at least 2 characters.',
   }),
+  slug: z.string().min(2, {
+    message: 'Product slug must be at least 2 characters.',
+  }),
   description: z.string().optional(),
   details: z.string().optional(), // Make optional if not required
   price: z.string().min(0, {

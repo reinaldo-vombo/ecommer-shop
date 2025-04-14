@@ -1,3 +1,4 @@
+import { priceCoverter } from "@/lib/helper";
 import Image from "next/image"
 
 type TProps = {
@@ -15,7 +16,7 @@ const Details = ({ name, price, image, description }: TProps) => {
             <Image src={image} className="rounded-md object-cover" width={80} height={50} alt={name} />
             <div className="grid gap-2">
                <h2 className="base-semibold">{name}</h2>
-               <h3 className="base-semibold">{price}(kz)</h3>
+               <h3 className="base-semibold">{priceCoverter(price)}</h3>
             </div>
          </div>
          <div>

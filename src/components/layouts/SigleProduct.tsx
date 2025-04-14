@@ -12,31 +12,44 @@ import { useWishlistStore } from '@/lib/store/wishListStore';
 import parse from 'html-react-parser';
 import Comments from '../shared/product/Comments';
 import { CarouselCustomSizes } from '../shared/carosel/CaroselItems';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import QuantityButton from '../shared/product/QuantityButton';
 import { ImagePreview } from '../shared/product/ImagePreview';
-import { useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { priceCoverter } from '@/lib/helper';
+import { ScrollArea } from '../ui/scroll-area';
+import { createQueryString } from '@/lib/utils';
 
 const SigleProduct: React.FC<{ props: SigleProductProps }> = ({ props }) => {
-   console.log('render');
-
    const { product, reviews, relatedProducts } = props;
 
    const urls = product.images[0].images
    const addToCart = useCartStore((state) => state.addToCart);
    const updateAttributes = useCartStore((state) => state.updateAttributes);
    const addToWishlist = useWishlistStore((state) => state.addToWishlist);
+   const router = useRouter()
+   const searchParams = useSearchParams();
+   const pathname = usePathname()
+   const cart = useCartStore((state) => state.cart);
+   const loadCart = useCartStore((state) => state.loadCart);
+
    const covertedText = parse(product.details || '');
    const productId = product.id;
 
-   const searchParams = useSearchParams();
+   const generateQueryString = useCallback(
+      (name: string, value: string) => createQueryString(searchParams, name, value),
+      [searchParams]
+   );
+   const onChange = (queryName: string, queryValue: string) => {
+      router.push(pathname + '?' + generateQueryString(queryName, queryValue), { scroll: false })
+   }
+
+   const colors = product.images.map(item => { return item.color });
+
+
    const color = searchParams.get('color');
    const size = searchParams.get('size');
-   const convertedSize = Number(size);
-   const arr = [convertedSize]
 
-   const cart = useCartStore((state) => state.cart);
-   const loadCart = useCartStore((state) => state.loadCart);
 
 
    useEffect(() => {
@@ -44,7 +57,9 @@ const SigleProduct: React.FC<{ props: SigleProductProps }> = ({ props }) => {
    }, [loadCart]);
    useEffect(() => {
       const handleAttributeChange = () => {
-         updateAttributes(color || '', productId, arr);
+         const convertedSize = Number(size);
+         const sizes = [convertedSize]
+         updateAttributes(color || '', productId, sizes);
       };
 
       handleAttributeChange();
@@ -65,7 +80,17 @@ const SigleProduct: React.FC<{ props: SigleProductProps }> = ({ props }) => {
                      <div>
                         <h2 className="h2-bold">{product.name}</h2>
                         <h3 className="font-semibold">Sapatilha para homens</h3>
-                        <h4 className="mt-6 font-bold">{product.price} (kz)</h4>
+                        <h4 className="mt-6 font-bold">{priceCoverter(product.price)}</h4>
+                     </div>
+
+                     <div>
+                        {colors.map((color) => (
+                           <button
+                              className='size-9 rounded-full'
+                              key={color}
+                              onClick={() => onChange("color", color)}
+                              style={{ backgroundColor: color }} />
+                        ))}
                      </div>
 
                      <SizeTabel sizes={product.size} />
@@ -74,7 +99,7 @@ const SigleProduct: React.FC<{ props: SigleProductProps }> = ({ props }) => {
                            <SheetModal
                               side='right'
                               triggerClass='bg-primary rounded-md p-2 text-primary-foreground flex items-center justify-center'
-                              title={product.name}
+                              title='Productos No Carrinho'
                               className='sm:max-w-lg'
                               onClick={() => addToCart(product)}
                               trigger={<span className='flex items-center gap-4'>Adicionar ao carrinho <ShoppingBag className="h-4 w-4" /></span>}>
@@ -106,13 +131,15 @@ const SigleProduct: React.FC<{ props: SigleProductProps }> = ({ props }) => {
                            <span className='text-slate-500'>Descrição</span>
                            <div>{parse(product.description)}</div>
                         </div>
-                        <Modal btn={<p className="underline font-semibold text-left">Ver detalhes do producto</p>} title='Detalhes'>
-                           <Details
-                              name={product.name}
-                              image={product.image}
-                              price={product.price}
-                              description={covertedText}
-                           />
+                        <Modal size='lg' btn={<p className="underline font-semibold text-left">Ver detalhes do producto</p>} title='Detalhes'>
+                           <ScrollArea className='h-[500px]'>
+                              <Details
+                                 name={product.name}
+                                 image={product.image}
+                                 price={product.price}
+                                 description={covertedText}
+                              />
+                           </ScrollArea>
                         </Modal>
                         <Comments reviews={reviews} productId={productId} />
                      </div>

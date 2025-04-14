@@ -10,9 +10,11 @@ import FavoriteItem from '../wishList/ListItem';
 import ProductPreview from './ProductPreview';
 import { useCartStore } from '@/lib/store/cartStore';
 import { useWishlistStore } from '@/lib/store/wishListStore';
+import { priceCoverter } from '@/lib/helper';
 
 const ProductCard = ({ props }: TProductProps) => {
-   const { name, image, price, id, images } = props;
+   const { name, image, price, images, slug } = props;
+
    const addToCart = useCartStore((state) => state.addToCart);
    const addToWishlist = useWishlistStore((state) => state.addToWishlist);
    const colors = images.map(item => item.images[0])
@@ -21,7 +23,7 @@ const ProductCard = ({ props }: TProductProps) => {
       <div>
          <div className="group">
             <div className="relative aspect-square rounded-lg overflow-hidden mb-4">
-               <Link href={`/productos/${id}`}>
+               <Link href={`/productos/${slug}`}>
                   <Image
                      src={image}
                      alt={name}
@@ -60,15 +62,14 @@ const ProductCard = ({ props }: TProductProps) => {
             <div className='transition-all flex gap-3'>
                {colors.map((url, idx) => (
                   <div className='flex gap-3 items-center' key={idx}>
-                     <Image src={url} key={url} className='opacity-0 group-hover:opacity-100 transition-opacity rounded-lg' width={40} height={40} alt='w' />
-                     {/* <p>+ {idx - 4}</p> */}
+                     <Image src={url} key={url} className='opacity-0 group-hover:opacity-100 transition-opacity rounded-lg' width={40} height={40} alt='' />
                   </div>
                ))}
             </div>
             <div className='mt-4'>
                <span className='text-slate-500 font-medium mb-4'>Sapatilhia para homens</span>
                <h3 className="font-bold text-xl">{name}</h3>
-               <p className="text-gray-600">{price} (kz)</p>
+               <p className="text-gray-600">{priceCoverter(price)}</p>
             </div>
          </div>
       </div>

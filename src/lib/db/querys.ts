@@ -53,6 +53,35 @@ export const getProductById = async (id: string) => {
         
   };
 };
+export const getProductBySlug = async (slug: string) => {
+  const product = await prisma.products.findUnique({
+    where: {
+      slug,
+    },
+  });
+
+  if (!product) {
+    throw new Error('Product not found');
+  }
+
+  return {
+    ...product,
+    style: Array.isArray(product.style) ? (product.style as string[]) : [],
+    size:
+      typeof product.size === 'string'
+        ? JSON.parse(product.size)
+        : product.size,
+    category:
+      typeof product.category === 'string'
+        ? JSON.parse(product.category)
+        : product.category,
+    images:
+      typeof product.images === 'string'
+        ? JSON.parse(product.images)
+        : product.images,
+        
+  };
+};
 export const getProductReviews = async (productId: string) => {
   try {
     const reviews = await prisma.reviews.findMany({
@@ -79,7 +108,6 @@ export const getRelatedProducts = async (
   productType: string,
   productBrand: string
 ) => {
-  console.log(productId, productType, productBrand);
   
   const relatedProducts = await prisma.products.findMany({
     where: {

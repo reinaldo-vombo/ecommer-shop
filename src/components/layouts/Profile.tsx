@@ -23,7 +23,6 @@ import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 
 const Profile = () => {
-   console.log('hello');
    const router = useRouter()
    const { data: session } = useSession();
    useEffect(() => {
@@ -49,7 +48,7 @@ const Profile = () => {
                         <div className="flex">
                            <div className="relative size-40 mx-auto">
                               <Image
-                                 src={session?.user?.avatar || '/placeholder.jpg'}
+                                 src={session?.user?.avatar || '/root.jpeg'}
                                  className="rounded-full"
                                  fill
                                  sizes="100%"

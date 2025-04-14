@@ -28,8 +28,6 @@ const MultipleSelect = ({ options, placeholder, className, formField, multiple }
          setSelectedValues(updatedValues);
          formField.onChange(updatedValues); // Update form field with the array
       } else {
-         console.log('value', value);
-
          formField.onChange(value); // For single select
       }
    };

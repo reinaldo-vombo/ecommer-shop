@@ -40,7 +40,7 @@ export function ImagePreview({ images, initial }: TProps) {
                {selectedColor.map((item, i) => {
                   return (
                      <CarouselItem key={i} className='md:p-4'>
-                        <div className='flex aspect-square relative items-center justify-center border border-zinc-200 dark:border-zinc-800'>
+                        <div className='flex h-[40rem] relative items-center justify-center border border-zinc-200 dark:border-zinc-800'>
                            <Image src={item} className='rounded-lg' fill sizes='100%' alt={`preview${i}`} />
                         </div>
                      </CarouselItem>
@@ -48,7 +48,7 @@ export function ImagePreview({ images, initial }: TProps) {
                })}
             </CarouselContent>
          </Carousel>
-         <div className='grid grid-cols-6 gap-2 px-4 mt-6 md:mt-auto'>
+         <div className='grid grid-cols-8 px-1 mt-6 md:mt-auto'>
             {selectedColor.map((item, index) => {
                return (
                   <button
@@ -56,9 +56,9 @@ export function ImagePreview({ images, initial }: TProps) {
                      type='button'
                      aria-label={`Go to slide ${index}`}
                      onMouseEnter={() => setIndex(index)}
-                     className='h-12 w-12 border rounded-lg border-zinc-200 dark:border-zinc-800'
+                     className='h-16 w-12 border rounded-lg border-zinc-200 dark:border-zinc-800'
                   >
-                     <Image src={item} width={48} height={48} alt={`preview${index}`} />
+                     <Image src={item} width={48} height={64} alt={`preview${index}`} />
                   </button>
                );
             })}

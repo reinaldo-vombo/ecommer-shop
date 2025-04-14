@@ -27,7 +27,8 @@ const TextEditor = ({ formField, height = 200 }: TEditorProps) => {
       <FroalaEditorComponent
          tag='textarea'
          config={{
-            PlaceholderText: "Escreva algo",
+            placeholderText: "Descrição do producto",
+            placeholder: "Descrição do producto",
             heightMin: height,
             events: {
                // contentChanged: function () {

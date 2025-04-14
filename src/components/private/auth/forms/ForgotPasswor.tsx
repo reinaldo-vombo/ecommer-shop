@@ -20,7 +20,6 @@ import SubmitButton from '@/components/shared/SubmitButton'
 
 const ForgotPasswor = ({ view }: TFormView) => {
    function onSubmit(value: z.infer<typeof forgotenPasswordSchema>) {
-      console.log(value)
       toast.success('hhhhh')
       // Handle form submission
    }

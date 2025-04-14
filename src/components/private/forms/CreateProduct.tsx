@@ -31,6 +31,8 @@ import { toast } from 'sonner'
 import { Toggle } from '@/components/ui/toggle'
 import ModalButton from '../product/ModalButton'
 import ListProducts from "../product/ListProduct"
+import { generateSlug } from "@/lib/helper"
+import MultipleSelect from "@/components/shared/MultipleSelect"
 
 type TProps = {
    products: TProduct[]
@@ -41,6 +43,7 @@ const CreateProduct = ({ products }: TProps) => {
       resolver: zodResolver(productSchema),
       defaultValues: {
          name: "",
+         slug: "",
          description: "",
          details: "",
          brand: "",
@@ -107,6 +110,22 @@ const CreateProduct = ({ products }: TProps) => {
                                     <FormItem>
                                        <FormLabel className='text-slate-500'>Nome do produto</FormLabel>
                                        <FormControl>
+                                          <Input placeholder="shadcn" {...field} onChange={(e) => {
+                                             field.onChange(e); // Update the title field
+                                             form.setValue("slug", generateSlug(e.target.value)); // Generate slug dynamically
+                                          }} />
+                                       </FormControl>
+                                       <FormMessage />
+                                    </FormItem>
+                                 )}
+                              />
+                              <FormField
+                                 control={form.control}
+                                 name="slug"
+                                 render={({ field }) => (
+                                    <FormItem>
+                                       <FormLabel className='text-slate-500'>Slug</FormLabel>
+                                       <FormControl>
                                           <Input placeholder="shadcn" {...field} />
                                        </FormControl>
                                        <FormMessage />
@@ -133,7 +152,13 @@ const CreateProduct = ({ products }: TProps) => {
                                     name="category"
                                     control={control}
                                     render={({ field }) => (
-                                       <Selector placeholder='Categoria' options={CATEGORIES} formField={field} className='w-full' />
+                                       <FormItem className='w-full'>
+                                          <FormLabel className='text-slate-500'>Categoria</FormLabel>
+                                          <FormControl>
+                                             <MultipleSelect placeholder='Categoria' multiple={true} options={CATEGORIES} formField={field} className='w-full' />
+                                          </FormControl>
+                                          <FormMessage />
+                                       </FormItem>
                                     )}
                                  />
                                  <FormField

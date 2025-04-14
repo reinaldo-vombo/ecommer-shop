@@ -117,7 +117,7 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: '/login',
-    signOut: '/login',
+    signOut: '/',
   },
 };
 export const getServerAuthSession = () => getServerSession(authOptions);

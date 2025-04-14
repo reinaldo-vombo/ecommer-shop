@@ -14,18 +14,14 @@ interface MultiSelectProps {
 }
 
 export default function MultiSelect({ options, selected, value, onChange }: MultiSelectProps) {
-   console.log("Selected Values:", selected);
-   console.log("Value Prop:", value);
 
    const [isOpen, setIsOpen] = useState(false);
 
    const toggleOption = (option: string) => {
-      console.log('option', option);
 
       if (value.includes(option)) {
          onChange(value.filter((item: string) => item !== option));
       } else {
-         console.log('hello');
 
          onChange([...value, option]);
       }

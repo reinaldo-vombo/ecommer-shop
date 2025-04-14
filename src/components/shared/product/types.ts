@@ -2,6 +2,7 @@ import { JsonValue } from '@prisma/client/runtime/library';
 
 export type TProduct = {
   id: string;
+  slug: string;
   name: string;
   gender: string;
   brand: string;

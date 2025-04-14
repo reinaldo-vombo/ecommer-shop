@@ -40,7 +40,6 @@ const Lognin = ({ view }: TFormView) => {
          }
          if (result?.ok) {
             toast.success(`Bem-vindo ao portal ${result.status}`);
-            console.log(result.url)
             router.push("/");
          }
       } catch (error) {
